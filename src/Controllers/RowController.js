@@ -9,7 +9,7 @@ export default class RowController {
 
     getCellValueUsingColumnKeyFromData(columnKey, jsonData) {
         let temp = this.appDataModel.dataKeysJsonpathMapper[columnKey];
-        if (temp != undefined) {
+        if (temp !== undefined) {
             return this.getJsonValAtPath(temp,jsonData);
         }
         else {
@@ -28,7 +28,7 @@ export default class RowController {
         let pathComponents = path.split('/').slice(1), tempJson = jsonObject, temp;
         for (let i = 0; i < pathComponents.length; i++) {
             temp = tempJson[pathComponents[i]];
-            if (temp == undefined) {
+            if (temp === undefined) {
                 return null;
             }
             tempJson = temp;

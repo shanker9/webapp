@@ -32,7 +32,7 @@ class AggregateDataQueryManagerPrivate {
     }
 
     unsubscribeToDetailsOfAggRow(aggregatedRowKey) {
-        let subId = this.subscriptionsMapper.get(aggregatedRowKey);
+        // let subId = this.subscriptionsMapper.get(aggregatedRowKey);
         let controllerInstance = this.subscriptionControllers.get(aggregatedRowKey);
         if (controllerInstance !== undefined) {
             controllerInstance.unsubscribe();

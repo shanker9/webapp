@@ -40,11 +40,11 @@ class TwoDChart extends Component {
     let chartData = [];
     let dataMin, dataMax;
     graphData.forEach(item => {
-      let object, xVal = this.getFormatedDate(item),
+      let xVal = this.getFormatedDate(item),
         yVal = item.value * 100;
 
-      dataMin = dataMin == undefined ? yVal : (dataMin > yVal ? yVal : dataMin);
-      dataMax = dataMax == undefined ? yVal : (dataMax < yVal ? yVal : dataMax);
+      dataMin = dataMin === undefined ? yVal : (dataMin > yVal ? yVal : dataMin);
+      dataMax = dataMax === undefined ? yVal : (dataMax < yVal ? yVal : dataMax);
 
       chartData.push({ time: xVal, rate: yVal });
     })
@@ -55,7 +55,7 @@ class TwoDChart extends Component {
   }
 
   getFormatedDate(item) {
-    let d = new Date(parseInt(item[this.entriesDatePathComponent].value * 1000));
+    let d = new Date(parseInt(item[this.entriesDatePathComponent].value * 1000,10));
     return `${d.getDate()}${this.monthNames[d.getMonth()]}${d.getFullYear()}`;
   }
 

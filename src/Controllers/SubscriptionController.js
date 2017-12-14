@@ -32,12 +32,12 @@ export default class SubscriptionController {
                 let rowKey = message.k;
                 let item = this.appDataModel.getDataFromDefaultData(rowKey);
 
-                if (item == undefined) {
+                if (item === undefined) {
                     this.appDataModel.addorUpdateRowData(rowKey, { "rowID": rowKey, "data": newData, "isSelected": false, "isUpdated": false });
                 } else {
                     this.appDataModel.addorUpdateRowData(rowKey, { "rowID": item.rowID, "data": newData, "isSelected": item.isSelected, "isUpdated": true });
 
-                    if (this.appDataModel.getGroupedData() != undefined) {
+                    if (this.appDataModel.getGroupedData() !== undefined) {
                         // this.parentControllerRef.updateRowDataInGroupedData(message,true);
                         this.updateCallback(this.appDataModel.getDataFromDefaultData(rowKey), true);
                     }

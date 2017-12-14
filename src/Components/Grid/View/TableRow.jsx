@@ -1,6 +1,6 @@
 import React from 'react';
 import TableCell from './TableCell.jsx';
-import styles from '../../../styles/AppStyles.css';
+// import styles from '../../../styles/AppStyles.css';
 import format from 'format-number';
 
 class TableRow extends React.Component {
@@ -112,15 +112,18 @@ class TableRow extends React.Component {
     getCellDataForKey(data, key) {
         let result, jsonpathforkey = this.dataKeysJsonpathMapper[key];
 
-        if (jsonpathforkey == undefined) {
+        if (jsonpathforkey === undefined) {
             return '';
         } else {
             let pathComponents = jsonpathforkey.split('/');
             pathComponents = pathComponents.filter(item => {
-                if (item != "")
+                if (item !== ""){
                     return item;
+                }else{
+                    return false;
+                }
             })
-            if (pathComponents.length == 0) {
+            if (pathComponents.length === 0) {
                 result = data[key];
             } else {
                 result = data;

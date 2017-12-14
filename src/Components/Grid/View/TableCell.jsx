@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../../styles/AppStyles.css';
+// import styles from '../../../styles/AppStyles.css';
 
 class TableCell extends React.Component {
 
@@ -30,7 +30,7 @@ class TableCell extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.cellData != nextProps.cellData) {
+        if (this.props.cellData !== nextProps.cellData) {
             return true;
         } else
             return false;

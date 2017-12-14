@@ -3,7 +3,7 @@ var AppDataModelSingleton = (function () {
     var instance;
     return {
         getInstance: function () {
-            if (instance != undefined) {
+            if (instance !== undefined) {
                 return instance;
             } else {
                 instance = new AppDataModel();
@@ -127,13 +127,13 @@ class AppDataModel {
     clearSelectedRows() { this.selectedRows.clear() };
     clearSelectionStateData() {
         this.selectedRows.forEach((item, key) => {
-            if(item.hasOwnProperty('aggRowKey')){
+            if (item.hasOwnProperty('aggRowKey')) {
                 let childRows = this.getDataFromGroupedData(item.aggRowKey).bucketData;
                 let dataForSelectedRow = childRows.get(item.rowID);
                 dataForSelectedRow.isSelected = false;
             }
         })
-        this.clearSelectedRows();        
+        this.clearSelectedRows();
     }
 
     /** groupedData methods */
@@ -149,7 +149,7 @@ class AppDataModel {
     getDataMapInRangeFromGroupedData(startIndex, endIndex) { return this.groupedViewData.slice(startIndex, endIndex); }
 
     sortGroupedDataBy(columnkey) {
-        let jsonpath = this.dataKeysJsonpathMapper[columnkey];
+        // let jsonpath = this.dataKeysJsonpathMapper[columnkey];
         this.groupedData = this.sortMapByValue(this.groupedData, columnkey, (a, b) => {
             return a[0].localeCompare(b[0]);
             // this.getCellDataForKey(a[1].groupData, columnkey).localeCompare(this.getCellDataForKey(b[1].groupData, columnkey));
@@ -160,13 +160,16 @@ class AppDataModel {
         try {
             let result, jsonpathforkey = this.dataKeysJsonpathMapper[key];
 
-            if (jsonpathforkey == undefined) {
+            if (jsonpathforkey === undefined) {
                 return '';
             } else {
                 let pathComponents = jsonpathforkey.split('/');
                 pathComponents = pathComponents.filter(item => {
-                    if (item != "")
+                    if (item !== "") {
                         return item;
+                    } else {
+                        return false;
+                    }
                 })
 
                 result = data;
@@ -184,9 +187,9 @@ class AppDataModel {
     sortMapByValue(map, columnkey, sortFunction) {
         var tupleArray = [], keyColumnMapper = new Map(), columnkeyData;
         map.forEach((item, key) => {
-            columnkeyData = this.getCellDataForKey(item.groupData,columnkey);
+            columnkeyData = this.getCellDataForKey(item.groupData, columnkey);
             tupleArray.push([columnkeyData, item]);
-            keyColumnMapper.set(columnkeyData,key);
+            keyColumnMapper.set(columnkeyData, key);
 
             // tupleArray.push([key, item]);
         })
@@ -195,7 +198,7 @@ class AppDataModel {
         var sortedMap = new Map();
         tupleArray.forEach(function (item) {
             // sortedMap[keyColumnMapper.get(item[0])] = item[1];
-            sortedMap.set(keyColumnMapper.get(item[0]),item[1]);
+            sortedMap.set(keyColumnMapper.get(item[0]), item[1]);
             // sortedMap.set(item[0],item[1]);
             // sortedMap[item[0]] = item[1];
         });

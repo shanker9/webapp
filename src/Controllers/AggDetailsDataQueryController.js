@@ -23,21 +23,21 @@ export default class AggDetailsDataQueryController {
     }
 
     defaultSubscriptionDataHandler(message) {
-        if (message.c == 'group_begin') {
+        if (message.c === 'group_begin') {
             console.log(message.c);
             this.data = new Map();
             this.aggRowData = this.appDataModel.getDataFromGroupedData(this.rowKey);
             return;
-        } else if (message.c == 'group_end') {
+        } else if (message.c === 'group_end') {
             console.log(message.c);
             this.aggRowData.bucketData = this.data;
             let groupedViewData = this.appDataModel.createGroupedViewedData(this.appDataModel.getGroupedData());
             this.appDataModel.setGroupedViewData(groupedViewData);
             this.initialUIupdateCallback();
             return;
-        } else if (message.c == 'sow') {
+        } else if (message.c === 'sow') {
             this.data.set(message.k, { "rowID": message.k, "data": message.data, "isSelected": false, "isUpdated": false, "aggRowKey": this.rowKey });
-        } else if (message.c == 'p') {
+        } else if (message.c === 'p') {
             let newData = message.data;
             let rowKey = message.k;
             let item = this.aggRowData.bucketData.get(rowKey);

@@ -1,7 +1,7 @@
 import AmpsControllerSingleton from '../Amps/AmpsController.js';
 import AppDataModelSingleton from '../DataModel/AppDataModel.js';
 import SubscriptionController from './SubscriptionController.js';
-import GroupSubscriptionController from './GroupSubscriptionController.js';
+// import GroupSubscriptionController from './GroupSubscriptionController.js';
 import AggregateSubscriptionController from './AggregateSubscriptionController';
 import GraphQueryController from './GraphQueryController.js';
 import AggregateDataQueryManager from './AggregateDataQueryManager';
@@ -71,7 +71,7 @@ export default class TableController {
         let pathComponents = path.split('/').slice(1), tempJson = jsonObject, temp;
         for (let i = 0; i < pathComponents.length; i++) {
             temp = tempJson[pathComponents[i]];
-            if (temp == undefined) {
+            if (temp === undefined) {
                 return null;
             }
             tempJson = temp;
@@ -95,14 +95,14 @@ export default class TableController {
         this.clearGroupSubscriptions();
 
         let index = this.groupingColumnsByLevel.indexOf(columnName);
-        if (index != -1) {
+        if (index !== -1) {
             // let newGroupingColumnsOrderArray = this.groupingColumnsByLevel.slice(0, index);
             // this.groupingColumnsByLevel = newGroupingColumnsOrderArray;
         } else {
             this.groupingColumnsByLevel.push(columnName);
         }
 
-        this.groupingColumnsByLevel.length != 0 ?
+        this.groupingColumnsByLevel.length !== 0 ?
             this.ampsGroupSubscribe(this.groupingColumnsByLevel.slice(-1)[0])
             : this.updateUIWithDefaultViewData();
     }
@@ -141,7 +141,7 @@ export default class TableController {
         projectionsArray.sort();
 
         projectionsArray = projectionsArray.map(path => {
-            if (aggregateColumnsJsonpathArray.indexOf(path) != -1) {
+            if (aggregateColumnsJsonpathArray.indexOf(path) !== -1) {
                 return `SUM(${path}) AS ${path}`;
             } else {
                 return `${path}`;
@@ -197,7 +197,7 @@ export default class TableController {
 
     isSubscriptionExists(groupByColumn) {
         let subscriptionId = this.columnSubscriptionMapper.get(groupByColumn);
-        if (subscriptionId != undefined) {
+        if (subscriptionId !== undefined) {
             return true;
         }
         return false;
@@ -257,7 +257,7 @@ export default class TableController {
     /** Clearing Grouping subscriptions */
 
     clearGroupSubscriptions() {
-        if (this.columnSubscriptionMapper.size == 0) {
+        if (this.columnSubscriptionMapper.size === 0) {
             return;
         }
         this.columnSubscriptionMapper.forEach((value, key) => {
@@ -293,7 +293,7 @@ export default class TableController {
         }
 
         // let dataForSelectedRow = this.appDataModel.getDataFromDefaultData(indexValue);
-        if (dataForSelectedRow != undefined) {
+        if (dataForSelectedRow !== undefined) {
             dataForSelectedRow.isSelected = !dataForSelectedRow.isSelected;
         } else {
             console.log('Data pertaining to the selected row does not exist in the appData');
@@ -408,7 +408,7 @@ export default class TableController {
     }
 
     unsubscribeLiveData() {
-        if (this.livedatasubscriptionId != undefined) {
+        if (this.livedatasubscriptionId !== undefined) {
             this.unsubscribe(this.livedatasubscriptionId, (subid, colname) => console.log('unsubscribed live data subscription with id', subid))
         }
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import TableView from './Grid/View/TableView.jsx';
-import styles from '../styles/AppStyles.css';
+// import styles from '../styles/AppStyles.css';
 import DagreD3 from './Graph/View/dagreD3.jsx';
 import ObjectBrowser from './ObjectBrowser/View/ObjectBrowser.jsx';
 import ChartHOC from './Charts/View/ChartHOC.jsx';

@@ -17,11 +17,11 @@ export default class AggregateSubscriptionController {
     /** GROUP SUBSCRIPTION DATAHANDLER **/
 
     groupingSubscriptionDataHandler(message) {
-        if (message.c == 'group_begin') {
+        if (message.c === 'group_begin') {
             // this.groupingColumnKeyMap = new Map();
             this.aggregatedRowsData = new Map();
             return;
-        } else if (message.c == 'group_end') {
+        } else if (message.c === 'group_end') {
             this.sowGroupDataEnd = true;
             // this.appDataModel.setGroupColumnKeyMapper(this.groupingColumnKeyMap);
             // let keyBinMapper = this.getGroupBuckets(this.appDataModel.getDataMap(),this.groupingColumnArray);
@@ -61,7 +61,7 @@ export default class AggregateSubscriptionController {
         let pathComponents = path.split('/').slice(1), tempJson = jsonObject, temp;
         for(let i=0; i<pathComponents.length;i++){
             temp = tempJson[pathComponents[i]];
-            if(temp==undefined){
+            if(temp === undefined){
                 return null;
             }
             tempJson = temp;
@@ -99,7 +99,7 @@ export default class AggregateSubscriptionController {
         dataMap.forEach((item, key) => {
             let groupingKey = groupingColumnArray.map((val,k)=>this.getJsonValAtPath(this.dataModel.dataKeysJsonpathMapper[val],item.data)).join('-');
             let resultMapIterationData = resultMap.get(this.groupingColumnKeyMap.get(groupingKey));
-            if (resultMapIterationData == undefined) {
+            if (resultMapIterationData === undefined) {
                 let bucketData = new Map();
                 // bucketData.set(key, item);
                 resultMap.set(this.groupingColumnKeyMap.get(groupingKey), bucketData);
