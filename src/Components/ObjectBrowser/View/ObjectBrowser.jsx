@@ -17,7 +17,7 @@ class ObjectBrowser extends Component {
 
     render() {
         return (
-            <div className={styles.objectBrowser}>
+            <div className="objectBrowser">
                 <JsonView json={this.state.data} />
             </div>
         );

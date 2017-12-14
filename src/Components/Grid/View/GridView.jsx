@@ -30,8 +30,8 @@ class GridView extends React.Component {
         let rowColorBoolean = false;
         return (
             <div>
-                <table className={styles.table}>
-                    <tbody className={styles.tableBody} >
+                <table className="table">
+                    <tbody className="tableBody" >
                         <tr>
                             <th>
                                 <div style={{ height: this.props.topDivHeight }}></div>
@@ -80,8 +80,8 @@ class GridView extends React.Component {
         let rowColorBoolean = true;
         return (
             <div>
-                <table className={styles.table}>
-                    <tbody className={styles.tableBody} >
+                <table className="table">
+                    <tbody className="tableBody">
                         <tr>
                             <th>
                                 <div style={{ height: this.props.topDivHeight }}></div>

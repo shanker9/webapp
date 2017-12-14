@@ -52,7 +52,7 @@ class TableCell extends React.Component {
     render() {
 
         return (
-            <td ref={"tableCell"} className={styles.td} >
+            <td ref={"tableCell"} className="td" >
                 {this.props.cellData}
             </td>
         )

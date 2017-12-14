@@ -44,10 +44,10 @@ class TableAggregatedRow extends React.Component {
     render() {
         return (
             <tr ref={"tableRow"}
-                className={styles.tableRow}
+                className="tableRow"
                 onClick={this.handleRowClick}
                 style={{ backgroundColor: '#ededed' }}>
-                <td className={styles.tdGroupedView}>{this.state.expandStatus?'-':'+'}</td>
+                <td className="tdGroupedView">{this.state.expandStatus?'-':'+'}</td>
                 {
                     this.state.columnOrder.map((item, i) => {
                         return (

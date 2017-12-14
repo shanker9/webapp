@@ -334,9 +334,9 @@ class TableView extends React.Component {
 
     render() {
         return (
-            <div className={styles.blottercontainer}>
-                <div className={styles.temporalUIblock}>
-                    <div className={styles.temporalslider}>
+            <div className="blottercontainer">
+                <div className="temporalUIblock">
+                    <div className="temporalslider">
                         <ReactSimpleRange
                             disableTrack
                             min={0}
@@ -350,23 +350,23 @@ class TableView extends React.Component {
                             thumbColor="#307dd4"
                             onChange={this.sliderChangeHandler.bind(this)} />
                     </div>
-                    <button className={styles.temporalButton} onClick={this.getLivePrices.bind(this)}> Live Prices </button>
+                    <button className="temporalButton" onClick={this.getLivePrices.bind(this)}> Live Prices </button>
                 </div>
                 <BlotterInfo ref="blotterInfo"
                     subscribedTopic={this.props.subscriptionTopic}
                     clearGrouping={this.clearGrouping.bind(this)} />
                 <div ref="dragToBar"
-                    className={styles.dragtobar}
+                    className="dragtobar"
                     onDragOver={event => event.preventDefault()}
                     onDrop={this.onColumnDrop.bind(this)}>
                     DRAG COLUMNS HERE TO START GROUPING
                 </div>
-                <div className={styles.gridContainerDiv}>
+                <div className="gridContainerDiv">
                     {this.state.isGroupedView ?
-                        <div id="scrollableHeaderDiv" className={styles.headerDiv}>
-                            <table className={styles.table}>
-                                <thead className={styles.tableHead}>
-                                    <tr className={styles.tableHeaderRow}>
+                        <div id="scrollableHeaderDiv" className="headerDiv">
+                            <table className="table">
+                                <thead className="tableHead">
+                                    <tr className="tableHeaderRow">
                                         <th style={{ minWidth: '18px' }} />
                                         {this.columns.map((item, i) =>
                                             <TableHeaderCell
@@ -379,10 +379,10 @@ class TableView extends React.Component {
                                 </thead>
                             </table>
                         </div> :
-                        <div id="scrollableHeaderDiv" className={styles.headerDiv}>
-                            <table className={styles.table}>
-                                <thead className={styles.tableHead}>
-                                    <tr className={styles.tableHeaderRow}>
+                        <div id="scrollableHeaderDiv" className="headerDiv">
+                            <table className="table">
+                                <thead className="tableHead">
+                                    <tr className="tableHeaderRow">
                                         {this.columns.map((item, i) =>
                                             <TableHeaderCell
                                                 key={i}
@@ -395,7 +395,7 @@ class TableView extends React.Component {
                             </table>
                         </div>
                     }
-                    <div id="scrollableTableDiv" className={styles.tableDiv} onScroll={this.scrollEventHandler}>
+                    <div id="scrollableTableDiv" className="tableDiv" onScroll={this.scrollEventHandler}>
                         <GridView isGroupedView={this.state.isGroupedView}
                             ref='gridViewRef'
                             viewableData={this.state.gridDataSource}

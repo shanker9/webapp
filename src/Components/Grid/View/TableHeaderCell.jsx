@@ -26,7 +26,7 @@ class TableHeaderCell extends React.Component {
 
         return (
             <th id={this.props.cellKey}
-                className={styles.th} 
+                className="th" 
                 onClick={this.columnClickHandler}
                 onDragStart={this.dragStart.bind(this)}
                 draggable="true">{this.props.cellData}</th>

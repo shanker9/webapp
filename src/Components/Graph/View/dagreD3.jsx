@@ -314,7 +314,7 @@ class DagreD3 extends Component {
     render() {
         return (
 
-            <div id="dagreContainer" className={styles.dagreContainer}>
+            <div id="dagreContainer" className="dagreContainer">
                 <svg className='treeSvg'>
                     <g></g>
                 </svg>

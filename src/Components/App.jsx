@@ -37,31 +37,31 @@ class App extends React.Component {
 
     render() {
         return (
-            <div className={styles.appEnclosingDiv}>
-                <div className={styles.appContainer}>
-                    <div className={styles.gridAndChartContainer}>
-                        <div className={styles.tablecontainer}>
-                            <div className={styles.ComponentTitle}>Blotter</div>
+            <div className="appEnclosingDiv">
+                <div className="appContainer">
+                    <div className="gridAndChartContainer">
+                        <div className="tablecontainer">
+                            <div className="ComponentTitle">Blotter</div>
                             <TableView ref='tableViewRef'
                                 graphTreeComponentReference={this.getGraphTreeComponentReference.bind(this)}
                                 subscriptionTopic={this.state.subscriptionTopic}
                                 rowHeight={this.state.rowHeight} />
                         </div>
-                        <div className={styles.chartContainer}>
-                            <div className={styles.ComponentTitle}>Chart</div>
+                        <div className="chartContainer">
+                            <div className="ComponentTitle">Chart</div>
                             <ChartHOC ref='chartHOC'/>
                         </div>
                     </div>
-                    <div className={styles.graphAndObjectBrowserContainer}>
-                        <div className={styles.graphContainer}>
-                            <div className={styles.ComponentTitle}>Graph Sources</div>
+                    <div className="graphAndObjectBrowserContainer">
+                        <div className="graphContainer">
+                            <div className="ComponentTitle">Graph Sources</div>
                             <DagreD3 ref="graphTree"
                                 objectBrowserComponentReference={this.getObjectBrowserComponentReference.bind(this)}
                                 chartComponentReference={this.getChartComponentReference.bind(this)}
                                 qGraphData={{}} />
                         </div>
-                        <div className={styles.objectBrowserContainer}>
-                            <div className={styles.ComponentTitle}>Object Browser</div>
+                        <div className="objectBrowserContainer">
+                            <div className="ComponentTitle">Object Browser</div>
                             <ObjectBrowser ref="objectBrowser" />
                         </div>
                     </div>
