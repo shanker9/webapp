@@ -1,0 +1,323 @@
+    .appEnclosingDiv{
+        position: absolute;
+        width: 98vw;
+        height: 95vh;
+        background-color: rgb(226, 226, 226);
+        padding: 5px;
+    }
+    
+    .appContainer{
+        display: flex;
+        flex-direction: column;
+        /* height: 57em; */
+        height: 100%;
+        background-color: white;
+    }
+    
+    .gridAndChartContainer {
+        /* max-height: 60%; */
+        flex: 1;
+        display: -webkit-flex;
+        display: flex;
+        /* border: 1px solid black; */
+    }
+
+    .graphAndObjectBrowserContainer{
+        flex: 1;
+        display: -webkit-flex;
+        display: flex;
+    }
+
+    .tablecontainer {
+        min-width: 30%;
+        max-width: 60%;
+        border: 1px solid rgb(150, 188, 211);
+        border-collapse: collapse;
+        display: flex;
+        flex-direction: column;
+        resize: horizontal;
+        overflow: hidden;
+    }
+
+    .blottercontainer{
+        height: -webkit-fill-available;
+        display: flex;
+        flex-direction: column;
+        margin: 5px;
+    }
+    
+    .blotterinfocontainer {
+        align-items : center;
+        padding: 2px;
+        /* margin-bottom: 10px; */
+        /* border: 0.5px solid grey; */
+    }
+
+    .temporalUIblock {
+        width: 50%;        
+        align-self: center;
+        display: flex;
+    }
+
+    .temporalslider {
+        flex: 1;
+        vertical-align: middle;
+    }
+
+    .temporalButton {
+        height: 20px; 
+        background-color: rgb(0, 134, 56);
+        border: none;
+        color: white;
+        text-align: center;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+
+    .dragtobar{
+        /* background-color: rgb(255, 255, 255); */
+        border: 1px dotted black;
+        height: 27px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 14px;
+    }
+
+    .gridContainerDiv {
+        display: flex;
+        flex-direction: column; 
+    }
+    
+    .header {
+        font-size: 15px;
+        color: #c00000;
+    }
+
+    .headerDiv {
+        min-height: fit-content;
+        overflow-x: hidden;     
+        overflow-y: scroll;
+        /* background-color: #2C4C65; */
+        background-color: rgb(48, 125, 212);
+    }
+
+    .table {
+        border-collapse: collapse;
+    }
+
+    .tableHeaderRow{
+        height: 20px;
+        text-align: center;
+        cursor: pointer;        
+    }
+
+    th:hover {
+        background-color: rgb(206, 77, 77);
+        cursor: move;
+    }
+
+
+    .th {
+        border: 1px solid grey;
+        font-size: 14px;
+        font-weight: 300;
+        /* text-align: center; */
+        vertical-align: middle;
+        /* padding: 3px; */
+        min-width: 190px;
+        /* box-sizing: border-box; */
+        outline-style: outset;
+        outline-color : lightgray;
+        outline-width : 1.3px;
+        color: white;   
+    }
+
+    
+    .tableDiv {
+        height: -webkit-fill-available;
+        overflow-y: scroll;
+        overflow-x: auto;
+    }
+
+    .tableDiv::-webkit-scrollbar-track
+    {
+        /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+        /* box-shadow : inset 0 0 6px rgba(0,0,0,0.3); */
+        border-radius: 1px;
+        background-color: #F5F5F5;
+    }
+    
+    .tableDiv::-webkit-scrollbar
+    {
+        width: 12px;
+        height: 12px;
+        background-color: #F5F5F5;
+    }
+    
+    .tableDiv::-webkit-scrollbar-thumb
+    {
+        border-radius: 5px;
+        /* -webkit-box-shadow: inset 10px 0 6px rgba(0,0,0,.3); */
+        /* box-shadow: inset 10px 0 6px rgba(0,0,0,.3); */
+        /* background-color: #a86161; */
+        background-image: -webkit-gradient(linear,
+									   left bottom,
+									   left top,
+                                       color-stop(0, #c5c8cc),
+                                       color-stop(0.2, #95afcf),                                       
+									   color-stop(0.50, #307dd4),
+									   color-stop(0.75, #6b9cd4));
+    }
+
+    .headerDiv::-webkit-scrollbar-track {
+        /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+        /* box-shadow : inset 0 0 6px rgba(0,0,0,0.3); */
+        /* border-radius: 10px; */
+        background-color: #307dd4;
+        opacity: 0;
+    }
+
+    .headerDiv::-webkit-scrollbar
+    {
+        width: 15px;
+        height: 15px;
+        background-color: #F5F5F5;
+    }
+    
+    .headerDiv::-webkit-scrollbar-thumb
+    {
+        /* border-radius: 5px; */
+        /* -webkit-box-shadow: inset 10px 0 6px rgba(0,0,0,.3); */
+        /* box-shadow: inset 10px 0 6px rgba(0,0,0,.3); */
+        background-color: #307dd4;
+        /* background-image: -webkit-gradient(linear,
+									   left bottom,
+									   left top,
+									   color-stop(0.44, rgb(122,153,217)),
+									   color-stop(0.72, rgb(73,125,189)),
+									   color-stop(0.86, rgb(28,58,148))); */
+    }
+
+
+    .tableGridRow {
+        border-collapse: collapse;
+        height: 20px;
+    }
+
+    tr:hover {
+        cursor: default;
+    }
+
+    .tableRow:hover {
+        cursor: default;
+    }
+
+    .tableRow {
+        font-variant : bold;
+    }
+
+    .td {
+        border: 1px solid grey;
+        border-bottom: 0px;
+        text-align: center;
+        font-size: 80%;
+        font-weight: 300;
+        min-width: 190px;
+        outline-style: outset;
+        outline-color : lightgray;
+        outline-width : 1.3px;
+        -webkit-transition: background-color 1s;
+        -moz-transition: background-color 1s;
+        transition: background-color 1s;       
+    }
+
+    .tdGroupedView {
+        border: 1px solid grey;
+        border-bottom: 0px;
+        text-align: center;
+        font-size: 100%;
+        font-weight: bold;
+        /* padding: 2px; */
+        min-width: 20px;
+        box-sizing: border-box;
+        /* outline-style: outset; */
+        outline-color : lightgray;
+        outline-width : 1.3px; 
+    }
+
+    .leftAlignContentCells {
+        align-content: left;
+        align-items : left;
+    }
+
+    .button {
+        background-color: #A72D2D;
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-size: 10px;
+        padding: 5px;
+        font-weight: 300;
+        cursor: pointer;
+        margin-left: 10px;
+        float: right;
+    }
+
+    .label {
+        font-size: 14px;
+    }
+
+    .chartContainer{
+        /* width: 100%; */
+        flex: 1;
+        background-color: rgb(255, 255, 255);
+        border: 1px solid rgb(150, 188, 211);
+        display: flex;
+        flex-direction: column;
+        resize: horizontal;
+        overflow: hidden;
+    }
+
+    /* Graph */
+
+    .graphContainer{
+        width: 60%;
+        background-color: #FFFFFF;        
+        border: 1px solid rgb(150, 188, 211);        
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dagreContainer {
+        flex: 1;
+    }
+
+    .objectBrowserContainer{
+        /* width: 30%; */
+        flex: 1;
+        background-color: #ffffff;
+        border: 1px solid rgb(150, 188, 211);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .objectBrowser{
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+
+    .ComponentTitle{
+        border: 0.5px solid rgb(163, 159, 159);
+        margin: 2px 4px 4px 2px;
+        background-color: #F0F3F5;
+        color: #0C0101;
+        font-family: Geneva, Tahoma, sans-serif;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    svg:hover {
+        /* background-color:#F0E7C0; */
+        cursor: pointer;
+    }
