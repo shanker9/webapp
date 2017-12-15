@@ -17,14 +17,15 @@ class DagreD3 extends Component {
             childNodesArray: this.props.qGraphData.childNodesArray,
         }
 
-        this.dagreLayoutNodeInfo = undefined;
-        this.dagreLayoutEdgeInfo = undefined;
+        // this.dagreLayoutNodeInfo = undefined;
+        // this.dagreLayoutEdgeInfo = undefined;
         this.dagreD3Renderer = this.dagreD3Renderer.bind(this);
         this.dagreGraphTreeLayout = this.dagreGraphTreeLayout.bind(this);
         this.gLayout = undefined;
         this.svg = undefined;
         this.selectedNodeKey = undefined;
         this.isInitialSVGRender = true;
+        this.initialSvg = undefined;
         
     }
 
@@ -225,9 +226,14 @@ class DagreD3 extends Component {
 
         const { parentNodeData, parentNodeSources, childNodesArray } = graphData;
         this.gLayout = undefined;
-        // this.svg = undefined;
         this.selectedNodeKey = undefined;
         this.isInitialSVGRender = true;
+      
+        if(!parentNodeData || !parentNodeSources || !childNodesArray){
+            this.clearSvg();
+            return;
+        }
+
         this.setState({ parentNodeData: parentNodeData, parentNodeSources: parentNodeSources, childNodesArray: childNodesArray });
     }
 
@@ -238,10 +244,14 @@ class DagreD3 extends Component {
 
     clearSvg() {
         if (this.svg !== undefined) {
-            let containter = document.getElementById("dagreContainer");
-            containter.removeChild(containter.childNodes[0]);
-            this.svg = d3Local.select('#dagreContainer').append('svg');
-            this.svg.append('g');
+            // Clearing the group element in svg
+            let svg = document.getElementById('treeSvg');
+            svg.removeChild(svg.childNodes[0]);
+
+            //appending the new group element to svg
+            let newsvg = d3Local.select('.treeSvg').append('g');
+
+            // this.svg = undefined;
         }
     }
 
@@ -313,9 +323,8 @@ class DagreD3 extends Component {
 
     render() {
         return (
-
             <div id="dagreContainer" className="dagreContainer">
-                <svg className='treeSvg'>
+                <svg id='treeSvg' className='treeSvg'>
                     <g></g>
                 </svg>
             </div>

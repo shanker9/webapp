@@ -301,7 +301,7 @@ export default class TableController {
 
         //deselecting selected Rows
         let selectedRows = this.appDataModel.getSelectedRows();
-        selectedRows.forEach((item, key) => {
+        selectedRows.forEach(((item, key) => {
             if (item.hasOwnProperty('aggRowKey')) {
                 let childRows = this.appDataModel.getDataFromGroupedData(item.aggRowKey).bucketData;
                 let dataForSelectedRow = childRows.get(item.rowID);
@@ -310,7 +310,10 @@ export default class TableController {
             }
 
             // let dataFromDataMap = this.appDataModel.getDataFromDefaultData(key);
-        })
+        }).bind(this))
+
+        //clearing selectRows data
+        this.appDataModel.clearSelectedRows();
 
         // updating selectedRows data
         if (dataForSelectedRow.isSelected) {
@@ -337,6 +340,7 @@ export default class TableController {
         const id = dataForSelectedRow.data.Vertex;
         if (id == null) {
             this.graphQueryController.unsubscribeParentNodeData();
+            this.uiRef.updateGraphUIWithData({});            
             return;
         }
         let parentNodeData, parentNodeSources, childNodesArray;
@@ -348,12 +352,12 @@ export default class TableController {
 
 
         Promise.all([parentNodeDataQueryRequest, parentNodeSourcesQueryRequest]).then(values => {
-            console.log(values);
+            console.log('ParentNode and Sources data',values);
             parentNodeData = values[0];
             parentNodeSources = values[1].sources;
             let nodeDataArray = this.graphQueryController.getGraphNodesDataArrayWithIds('Graph', parentNodeSources);
             nodeDataArray.then(result => {
-                console.log(result);
+                console.log('childnodes data',result);
                 childNodesArray = result;
                 this.uiRef.updateGraphUIWithData({ parentNodeData, parentNodeSources, childNodesArray });
             })
