@@ -23,7 +23,7 @@ class TableView extends React.Component {
         this.columns = [
             {
                 columnkey: "counterparty",
-                columnvalue: "counterparty"
+                columnvalue: "Counterparty"
             },
             {
                 columnkey: "name",
@@ -31,103 +31,103 @@ class TableView extends React.Component {
             },
             {
                 columnkey: "receiveIndex",
-                columnvalue: "receiveIndex"
+                columnvalue: "ReceiveIndex"
             },
             {
                 columnkey: "rho10bps",
-                columnvalue: "rho10bps"
+                columnvalue: "Rho10bps"
             },
             {
                 columnkey: "gamma1pct",
-                columnvalue: "gamma1pct"
+                columnvalue: "Gamma1pct"
             },
             {
                 columnkey: "delta1pct",
-                columnvalue: "delta1pct"
+                columnvalue: "Delta1pct"
             },
             {
                 columnkey: "vega1pt",
-                columnvalue: "vega1pt"
+                columnvalue: "Vega1pt"
             },
             {
                 columnkey: "lastUpdated",
-                columnvalue: "lastUpdated"
+                columnvalue: "LastUpdated"
             },
             {
                 columnkey: "receiveLeg",
-                columnvalue: "receiveLeg"
+                columnvalue: "ReceiveLeg"
             },
             {
                 columnkey: "vertex",
-                columnvalue: "vertex"
+                columnvalue: "Vertex"
             },
             {
                 columnkey: "price",
-                columnvalue: "price"
+                columnvalue: "Price"
             },
             {
                 columnkey: "payLeg",
-                columnvalue: "payLeg"
+                columnvalue: "PayLeg"
             },
             {
                 columnkey: "volatility",
-                columnvalue: "volatility"
+                columnvalue: "Volatility"
             },
             {
                 columnkey: "payCurrency",
-                columnvalue: "payCurrency"
+                columnvalue: "PayCurrency"
             },
             {
                 columnkey: "payDiscountCurve",
-                columnvalue: "payDiscountCurve"
+                columnvalue: "PayDiscountCurve"
             },
             {
                 columnkey: "payFixedRate",
-                columnvalue: "payFixedRate"
+                columnvalue: "PayFixedRate"
             },
             {
                 columnkey: "maturityDate",
-                columnvalue: "maturityDate"
+                columnvalue: "MaturityDate"
             },
             {
                 columnkey: "payNotional",
-                columnvalue: "payNotional"
+                columnvalue: "PayNotional"
             },
             {
                 columnkey: "receiveDiscountCurve",
-                columnvalue: "receiveDiscountCurve"
+                columnvalue: "ReceiveDiscountCurve"
             },
             {
                 columnkey: "receiveNotional",
-                columnvalue: "receiveNotional"
+                columnvalue: "ReceiveNotional"
             },
             {
                 columnkey: "receiveCurrency",
-                columnvalue: "receiveCurrency"
+                columnvalue: "ReceiveCurrency"
             },
             {
                 columnkey: "receiveSpread",
-                columnvalue: "receiveSpread"
+                columnvalue: "ReceiveSpread"
             },
             {
                 columnkey: "amerOrEuro",
-                columnvalue: "amerOrEuro"
+                columnvalue: "AmerOrEuro"
             },
             {
                 columnkey: "putOrCall",
-                columnvalue: "putOrCall"
+                columnvalue: "PutOrCall"
             },
             {
                 columnkey: "contractSize",
-                columnvalue: "contractSize"
+                columnvalue: "ContractSize"
             },
             {
                 columnkey: "strike",
-                columnvalue: "strike"
+                columnvalue: "Strike"
             },
             {
                 columnkey: "underlier",
-                columnvalue: "underlier"
+                columnvalue: "Underlier"
             }
         ];
 

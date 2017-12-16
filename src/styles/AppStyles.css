@@ -119,8 +119,9 @@
 
     .th {
         border: 1px solid grey;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 300;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
         /* text-align: center; */
         vertical-align: middle;
         /* padding: 3px; */
