@@ -30,7 +30,7 @@
 
     .tablecontainer {
         min-width: 30%;
-        max-width: 60%;
+        max-width: 100%;
         border: 1px solid rgb(150, 188, 211);
         border-collapse: collapse;
         display: flex;
