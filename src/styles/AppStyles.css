@@ -1,7 +1,9 @@
     .appEnclosingDiv{
         position: absolute;
-        width: 98vw;
-        height: 95vh;
+        /* width: 98vw;
+        height: 95vh; */
+        width: inherit;
+        height: inherit;
         background-color: rgb(226, 226, 226);
         padding: 5px;
     }

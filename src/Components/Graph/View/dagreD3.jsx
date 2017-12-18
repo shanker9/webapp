@@ -34,6 +34,11 @@ class DagreD3 extends Component {
     }
 
     componentDidUpdate() {
+        const { parentNodeData, parentNodeSources, childNodesArray } = this.state;        
+        if(!parentNodeData || !parentNodeSources || !childNodesArray){
+            this.clearSvg();
+            return;
+        }
         this.dagreGraphTreeLayout();
     }
 
