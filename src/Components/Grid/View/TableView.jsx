@@ -367,7 +367,7 @@ class TableView extends React.Component {
                             <table className="table">
                                 <thead className="tableHead">
                                     <tr className="tableHeaderRow">
-                                        <th style={{ minWidth: '18px' }} />
+                                        <th className='groupExpansionHeaderBox'/>
                                         {this.columns.map((item, i) =>
                                             <TableHeaderCell
                                                 key={i}

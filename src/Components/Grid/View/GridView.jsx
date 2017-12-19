@@ -33,7 +33,7 @@ class GridView extends React.Component {
                 <table className="table">
                     <tbody className="tableBody" >
                         <tr>
-                            <th>
+                            <th style={{padding : '0px'}}>
                                 <div style={{ height: this.props.topDivHeight }}></div>
                             </th>
                         </tr>
@@ -83,7 +83,7 @@ class GridView extends React.Component {
                 <table className="table">
                     <tbody className="tableBody">
                         <tr>
-                            <th>
+                            <th style={{padding :'0px'}}>
                                 <div style={{ height: this.props.topDivHeight }}></div>
                             </th>
                         </tr>
