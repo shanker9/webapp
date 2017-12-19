@@ -7,19 +7,21 @@ export default class GraphQueryController {
         this.parentNodeSubscriptionId = undefined;
     }
 
-    getGraphDataWithId(queryTopic, filter, dataHandler, subscriptionIdHandler, queryId) {
+    getGraphDataWithId(isLiveData, queryTopic, filter, dataHandler, subscriptionIdHandler, queryId) {
         let commandObject = {
-            "command": "sow_and_subscribe",
             "topic": queryTopic,
             "filter": filter
         };
+
+        commandObject.command = isLiveData ? 'sow_and_subscribe' : 'sow';
+
         this.ampsController.connectAndSubscribe(dataHandler, subscriptionIdHandler, commandObject);
     }
 
-    getParentNodeData(queryTopic, nodeId, callback) {
+    getParentNodeData(isLiveData, queryTopic, nodeId, callback) {
         let graphNodeData, isSowDataEnd;
         return new Promise((resolve, reject) => {
-            this.getGraphDataWithId(queryTopic, `/id=="${nodeId}"`, (message) => {
+            this.getGraphDataWithId(isLiveData, queryTopic, `/id=="${nodeId}"`, (message) => {
 
                 // console.log("UPDATE: ",message.c,message.data);
                 if (message.c === 'group_begin') { return; }
@@ -39,9 +41,9 @@ export default class GraphQueryController {
     }
 
     getGraphDataForNodeWithId(queryTopic, nodeId, unsubscribeAfterSowData, callback) {
-        let graphNodeData, subscriptionId;
+        let graphNodeData, subscriptionId, isLiveData = false;
         return new Promise((resolve, reject) => {
-            this.getGraphDataWithId(queryTopic, `/id=="${nodeId}"`, (message) => {
+            this.getGraphDataWithId(isLiveData, queryTopic, `/id=="${nodeId}"`, (message) => {
 
                 if (message.c === 'group_begin') { return; }
                 else if (message.c === 'group_end') {
@@ -60,12 +62,12 @@ export default class GraphQueryController {
     }
 
     getGraphNodesDataArrayWithIds(queryTopic, nodeIdArray) {
-        let subscriptionId, graphNodesArray = [];
+        let subscriptionId, graphNodesArray = [], isLiveData = false;
         let commaSeparatedNodeIds = nodeIdArray.map(item => `"${item}"`).join(',');
         let queryString = `/id in (${commaSeparatedNodeIds})`;
 
         return new Promise((resolve, reject) => {
-            this.getGraphDataWithId(queryTopic, queryString, (message) => {
+            this.getGraphDataWithId(isLiveData, queryTopic, queryString, (message) => {
                 if (message.c === 'group_begin') { return; }
                 else if (message.c === 'group_end') {
                     this.ampsController.unsubscribe(subscriptionId, unsubscribeId => console.log('Query Unsubscribed Id:', unsubscribeId))

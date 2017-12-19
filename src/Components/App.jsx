@@ -31,71 +31,76 @@ class App extends React.Component {
             layout: {
                 "type": "row",
                 "weight": 100,
-                "children": [
-                    {
-                        "type": "row",
-                        "weight": 60,
-                        "children": [
-                            {
-                                "type": "tabset",
-                                "weight": 100,
-                                "selected": 0,
-                                "children": [
-                                    {
-                                        "type": "tab",
-                                        "name": "Blotter",
-                                        "component": "blotter",
-                                        enableClose: false
-                                    }
-                                ]
-                            }]
-                    },
-                    {
-                        "type": "row",
-                        "weight": 40,
-                        "children": [
-                            {
-                                "type": "tabset",
-                                "weight": 50,
-                                "selected": 0,
-                                "children": [
-                                    {
-                                        "type": "tab",
-                                        "name": "Graph",
-                                        "component": "graph",
-                                        enableClose: false
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "tabset",
-                                "weight": 50,
-                                "selected": 0,
-                                "children": [
-                                    {
-                                        "type": "tab",
-                                        "name": "Chart",
-                                        "component": "chart",
-                                        enableClose: false
-                                    }
-                                ]
-                            },
-                            // {
-                            //     "type": "tabset",
-                            //     "weight": 50,
-                            //     "selected": 0,
-                            //     "children": [
-                            //         {
-                            //             "type": "tab",
-                            //             "name": "Object Browser",
-                            //             "component": "objectbrowser",
-                            //             enableClose: false
-                            //         }
-                            //     ]
-                            // }
-                        ]
-                    }
-                ]
+                children: [{
+                    type: 'row',
+                    weight: 100,
+                    "children": [
+                        {
+                            "type": "row",
+                            "weight": 50,
+                            "children": [
+                                {
+                                    "type": "tabset",
+                                    "weight": 100,
+                                    "selected": 0,
+                                    "children": [
+                                        {
+                                            "type": "tab",
+                                            "name": "Blotter",
+                                            "component": "blotter",
+                                            enableClose: false
+                                        }
+                                    ]
+                                }]
+                        },
+                        {
+                            "type": "row",
+                            "weight": 50,
+                            "children": [
+                                {
+                                    "type": "tabset",
+                                    "weight": 50,
+                                    "selected": 0,
+                                    "children": [
+                                        {
+                                            "type": "tab",
+                                            "name": "Graph",
+                                            "component": "graph",
+                                            enableClose: false
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "tabset",
+                                    "weight": 50,
+                                    "selected": 0,
+                                    "children": [
+                                        {
+                                            "type": "tab",
+                                            "name": "Chart",
+                                            "component": "chart",
+                                            enableClose: false
+                                        }
+                                    ]
+                                },
+                                // {
+                                //     "type": "tabset",
+                                //     "weight": 50,
+                                //     "selected": 0,
+                                //     "children": [
+                                //         {
+                                //             "type": "tab",
+                                //             "name": "Object Browser",
+                                //             "component": "objectbrowser",
+                                //             enableClose: false
+                                //         }
+                                //     ]
+                                // }
+                            ]
+                        }
+                    ]
+                }]
+
             }
         };
         this.state = {

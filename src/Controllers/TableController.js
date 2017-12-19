@@ -125,7 +125,7 @@ export default class TableController {
         let topic = this.subscriptionTopic;
         let orderby = `/${this.groupingColumnsByLevel[0]}`;
         let numericValueColumns = ['rho10bps', 'vega1pt', 'delta1pct', 'gamma1pct', 'payNotional', 'receiveNotional', 'price', 'receiveLeg', 'payLeg'];
-        let dateValueColumns = ['lastUpdated'];
+        let maxValueColumns = ['lastUpdated','vertex'];
         let nonNumericColumns = ['counterparty', 'receiveIndex', 'payCurrency', 'payDiscountCurve', 'receiveDiscountCurve', 'receiveCurrency', 'amerOrEuro', 'putOrCall', 'contractSize', 'strike'];
 
         let groupingString = this.groupingColumnsByLevel.map((item, i) => `${this.getJSONPathForColumnKey(item)}`).join(',');
@@ -134,7 +134,7 @@ export default class TableController {
 
         let groupingColumnsJsonpathArray = groupingColumnsCopy.map(item => this.getJSONPathForColumnKey(item));
         let nonNumericColumnsJsonpathArray = nonNumericColumns.map(item => this.getJSONPathForColumnKey(item));
-        let dateValueColumnsJsonpathArray = dateValueColumns.map(item => this.getJSONPathForColumnKey(item));
+        let dateValueColumnsJsonpathArray = maxValueColumns.map(item => this.getJSONPathForColumnKey(item));
         let aggregateColumnsJsonpathArray = numericValueColumns.map(item => this.getJSONPathForColumnKey(item));
 
         let projectionsArray = groupingColumnsJsonpathArray.concat(aggregateColumnsJsonpathArray, nonNumericColumnsJsonpathArray, dateValueColumnsJsonpathArray);
@@ -148,7 +148,7 @@ export default class TableController {
             }
         });
         projectionsArray = projectionsArray.map(projection => {
-            if (projection === dateValueColumnsJsonpathArray[0]) {
+            if (dateValueColumnsJsonpathArray.indexOf(projection) !== -1) {
                 return `MAX(${projection}) AS ${projection}`;
             } else {
                 return `${projection}`;
@@ -351,7 +351,7 @@ export default class TableController {
 
         this.graphQueryController.unsubscribeParentNodeData();
 
-        let parentNodeDataQueryRequest = this.graphQueryController.getParentNodeData('Graph', id, graphUpdateCallback);
+        let parentNodeDataQueryRequest = this.graphQueryController.getParentNodeData(this.isLiveData, 'Graph', id, graphUpdateCallback);
         let parentNodeSourcesQueryRequest = this.graphQueryController.getGraphDataForNodeWithId('GraphSources', id);
 
 
