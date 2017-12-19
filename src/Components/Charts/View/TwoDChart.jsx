@@ -16,24 +16,25 @@ class TwoDChart extends Component {
     super();
 
     this.state = {
-      dataObject: {}
+      dataObject: {},
     }
     this.entriesDatePathComponent = undefined;
     this.monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    this.chartWidth = 0;
-    this.chartHeight = 0;
+
   }
 
   componentDidMount() {
-    let boundingDiv = document.getElementById('chartBoundingDiv');
-    this.chartHeight = boundingDiv.clientHeight;
-    this.chartWidth = boundingDiv.clientWidth;
+
   }
 
   componentWillUpdate() {
-    let boundingDiv = document.getElementById('chartBoundingDiv');
-    this.chartHeight = boundingDiv.clientHeight;
-    this.chartWidth = boundingDiv.clientWidth;
+    // let boundingDiv = document.getElementById('chartBoundingDiv');
+    // // this.setState({
+    // //   chartWidth: boundingDiv.clientWidth,
+    // //   chartHeight : boundingDiv.clientHeight
+    // // })
+    // this.chartHeight = boundingDiv.parentElement.clientHeight;
+    // this.chartWidth = boundingDiv.parentElement.clientWidth;
   }
 
   getChartData(graphData) {
@@ -55,7 +56,7 @@ class TwoDChart extends Component {
   }
 
   getFormatedDate(item) {
-    let d = new Date(parseInt(item[this.entriesDatePathComponent].value * 1000,10));
+    let d = new Date(parseInt(item[this.entriesDatePathComponent].value * 1000, 10));
     return `${d.getDate()}${this.monthNames[d.getMonth()]}${d.getFullYear()}`;
   }
 
@@ -65,8 +66,17 @@ class TwoDChart extends Component {
     this.setState({ dataObject: formatedDataForAreaChart });
   }
 
-  render() {
+  calculateChartSize() {
+    let boundingDiv = document.getElementById('chartBoundingDiv');
+    if (boundingDiv) {
+      this.chartHeight = boundingDiv.parentElement.clientHeight;
+      this.chartWidth = boundingDiv.parentElement.clientWidth;
+    }
+    console.log('chart render');
+  }
 
+  render() {
+    this.calculateChartSize();
     // const this.state.dataObject = this.getChartData(chartData);
     return (
       <div id='chartBoundingDiv' style={{ flex: 1 }}>

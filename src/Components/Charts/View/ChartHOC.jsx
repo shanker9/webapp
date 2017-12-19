@@ -4,8 +4,8 @@ import ThreeDChart from './ThreeDChart.jsx';
 
 class ChartHOC extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             chartType: '',
@@ -14,6 +14,8 @@ class ChartHOC extends Component {
         }
         this.twoDChart = undefined;
         this.threeDChart = undefined;
+
+        this.props.reference(this);
     }
 
     drawChartWithData(params) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import TableView from './Grid/View/TableView.jsx';
-import styles from '../styles/dark.css';
+import styles from '../styles/light.css';
 import DagreD3 from './Graph/View/dagreD3.jsx';
 import ObjectBrowser from './ObjectBrowser/View/ObjectBrowser.jsx';
 import ChartHOC from './Charts/View/ChartHOC.jsx';
@@ -21,15 +21,18 @@ class App extends React.Component {
     }
 
     getObjectBrowserComponentReference() {
-        return this.refs.objectBrowser;
+        // return this.refs.objectBrowser;
+        return this.objectBrowserReference;
     }
 
     getGraphTreeComponentReference() {
-        return this.refs.graphTree;
+        // return this.refs.graphTree;
+        return this.graphReference;
     }
 
     getChartComponentReference() {
-        return this.refs.chartHOC;
+        // return this.refs.chartHOC;
+        return this.chartReference;
     }
 
     // passNewDatato3DChart() {
@@ -46,77 +49,147 @@ class App extends React.Component {
                 "weight": 100,
                 "children": [
                     {
-                        "type": "tabset",
-                        "weight": 50,
-                        "selected": 0,
+                        "type": "row",
+                        "weight": 60,
                         "children": [
                             {
-                                "type": "tab",
-                                "name": "FX",
-                                "component": "app",
-                            }
-                        ]
+                                "type": "tabset",
+                                "weight": 50,
+                                "selected": 0,
+                                "children": [
+                                    {
+                                        "type": "tab",
+                                        "name": "Blotter",
+                                        "component": "blotter",
+                                        enableClose: false
+                                    }
+                                ]
+                            }]
                     },
                     {
-                        "type": "tabset",
-                        "weight": 50,
-                        "selected": 0,
+                        "type": "row",
+                        "weight": 40,
                         "children": [
                             {
-                                "type": "tab",
-                                "name": "FI",
-                                "component": "button",
-                                enableClose: false
+                                "type": "tabset",
+                                "weight": 50,
+                                "selected": 0,
+                                "children": [
+                                    {
+                                        "type": "tab",
+                                        "name": "Graph",
+                                        "component": "graph",
+                                        enableClose: false
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "tabset",
+                                "weight": 50,
+                                "selected": 0,
+                                "children": [
+                                    {
+                                        "type": "tab",
+                                        "name": "Chart",
+                                        "component": "chart",
+                                        enableClose: false
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "tabset",
+                                "weight": 50,
+                                "selected": 0,
+                                "children": [
+                                    {
+                                        "type": "tab",
+                                        "name": "Object Browser",
+                                        "component": "objectbrowser",
+                                        enableClose: false
+                                    }
+                                ]
                             }
                         ]
                     }
                 ]
             }
         };
-        this.state = { 
+        this.state = {
             model: FlexLayout.Model.fromJson(json),
             rowHeight: 20,
             subscriptionTopic: 'ProductUI'
         };
+        this.graphReference = undefined;
+        this.objectBrowserReference = undefined;
+        this.chartReference = undefined;
     }
+
+    getGridView() {
+        return (
+            <div className="tablecontainer">
+                <TableView ref='tableViewRef'
+                    graphTreeComponentReference={this.getGraphTreeComponentReference.bind(this)}
+                    subscriptionTopic={this.state.subscriptionTopic}
+                    rowHeight={this.state.rowHeight} />
+            </div>
+        );
+    }
+
+    getGraphView() {
+        return (
+            <div className="graphContainer">
+                <DagreD3 ref="graphTree"
+                    reference={ref => this.graphReference = ref}
+                    objectBrowserComponentReference={this.getObjectBrowserComponentReference.bind(this)}
+                    chartComponentReference={this.getChartComponentReference.bind(this)}
+                    qGraphData={{}} />
+            </div>
+        )
+    }
+
+    getChartView() {
+        return (
+            <div className="chartContainer">
+                <ChartHOC ref='chartHOC'
+                    reference={ref => this.chartReference = ref}
+                />
+            </div>
+        )
+    }
+
+    getObjectBrowserView() {
+        return (
+            <div className="objectBrowserContainer">
+                <ObjectBrowser ref="objectBrowser"
+                    reference={ref => this.objectBrowserReference = ref}
+                />
+            </div>
+        )
+    }
+
 
     factory(node) {
         var component = node.getComponent();
-        if (component === "button") {
-            return <button style={{ width: '400px', border: '1px solid black' }}>{node.getName()}</button>;
-        } else if (component === "app") {
-            return (
-                <div className="appEnclosingDiv">
-                    <div className="appContainer">
-                        <div className="buttonAndChartContainer">
-                            <div className="tablecontainer">
-                                <div className="ComponentTitle">Blotter</div>
-                                <TableView ref='tableViewRef'
-                                    graphTreeComponentReference={this.getGraphTreeComponentReference.bind(this)}
-                                    subscriptionTopic={this.state.subscriptionTopic}
-                                    rowHeight={this.state.rowHeight} />
-                            </div>
-                            <div className="chartContainer">
-                                <div className="ComponentTitle">Chart</div>
-                                <ChartHOC ref='chartHOC' />
-                            </div>
-                        </div>
-                        <div className="graphAndObjectBrowserContainer">
-                            <div className="graphContainer">
-                                <div className="ComponentTitle">Graph Sources</div>
-                                <DagreD3 ref="graphTree"
-                                    objectBrowserComponentReference={this.getObjectBrowserComponentReference.bind(this)}
-                                    chartComponentReference={this.getChartComponentReference.bind(this)}
-                                    qGraphData={{}} />
-                            </div>
-                            <div className="objectBrowserContainer">
-                                <div className="ComponentTitle">Object Browser</div>
-                                <ObjectBrowser ref="objectBrowser" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )
+        switch (component) {
+            case 'blotter':
+                return this.getGridView();
+                break;
+
+            case 'graph':
+                return this.getGraphView();
+                break;
+
+            case 'chart':
+                return this.getChartView();
+                break;
+
+            case 'objectbrowser':
+                return this.getObjectBrowserView();
+                break;
+
+            default:
+                console.log('invalid view type');
+                return <div />
         }
     }
 
