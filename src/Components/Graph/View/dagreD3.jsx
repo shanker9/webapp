@@ -27,7 +27,7 @@ class DagreD3 extends Component {
         this.initialSvg = undefined;
 
 
-        this.props.reference(this);        
+        this.props.reference(this);
     }
 
     componentDidMount() {
@@ -36,7 +36,7 @@ class DagreD3 extends Component {
 
     componentDidUpdate() {
         const { parentNodeData, parentNodeSources, childNodesArray } = this.state;
-        if(!parentNodeData || !parentNodeSources || !childNodesArray){
+        if (!parentNodeData || !parentNodeSources || !childNodesArray) {
             this.clearSvg();
             return;
         }
@@ -165,9 +165,9 @@ class DagreD3 extends Component {
         // }
 
         this.svg = d3Local.select("svg.treeSvg")
-        .attr("width", document.getElementById("dagreContainer").clientWidth)
-        .attr("height", document.getElementById("dagreContainer").clientHeight-4)
-        .attr("fill", "white");
+            .attr("width", document.getElementById("dagreContainer").clientWidth)
+            .attr("height", document.getElementById("dagreContainer").clientHeight - 4)
+            .attr("fill", "white");
 
         let inner = this.svg.select("g").attr("stroke", "black");
 
@@ -213,12 +213,12 @@ class DagreD3 extends Component {
                 let initialScaleY = (this.svg.attr("height") - 20) / g.graph().height;
                 let temp = zoom
                     .translate([50, 10])
-                    .scale(initialScaleX,initialScaleY);
+                    .scale(initialScaleX, initialScaleY);
                 temp.event(this.svg);
             } else {
                 let temp = zoom
                     .translate([(this.svg.attr("width") - g.graph().width * initialScale) / 2, 10])
-                    .scale(initialScale,initialScale);
+                    .scale(initialScale, initialScale);
                 temp.event(this.svg);
             }
             // this.isInitialSVGRender = false;
@@ -234,15 +234,18 @@ class DagreD3 extends Component {
 
 
     updateGraphData(graphData) {
-        this.props.objectBrowserComponentReference().updateData({});
+        let objectBrowserReference = this.props.objectBrowserComponentReference();
+        if (objectBrowserReference) {
+            this.props.objectBrowserComponentReference().updateData({});
+        }
         // this.clearSvg();
 
         const { parentNodeData, parentNodeSources, childNodesArray } = graphData;
         this.gLayout = undefined;
         this.selectedNodeKey = undefined;
         this.isInitialSVGRender = true;
-      
-        if(!parentNodeData || !parentNodeSources || !childNodesArray){
+
+        if (!parentNodeData || !parentNodeSources || !childNodesArray) {
             this.clearSvg();
             return;
         }
@@ -288,7 +291,10 @@ class DagreD3 extends Component {
     }
 
     updateObjectBrowserData(nodeData) {
-        this.props.objectBrowserComponentReference().updateData(nodeData.data);
+        let objectBrowserReference = this.props.objectBrowserComponentReference();
+        if (objectBrowserReference) {
+            this.props.objectBrowserComponentReference().updateData(nodeData.data);
+        }
     }
 
     updateChartComponent(nodeData) {
@@ -298,10 +304,10 @@ class DagreD3 extends Component {
             dataArrayKey = 'entries';
             this.props.chartComponentReference().drawChartWithData({
                 chartData:
-                {
-                    data: nodeData.data.data[dataArrayKey],
-                    datePathComponent: datePathComponent
-                },
+                    {
+                        data: nodeData.data.data[dataArrayKey],
+                        datePathComponent: datePathComponent
+                    },
                 chartType: '2D'
             }
             );
@@ -311,10 +317,10 @@ class DagreD3 extends Component {
             dataArrayKey = 'points';
             this.props.chartComponentReference().drawChartWithData({
                 chartData:
-                {
-                    data: nodeData.data.data[dataArrayKey],
-                    datePathComponent: datePathComponent
-                },
+                    {
+                        data: nodeData.data.data[dataArrayKey],
+                        datePathComponent: datePathComponent
+                    },
                 chartType: '2D'
             }
             );
@@ -322,9 +328,9 @@ class DagreD3 extends Component {
             dataArrayKey = 'curves';
             this.props.chartComponentReference().drawChartWithData({
                 chartData:
-                {
-                    data: nodeData.data.data[dataArrayKey],
-                },
+                    {
+                        data: nodeData.data.data[dataArrayKey],
+                    },
                 chartType: '3D'
             }
             );

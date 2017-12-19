@@ -307,6 +307,10 @@ export default class TableController {
                 let dataForSelectedRow = childRows.get(item.rowID);
                 dataForSelectedRow.isSelected = false;
                 this.updateUIRowWithData(dataForSelectedRow.data, dataForSelectedRow.isSelected, key);
+            }else{
+                let selectedRow = this.appDataModel.getDataFromDefaultData(key);
+                selectedRow.isSelected = false;
+                this.updateUIRowWithData(selectedRow.data, selectedRow.isSelected, key);                
             }
 
             // let dataFromDataMap = this.appDataModel.getDataFromDefaultData(key);

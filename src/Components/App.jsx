@@ -169,27 +169,29 @@ class App extends React.Component {
 
     factory(node) {
         var component = node.getComponent();
+        let view;
         switch (component) {
             case 'blotter':
-                return this.getGridView();
+                view = this.getGridView();
                 break;
 
             case 'graph':
-                return this.getGraphView();
+                view = this.getGraphView();
                 break;
 
             case 'chart':
-                return this.getChartView();
+                view = this.getChartView();
                 break;
 
             case 'objectbrowser':
-                return this.getObjectBrowserView();
+                view = this.getObjectBrowserView();
                 break;
 
             default:
                 console.log('invalid view type');
-                return <div />
+                view = (<div />)
         }
+        return view;
     }
 
     render() {
