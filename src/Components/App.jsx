@@ -141,13 +141,13 @@ class App extends React.Component {
 
     getGraphView() {
         return (
-            <div className="graphContainer">
+            // <div className="graphContainer">
                 <DagreD3 ref="graphTree"
                     reference={ref => this.graphReference = ref}
                     objectBrowserComponentReference={this.getObjectBrowserComponentReference.bind(this)}
                     chartComponentReference={this.getChartComponentReference.bind(this)}
                     qGraphData={{}} />
-            </div>
+            // </div>
         )
     }
 

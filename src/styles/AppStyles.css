@@ -307,11 +307,16 @@
         background-color: #FFFFFF;        
         /* border: 1px solid rgb(150, 188, 211);         */
         display: flex;
+        box-sizing: border-box;
         /* flex-direction: column; */
     }
 
     .dagreContainer {
         flex: 1;
+        height: 98%;
+        box-sizing: border-box;
+        border-top: 1px solid lightgrey;
+        background-color: rgb(223, 223, 223);
     }
 
     .objectBrowserContainer{
