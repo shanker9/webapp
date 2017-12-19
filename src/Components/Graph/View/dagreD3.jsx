@@ -14,10 +14,9 @@ class DagreD3 extends Component {
             parentNodeData: this.props.qGraphData.parentNodeData,
             parentNodeSources: this.props.qGraphData.parentNodeSources,
             childNodesArray: this.props.qGraphData.childNodesArray,
+            isInitialSVGRender : true
         }
 
-        // this.dagreLayoutNodeInfo = undefined;
-        // this.dagreLayoutEdgeInfo = undefined;
         this.dagreD3Renderer = this.dagreD3Renderer.bind(this);
         this.dagreGraphTreeLayout = this.dagreGraphTreeLayout.bind(this);
         this.gLayout = undefined;
@@ -72,7 +71,7 @@ class DagreD3 extends Component {
             width: 180,
             height: 50,
             data: parentNodeData,
-            labelStyle: "font-size: 1.5em",
+            labelStyle: "font-size: 1.5em; font-family:verdana",
             style: "stroke-width: 4px; stroke:#650922; fill:white"
         });
 
@@ -107,7 +106,7 @@ class DagreD3 extends Component {
                     // width: 180,
                     // height: 40,
                     data: nodeData,
-                    labelStyle: "font-size: 1.5em",
+                    labelStyle: "font-size: 1.5em; font-family:verdana",
                     style: "stroke-width: 4px; stroke:#650922; fill:white"
                 });
             } else {
@@ -152,22 +151,22 @@ class DagreD3 extends Component {
 
         // this.svg = d3Local.select('.dagreContainer').append('svg');
         let translateX, translateY, scale;
-        // if (this.svg === undefined) {
-        //     this.svg = d3Local.select("svg.treeSvg")
-        //         .attr("width", document.getElementById("dagreContainer").clientWidth)
-        //         .attr("height", document.getElementById("dagreContainer").clientHeight)
-        //         .attr("fill", "white");
-        // } else {
-        //     translateX = d3Local.transform(this.svg.select('g').attr("transform")).translate[0];
-        //     translateY = d3Local.transform(this.svg.select('g').attr("transform")).translate[1];
-        //     scale = d3Local.transform(this.svg.select('g').attr("transform")).scale[0];
-        //     // isInitialSVGRender = false;
-        // }
+        if (this.svg === undefined) {
+            this.svg = d3Local.select("svg.treeSvg")
+                .attr("width", document.getElementById("dagreContainer").clientWidth)
+                .attr("height", document.getElementById("dagreContainer").clientHeight)
+                .attr("fill", "white");
+        } else {
+            translateX = d3Local.transform(this.svg.select('g').attr("transform")).translate[0];
+            translateY = d3Local.transform(this.svg.select('g').attr("transform")).translate[1];
+            scale = d3Local.transform(this.svg.select('g').attr("transform")).scale[0];
+            // isInitialSVGRender = false;
+        }
 
-        this.svg = d3Local.select("svg.treeSvg")
-            .attr("width", document.getElementById("dagreContainer").clientWidth)
-            .attr("height", document.getElementById("dagreContainer").clientHeight - 4)
-            .attr("fill", "white");
+        // this.svg = d3Local.select("svg.treeSvg")
+        //     .attr("width", document.getElementById("dagreContainer").clientWidth)
+        //     .attr("height", document.getElementById("dagreContainer").clientHeight - 4)
+        //     .attr("fill", "white");
 
         let inner = this.svg.select("g").attr("stroke", "black");
 
@@ -205,14 +204,15 @@ class DagreD3 extends Component {
         //     .attr("stroke", "black");
 
         // Center the graph
-        if (this.isInitialSVGRender) {
+        if (this.state.isInitialSVGRender) {
             let initialScale = 0.90;
 
             if (g.graph().width > this.svg.attr("width")) {
                 let initialScaleX = (this.svg.attr("width") - 100) / g.graph().width;
                 let initialScaleY = (this.svg.attr("height") - 20) / g.graph().height;
+                let y = (this.svg.attr('height') - g.graph().height)/2;
                 let temp = zoom
-                    .translate([50, 10])
+                    .translate([50, y])
                     .scale(initialScaleX, initialScaleY);
                 temp.event(this.svg);
             } else {
@@ -243,19 +243,23 @@ class DagreD3 extends Component {
         const { parentNodeData, parentNodeSources, childNodesArray } = graphData;
         this.gLayout = undefined;
         this.selectedNodeKey = undefined;
-        this.isInitialSVGRender = true;
+        // this.isInitialSVGRender = true;
 
         if (!parentNodeData || !parentNodeSources || !childNodesArray) {
             this.clearSvg();
             return;
         }
 
-        this.setState({ parentNodeData: parentNodeData, parentNodeSources: parentNodeSources, childNodesArray: childNodesArray });
+        this.setState({ parentNodeData: parentNodeData, parentNodeSources: parentNodeSources, childNodesArray: childNodesArray, isInitialSVGRender : true });
     }
 
     updateParentNodeData(parentNodeData) {
         // this.clearSvg();
-        this.setState({ parentNodeData: parentNodeData });
+        // this.isInitialSVGRender = false;
+        this.setState({ 
+            parentNodeData: parentNodeData,
+            isInitialSVGRender : false
+        });
     }
 
     clearSvg() {
