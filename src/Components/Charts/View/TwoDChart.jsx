@@ -12,29 +12,27 @@ import {
 
 class TwoDChart extends Component {
 
-  constructor() {
-    super();
-
+  constructor(props) {
+    super(props);
+    props.resizeEventHandler(this.resizeEventHandler.bind(this));
     this.state = {
       dataObject: {},
+      chartHeight: 0,
+      chartWidth: 0
     }
     this.entriesDatePathComponent = undefined;
     this.monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   }
 
-  componentDidMount() {
-
-  }
-
-  componentWillUpdate() {
-    // let boundingDiv = document.getElementById('chartBoundingDiv');
-    // // this.setState({
-    // //   chartWidth: boundingDiv.clientWidth,
-    // //   chartHeight : boundingDiv.clientHeight
-    // // })
-    // this.chartHeight = boundingDiv.parentElement.clientHeight;
-    // this.chartWidth = boundingDiv.parentElement.clientWidth;
+  resizeEventHandler(p) {
+    console.log('cahrt resize handler');
+    let chartHeight = p.rect.height * 0.95;
+    let chartWidth = p.rect.width * 0.95;
+    this.setState({
+      chartHeight: chartHeight,
+      chartWidth: chartWidth
+    });
   }
 
   getChartData(graphData) {
@@ -63,25 +61,30 @@ class TwoDChart extends Component {
   renderChartWithData(dataParams) {
     this.entriesDatePathComponent = dataParams.datePathComponent;
     let formatedDataForAreaChart = this.getChartData(dataParams.data);
-    this.setState({ dataObject: formatedDataForAreaChart });
+    const { chartHeight, chartWidth } = this.calculateChartSize();
+    this.setState({
+      dataObject: formatedDataForAreaChart,
+      chartHeight : chartHeight,
+      chartWidth : chartWidth
+    });
   }
 
   calculateChartSize() {
     let boundingDiv = document.getElementById('chartBoundingDiv');
+    let chartHeight, chartWidth;
     if (boundingDiv) {
-      this.chartHeight = boundingDiv.parentElement.clientHeight;
-      this.chartWidth = boundingDiv.parentElement.clientWidth;
+      chartHeight = boundingDiv.clientHeight * 0.95;
+      chartWidth = boundingDiv.clientWidth * 0.95;
     }
-    console.log('chart render');
+    return { chartHeight, chartWidth };
   }
 
   render() {
-    this.calculateChartSize();
     // const this.state.dataObject = this.getChartData(chartData);
     return (
       <div id='chartBoundingDiv' style={{ flex: 1 }}>
-        <AreaChart width={this.chartWidth} height={this.chartHeight} data={this.state.dataObject.chartData}
-          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+        <AreaChart width={this.state.chartWidth} height={this.state.chartHeight} data={this.state.dataObject.chartData}
+          margin={{ top: 10, right: 0, left: 10, bottom: 0 }}>
           <XAxis dataKey="time"
             tickCount={2}
             interval={10}

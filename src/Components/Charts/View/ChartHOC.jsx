@@ -41,7 +41,7 @@ class ChartHOC extends Component {
     render() {
 
         if (this.state.chartType === '2D') {
-            return (<TwoDChart ref="twoDChart" />);
+            return (<TwoDChart ref="twoDChart" resizeEventHandler={this.props.resizeEventHandler}/>);
         } else if (this.state.chartType === '3D') {
             return (<ThreeDChart ref="threeDChart" />);
         } else {

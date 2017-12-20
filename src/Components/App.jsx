@@ -111,6 +111,9 @@ class App extends React.Component {
         this.graphReference = undefined;
         this.objectBrowserReference = undefined;
         this.chartReference = undefined;
+
+        //EventHandler references
+        this.chartResizeEventHandler = undefined;
     }
 
     componentDidMount() {
@@ -156,6 +159,9 @@ class App extends React.Component {
             <div className="chartContainer">
                 <ChartHOC ref='chartHOC'
                     reference={ref => this.chartReference = ref}
+                    resizeEventHandler={(handler => {
+                        this.chartResizeEventHandler=handler}
+                    ).bind(this)}
                 />
             </div>
         )
@@ -186,6 +192,11 @@ class App extends React.Component {
 
             case 'chart':
                 view = this.getChartView();
+                node.setEventListener('resize',(p=>{
+                    if(this.chartResizeEventHandler)
+                    this.chartResizeEventHandler(p);
+                    console.log('resize Chart');
+                }).bind(this))
                 break;
 
             case 'objectbrowser':
