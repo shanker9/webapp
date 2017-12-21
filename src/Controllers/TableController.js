@@ -235,11 +235,13 @@ export default class TableController {
                 this.updateGroupedViewData.bind(this), this.updateUIRowWithData.bind(this));
         } else {
             aggDataQueryManager.unsubscribeToDetailsOfAggRow(groupKey);
-            aggRowData.bucketData.clear();
-            aggRowData.bucketData = null;
-            let groupedViewData = this.appDataModel.createGroupedViewedData(this.appDataModel.getGroupedData());
-            this.appDataModel.setGroupedViewData(groupedViewData);
-            this.updateGroupedViewData();
+            if (aggRowData.bucketData) {
+                aggRowData.bucketData.clear();
+                aggRowData.bucketData = null;
+                let groupedViewData = this.appDataModel.createGroupedViewedData(this.appDataModel.getGroupedData());
+                this.appDataModel.setGroupedViewData(groupedViewData);
+                this.updateGroupedViewData();
+            }
         }
 
     }

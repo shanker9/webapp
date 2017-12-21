@@ -20,6 +20,7 @@ class TableView extends React.Component {
         }
         this.controller = undefined;
         this.sliderValue = 15;
+        this.lastScrollTop = 0;
         this.columns = [
             {
                 columnkey: "counterparty",
@@ -155,10 +156,14 @@ class TableView extends React.Component {
         let headerNode = document.getElementById('scrollableHeaderDiv');
         let tableNode = document.getElementById('scrollableTableDiv');
         headerNode.scrollLeft = tableNode.scrollLeft;
-        if (this.state.isGroupedView) {
-            this.updateDataGridWithGroupedView();
-        } else {
-            this.updateDataGridWithDefaultView();
+        if (this.lastScrollTop !== tableNode.scrollTop) {
+            if (this.state.isGroupedView) {
+                this.lastScrollTop = tableNode.scrollTop;
+                this.updateDataGridWithGroupedView();
+            } else {
+                this.lastScrollTop = tableNode.scrollTop;                
+                this.updateDataGridWithDefaultView();
+            }
         }
     }
 
@@ -244,7 +249,7 @@ class TableView extends React.Component {
 
     clearGrouping() {
         /** Resetting temporal slider to default */
-        this.changeSliderValue(15);        
+        this.changeSliderValue(15);
 
         this.controller.clearGroupSubscriptions();
         this.controller.clearArray(this.controller.groupingColumnsByLevel);
@@ -267,9 +272,9 @@ class TableView extends React.Component {
             }
             let clonedColumnElement = document.getElementById(columnData.cellId).cloneNode(true);
             clonedColumnElement.style.color = "#1E0B06";
-            clonedColumnElement.style.backgroundColor = "#ffeb89";
+            clonedColumnElement.style.backgroundColor = "#e8e7e3";
             clonedColumnElement.style.boxSizing = "border-box";
-            clonedColumnElement.style.height = this.refs.dragToBar.offsetHeight + "px";
+            // clonedColumnElement.style.height = this.refs.dragToBar.offsetHeight + "px";
             this.refs.dragToBar.appendChild(clonedColumnElement);
             this.makeGroupSubscription(columnData.cellId);
         }
@@ -318,7 +323,7 @@ class TableView extends React.Component {
     sliderChangeHandler(e) {
         console.dir(15 - e.value);
         this.changeSliderValue(e.value);
-        this.controller.getDataAtBeforeMins(15 - e.value,this.state.isGroupedView);
+        this.controller.getDataAtBeforeMins(15 - e.value, this.state.isGroupedView);
     }
 
     changeSliderValue(value) {
@@ -335,39 +340,46 @@ class TableView extends React.Component {
     render() {
         return (
             <div className="blottercontainer">
-                <div className="temporalUIblock">
-                    <div className="temporalslider">
-                        <ReactSimpleRange
-                            disableTrack
-                            min={0}
-                            max={15}
-                            step={5}
-                            defaultValue={this.sliderValue}
-                            sliderSize={4}
-                            thumbSize={15}
-                            sliderColor="#61a9f9"
-                            trackColor="#307dd4"
-                            thumbColor="#307dd4"
-                            onChange={this.sliderChangeHandler.bind(this)} />
+                <div style={{ display: 'flex', marginBottom: '3px' }}>
+                    <div style={{ flex: 0.7 }}>
+                        <div ref="dragToBar"
+                            className="dragtobar"
+                            onDragOver={event => event.preventDefault()}
+                            onDrop={this.onColumnDrop.bind(this)}>
+                            DRAG COLUMNS HERE TO START GROUPING
+                        </div>
                     </div>
-                    <button className="temporalButton" onClick={this.getLivePrices.bind(this)}> Live Prices </button>
+                    <div className='temporalContainer'>
+                        <div className="temporalUIblock">
+                            <div className="temporalslider">
+                                <ReactSimpleRange
+                                    disableTrack
+                                    min={0}
+                                    max={15}
+                                    step={5}
+                                    defaultValue={this.sliderValue}
+                                    sliderSize={4}
+                                    thumbSize={15}
+                                    sliderColor="#61a9f9"
+                                    trackColor="#307dd4"
+                                    thumbColor="#307dd4"
+                                    onChange={this.sliderChangeHandler.bind(this)} />
+                            </div>
+                            <button className="temporalButton" onClick={this.getLivePrices.bind(this)}> Live Prices </button>
+                        </div>
+                    </div>
+                    <BlotterInfo ref="blotterInfo"
+                        subscribedTopic={this.props.subscriptionTopic}
+                        clearGrouping={this.clearGrouping.bind(this)} />
                 </div>
-                <BlotterInfo ref="blotterInfo"
-                    subscribedTopic={this.props.subscriptionTopic}
-                    clearGrouping={this.clearGrouping.bind(this)} />
-                <div ref="dragToBar"
-                    className="dragtobar"
-                    onDragOver={event => event.preventDefault()}
-                    onDrop={this.onColumnDrop.bind(this)}>
-                    DRAG COLUMNS HERE TO START GROUPING
-                </div>
+
                 <div className="gridContainerDiv">
                     {this.state.isGroupedView ?
                         <div id="scrollableHeaderDiv" className="headerDiv">
                             <table className="table">
                                 <thead className="tableHead">
                                     <tr className="tableHeaderRow">
-                                        <th className='groupExpansionHeaderBox'/>
+                                        <th className='groupExpansionHeaderBox' />
                                         {this.columns.map((item, i) =>
                                             <TableHeaderCell
                                                 key={i}

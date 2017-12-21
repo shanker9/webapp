@@ -46,7 +46,9 @@ class TableCell extends React.Component {
     }
 
     detectTheEnd(e) {
-        this.refs.tableCell.style.backgroundColor = "";
+        if (this.refs.tableCell) {
+            this.refs.tableCell.style.backgroundColor = "";
+        }
     }
 
     render() {
