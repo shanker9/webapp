@@ -26,6 +26,9 @@ export default class TableController {
 
     /** FOR DEFAULT VIEW DATA SUBSCRIPTION */
     ampsSubscribe(commandObject, columnName) {
+        const command = commandObject;
+        command.command = this.isLiveData ? 'sow_and_subscribe' : 'sow';
+
         let subController = new SubscriptionController(this, this.updateUIWithDefaultViewData.bind(this), this.rowUpdate.bind(this));
         this.ampsController.connectAndSubscribe(subController.defaultSubscriptionDataHandler.bind(subController),
             (subId) => {
@@ -93,7 +96,7 @@ export default class TableController {
     groupDataByColumnKey(columnName) {
         // let subId = this.columnSubscriptionMapper.get(columnName);
         this.clearGroupSubscriptions();
-
+        this.unsubscribeLiveData();
         let index = this.groupingColumnsByLevel.indexOf(columnName);
         if (index !== -1) {
             // let newGroupingColumnsOrderArray = this.groupingColumnsByLevel.slice(0, index);
@@ -157,15 +160,17 @@ export default class TableController {
 
         let projectionString = projectionsArray.join(',');
 
-        let options = `projection=[${projectionString}],grouping=[${groupingString}]`;
+        let options = `projection=[${projectionString}],grouping=[${groupingString}],conflation=5s`;
 
         let commandObject;
         if (this.isLiveData) {
             let command = 'sow_and_subscribe';
+            let options = `projection=[${projectionString}],grouping=[${groupingString}],conflation=5s`;
             commandObject = { command, topic, orderby, options };
         } else {
             let command = 'sow';
             let bookmark = this.temporalSubscriptionCommandCache.bookmark;
+            let options = `projection=[${projectionString}],grouping=[${groupingString}]`;
             commandObject = { command, bookmark, topic, orderby, options };
         }
         return commandObject;
@@ -266,11 +271,11 @@ export default class TableController {
             this.unsubscribe(value, (subId, columnRef) => this.columnSubscriptionMapper.delete(columnRef), key);
         });
         this.appDataModel.getGroupedData().clear();
-        this.appDataModel.setGroupedData(undefined);
+        // this.appDataModel.setGroupedData(undefined);
         // this.appDataModel.getGroupColumnKeyMapper().clear();
         // this.appDataModel.setGroupColumnKeyMapper(undefined);
         this.clearArray(this.appDataModel.getGroupedViewData());
-        this.appDataModel.setGroupedViewData(undefined);
+        // this.appDataModel.setGroupedViewData(undefined);
         // this.clearArray(this.groupingColumnsByLevel);
     }
 
@@ -385,6 +390,13 @@ export default class TableController {
             commandObject.command = 'sow';
             commandObject.bookmark = bookmark;
             console.log(commandObject);
+
+            // Removing conflation option
+            let optionsStringSplit = commandObject.options.split(',conflation');
+            let optionsWithoutConflation = optionsStringSplit[0];
+            console.log('options without conflation',optionsWithoutConflation);
+            commandObject.options = optionsWithoutConflation;
+
             let subController = new AggregateSubscriptionController(this, ['name'], commandObject);
             this.ampsController.connectAndSubscribe(subController.groupingSubscriptionDataHandler.bind(subController),
                 subController.groupingSubscriptionDetailsHandler.bind(subController),
@@ -421,7 +433,10 @@ export default class TableController {
 
     unsubscribeLiveData() {
         if (this.livedatasubscriptionId !== undefined) {
-            this.unsubscribe(this.livedatasubscriptionId, (subid, colname) => console.log('unsubscribed live data subscription with id', subid))
+            this.unsubscribe(this.livedatasubscriptionId, (subid, colname) => {
+                console.log('unsubscribed live data subscription with id', subid);
+                this.livedatasubscriptionId = undefined;
+            });
         }
     }
 }

@@ -33,8 +33,8 @@ class TableAggregatedRow extends React.Component {
 
     handleRowClick(e) {
         e.preventDefault();
-        this.props.updateAggregatedRowExpandStatus(this.props.aggregatedRowKey);
-        this.setState({expandStatus: !this.state.expandStatus});
+        this.props.updateAggregatedRowExpandStatus(this.props.aggregatedRowKey,this.state.expandStatus);
+        // this.setState({expandStatus: !this.state.expandStatus});
     }
 
     triggerUpdate(newdata) {

@@ -10,6 +10,7 @@ class DagreD3 extends Component {
 
     constructor(props) {
         super(props);
+        props.resizeEventHandler(this.componentResizeHandler.bind(this));
         this.state = {
             parentNodeData: this.props.qGraphData.parentNodeData,
             parentNodeSources: this.props.qGraphData.parentNodeSources,
@@ -41,6 +42,11 @@ class DagreD3 extends Component {
         }
 
         this.dagreGraphTreeLayout();
+    }
+
+    componentResizeHandler(p){
+        console.log(p);
+        this.setState({isInitialSVGRender : true});
     }
 
     formatNumber(number) {
@@ -152,10 +158,7 @@ class DagreD3 extends Component {
         // this.svg = d3Local.select('.dagreContainer').append('svg');
         let translateX, translateY, scale;
         if (this.svg === undefined) {
-            this.svg = d3Local.select("svg.treeSvg")
-                .attr("width", document.getElementById("dagreContainer").clientWidth)
-                .attr("height", document.getElementById("dagreContainer").clientHeight)
-                .attr("fill", "white");
+            this.svg = d3Local.select("svg.treeSvg");
         } else {
             translateX = d3Local.transform(this.svg.select('g').attr("transform")).translate[0];
             translateY = d3Local.transform(this.svg.select('g').attr("transform")).translate[1];
@@ -163,10 +166,10 @@ class DagreD3 extends Component {
             // isInitialSVGRender = false;
         }
 
-        // this.svg = d3Local.select("svg.treeSvg")
-        //     .attr("width", document.getElementById("dagreContainer").clientWidth)
-        //     .attr("height", document.getElementById("dagreContainer").clientHeight - 4)
-        //     .attr("fill", "white");
+        this.svg
+            .attr("width", document.getElementById("dagreContainer").clientWidth)
+            .attr("height", document.getElementById("dagreContainer").clientHeight - 4)
+            .attr("fill", "white");
 
         let inner = this.svg.select("g").attr("stroke", "black");
 
@@ -217,7 +220,7 @@ class DagreD3 extends Component {
                 temp.event(this.svg);
             } else {
                 let temp = zoom
-                    .translate([(this.svg.attr("width") - g.graph().width * initialScale) / 2, 10])
+                    .translate([(this.svg.attr("width") - g.graph().width * initialScale) / 2,(this.svg.attr("height") - g.graph().height * initialScale) / 2 ])
                     .scale(initialScale, initialScale);
                 temp.event(this.svg);
             }
@@ -273,6 +276,15 @@ class DagreD3 extends Component {
 
             // this.svg = undefined;
         }
+
+        //Clear the view in Object Browser
+        let objectBrowserReference = this.props.objectBrowserComponentReference();
+        if (objectBrowserReference) {
+            this.props.objectBrowserComponentReference().updateData({});
+        }
+
+        //Clear chart view
+
     }
 
     nodeClickHandler(nodeKey) {

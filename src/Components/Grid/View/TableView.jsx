@@ -5,7 +5,9 @@ import BlotterInfo from './BlotterInfo.jsx';
 import TableHeaderCell from './TableHeaderCell.jsx';
 import GridView from './GridView.jsx';
 import ReactSimpleRange from 'react-simple-range';
-// import styles from '../../../styles/AppStyles.css';
+import BlockUi from 'react-block-ui';
+import 'react-block-ui/style.css';
+
 
 // var flag = false, skipcount = 0;
 class TableView extends React.Component {
@@ -16,7 +18,9 @@ class TableView extends React.Component {
             gridDataSource: [],
             topDivHeight: 0,
             bottomDivHeight: 0,
-            isGroupedView: false
+            isGroupedView: false,
+            blocking: false,
+            loadingmessage: ''
         }
         this.controller = undefined;
         this.sliderValue = 15;
@@ -161,7 +165,7 @@ class TableView extends React.Component {
                 this.lastScrollTop = tableNode.scrollTop;
                 this.updateDataGridWithGroupedView();
             } else {
-                this.lastScrollTop = tableNode.scrollTop;                
+                this.lastScrollTop = tableNode.scrollTop;
                 this.updateDataGridWithDefaultView();
             }
         }
@@ -172,7 +176,6 @@ class TableView extends React.Component {
     makeDefaultSubscription() {
         // this.controller = new TableController(this, this.subscriptionTopic);
         let commandObject1 = {
-            "command": "sow_and_subscribe",
             "topic": this.subscriptionTopic,
             "orderBy": "/product",
         }
@@ -199,6 +202,9 @@ class TableView extends React.Component {
         let upperLimit = viewableUpperLimit > gridDataSource.length ? startIndex + gridDataSource.length : startIndex + viewableUpperLimit;
         this.refs.blotterInfo.updateGroupedViewStateTo(false);
         this.refs.blotterInfo.updateRowViewInfo(lowerLimit, upperLimit, this.controller.getDatamapSize());
+        if (this.state.blocking) {
+            this.toggleBlockUI();
+        }
     }
 
     updateDataGridWithDefaultView() {
@@ -239,17 +245,24 @@ class TableView extends React.Component {
             isGroupedView: true
         });
         this.refs.blotterInfo.updateGroupedViewStateTo(true);
+        if (this.state.blocking) {
+            this.toggleBlockUI();
+        }
     }
 
     updateDataGridWithGroupedView() {
         let startIndex = Math.round(document.getElementById('scrollableTableDiv').scrollTop / this.props.rowHeight);
         let endIndex = startIndex + 50;
         this.setState(this.controller.getGroupedViewData(startIndex, endIndex, this.props.rowHeight, this.state.isGroupedView));
+        if (this.state.blocking) {
+            this.toggleBlockUI();
+        }
     }
 
     clearGrouping() {
+        this.toggleBlockUI('Fetching Ungrouped Data');
         /** Resetting temporal slider to default */
-        this.changeSliderValue(15);
+        // this.changeSliderValue(15);
 
         this.controller.clearGroupSubscriptions();
         this.controller.clearArray(this.controller.groupingColumnsByLevel);
@@ -276,6 +289,7 @@ class TableView extends React.Component {
             clonedColumnElement.style.boxSizing = "border-box";
             // clonedColumnElement.style.height = this.refs.dragToBar.offsetHeight + "px";
             this.refs.dragToBar.appendChild(clonedColumnElement);
+            this.toggleBlockUI();
             this.makeGroupSubscription(columnData.cellId);
         }
     }
@@ -301,7 +315,10 @@ class TableView extends React.Component {
         }
     }
 
-    updateAggregatedRowExpandStatus(groupKey) {
+    updateAggregatedRowExpandStatus(groupKey, expandStatus) {
+        if (expandStatus === false) {
+            this.toggleBlockUI();
+        }
         this.controller.updateGroupExpansionStatus(groupKey);
     }
 
@@ -321,6 +338,7 @@ class TableView extends React.Component {
     /** TEMPORAL METHODS **/
 
     sliderChangeHandler(e) {
+        this.toggleBlockUI();
         console.dir(15 - e.value);
         this.changeSliderValue(e.value);
         this.controller.getDataAtBeforeMins(15 - e.value, this.state.isGroupedView);
@@ -337,89 +355,98 @@ class TableView extends React.Component {
         this.makeGroupSubscription('name');
     }
 
+    toggleBlockUI(loadingmessage) {
+        this.setState({
+            blocking: !this.state.blocking,
+            loadingmessage: loadingmessage
+        });
+    }
+
     render() {
         return (
-            <div className="blottercontainer">
-                <div style={{ display: 'flex', marginBottom: '3px' }}>
-                    <div style={{ flex: 0.7 }}>
-                        <div ref="dragToBar"
-                            className="dragtobar"
-                            onDragOver={event => event.preventDefault()}
-                            onDrop={this.onColumnDrop.bind(this)}>
-                            DRAG COLUMNS HERE TO START GROUPING
+            <BlockUi tag="div" blocking={this.state.blocking} message={this.state.loadingmessage}>
+                <div className="blottercontainer">
+                    <div style={{ display: 'flex', marginBottom: '3px' }}>
+                        <div style={{ flex: 0.7 }}>
+                            <div ref="dragToBar"
+                                className="dragtobar"
+                                onDragOver={event => event.preventDefault()}
+                                onDrop={this.onColumnDrop.bind(this)}>
+                                DRAG COLUMNS HERE TO START GROUPING
                         </div>
-                    </div>
-                    <div className='temporalContainer'>
-                        <div className="temporalUIblock">
-                            <div className="temporalslider">
-                                <ReactSimpleRange
-                                    disableTrack
-                                    min={0}
-                                    max={15}
-                                    step={5}
-                                    defaultValue={this.sliderValue}
-                                    sliderSize={4}
-                                    thumbSize={15}
-                                    sliderColor="#61a9f9"
-                                    trackColor="#307dd4"
-                                    thumbColor="#307dd4"
-                                    onChange={this.sliderChangeHandler.bind(this)} />
+                        </div>
+                        <div className='temporalContainer'>
+                            <div className="temporalUIblock">
+                                <div className="temporalslider">
+                                    <ReactSimpleRange
+                                        disableTrack
+                                        min={0}
+                                        max={15}
+                                        step={5}
+                                        defaultValue={this.sliderValue}
+                                        sliderSize={4}
+                                        thumbSize={15}
+                                        sliderColor="#61a9f9"
+                                        trackColor="#307dd4"
+                                        thumbColor="#307dd4"
+                                        onChangeComplete={this.sliderChangeHandler.bind(this)} />
+                                </div>
+                                <button className="temporalButton" onClick={this.getLivePrices.bind(this)}> Live Prices </button>
                             </div>
-                            <button className="temporalButton" onClick={this.getLivePrices.bind(this)}> Live Prices </button>
                         </div>
+                        <BlotterInfo ref="blotterInfo"
+                            subscribedTopic={this.props.subscriptionTopic}
+                            clearGrouping={this.clearGrouping.bind(this)} />
                     </div>
-                    <BlotterInfo ref="blotterInfo"
-                        subscribedTopic={this.props.subscriptionTopic}
-                        clearGrouping={this.clearGrouping.bind(this)} />
-                </div>
 
-                <div className="gridContainerDiv">
-                    {this.state.isGroupedView ?
-                        <div id="scrollableHeaderDiv" className="headerDiv">
-                            <table className="table">
-                                <thead className="tableHead">
-                                    <tr className="tableHeaderRow">
-                                        <th className='groupExpansionHeaderBox' />
-                                        {this.columns.map((item, i) =>
-                                            <TableHeaderCell
-                                                key={i}
-                                                groupingHandler={this.makeGroupSubscription}
-                                                cellKey={item.columnkey}
-                                                cellData={item.columnvalue} />
-                                        )}
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div> :
-                        <div id="scrollableHeaderDiv" className="headerDiv">
-                            <table className="table">
-                                <thead className="tableHead">
-                                    <tr className="tableHeaderRow">
-                                        {this.columns.map((item, i) =>
-                                            <TableHeaderCell
-                                                key={i}
-                                                groupingHandler={this.makeGroupSubscription}
-                                                cellKey={item.columnkey}
-                                                cellData={item.columnvalue} />
-                                        )}
-                                    </tr>
-                                </thead>
-                            </table>
+                    <div className="gridContainerDiv">
+                        {this.state.isGroupedView ?
+                            <div id="scrollableHeaderDiv" className="headerDiv">
+                                <table className="table">
+                                    <thead className="tableHead">
+                                        <tr className="tableHeaderRow">
+                                            <th className='groupExpansionHeaderBox' />
+                                            {this.columns.map((item, i) =>
+                                                <TableHeaderCell
+                                                    key={i}
+                                                    groupingHandler={this.makeGroupSubscription}
+                                                    cellKey={item.columnkey}
+                                                    cellData={item.columnvalue} />
+                                            )}
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div> :
+                            <div id="scrollableHeaderDiv" className="headerDiv">
+                                <table className="table">
+                                    <thead className="tableHead">
+                                        <tr className="tableHeaderRow">
+                                            {this.columns.map((item, i) =>
+                                                <TableHeaderCell
+                                                    key={i}
+                                                    groupingHandler={this.makeGroupSubscription}
+                                                    cellKey={item.columnkey}
+                                                    cellData={item.columnvalue} />
+                                            )}
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        }
+                        <div id="scrollableTableDiv" className="tableDiv" onScroll={this.scrollEventHandler}>
+                            <GridView isGroupedView={this.state.isGroupedView}
+                                ref='gridViewRef'
+                                viewableData={this.state.gridDataSource}
+                                topDivHeight={this.state.topDivHeight}
+                                bottomDivHeight={this.state.bottomDivHeight}
+                                columnKeyValues={this.columns}
+                                selectionDataUpdateHandler={this.selectionDataUpdateHandler.bind(this)}
+                                dataUpdateStatus={this.props.rowDataUpdateStatus}
+                                updateAggregatedRowExpandStatus={this.updateAggregatedRowExpandStatus} />
                         </div>
-                    }
-                    <div id="scrollableTableDiv" className="tableDiv" onScroll={this.scrollEventHandler}>
-                        <GridView isGroupedView={this.state.isGroupedView}
-                            ref='gridViewRef'
-                            viewableData={this.state.gridDataSource}
-                            topDivHeight={this.state.topDivHeight}
-                            bottomDivHeight={this.state.bottomDivHeight}
-                            columnKeyValues={this.columns}
-                            selectionDataUpdateHandler={this.selectionDataUpdateHandler.bind(this)}
-                            dataUpdateStatus={this.props.rowDataUpdateStatus}
-                            updateAggregatedRowExpandStatus={this.updateAggregatedRowExpandStatus} />
                     </div>
                 </div>
-            </div>
+            </BlockUi>
         );
     }
 }
