@@ -125,7 +125,7 @@ export default class TableController {
         let topic = this.subscriptionTopic;
         let orderby = `/${this.groupingColumnsByLevel[0]}`;
         let numericValueColumns = ['rho10bps', 'vega1pt', 'delta1pct', 'gamma1pct', 'payNotional', 'receiveNotional', 'price', 'receiveLeg', 'payLeg'];
-        let maxValueColumns = ['lastUpdated','vertex'];
+        let maxValueColumns = ['lastUpdated', 'vertex'];
         let nonNumericColumns = ['counterparty', 'receiveIndex', 'payCurrency', 'payDiscountCurve', 'receiveDiscountCurve', 'receiveCurrency', 'amerOrEuro', 'putOrCall', 'contractSize', 'strike'];
 
         let groupingString = this.groupingColumnsByLevel.map((item, i) => `${this.getJSONPathForColumnKey(item)}`).join(',');
@@ -296,7 +296,7 @@ export default class TableController {
         if (dataForSelectedRow !== undefined) {
             dataForSelectedRow.isSelected = !dataForSelectedRow.isSelected;
         } else {
-            console.log('Data pertaining to the selected row does not exist in the appData');
+            console.log('Data pertaining to the selected row does not exist');
         }
 
         //deselecting selected Rows
@@ -304,13 +304,15 @@ export default class TableController {
         selectedRows.forEach(((item, key) => {
             if (item.hasOwnProperty('aggRowKey')) {
                 let childRows = this.appDataModel.getDataFromGroupedData(item.aggRowKey).bucketData;
-                let dataForSelectedRow = childRows.get(item.rowID);
-                dataForSelectedRow.isSelected = false;
-                this.updateUIRowWithData(dataForSelectedRow.data, dataForSelectedRow.isSelected, key);
-            }else{
+                if (childRows) {
+                    let dataForSelectedRow = childRows.get(item.rowID);
+                    dataForSelectedRow.isSelected = false;
+                    this.updateUIRowWithData(dataForSelectedRow.data, dataForSelectedRow.isSelected, key);
+                }
+            } else {
                 let selectedRow = this.appDataModel.getDataFromDefaultData(key);
                 selectedRow.isSelected = false;
-                this.updateUIRowWithData(selectedRow.data, selectedRow.isSelected, key);                
+                this.updateUIRowWithData(selectedRow.data, selectedRow.isSelected, key);
             }
 
             // let dataFromDataMap = this.appDataModel.getDataFromDefaultData(key);
@@ -344,7 +346,7 @@ export default class TableController {
         const id = dataForSelectedRow.data.Vertex;
         if (id == null) {
             this.graphQueryController.unsubscribeParentNodeData();
-            this.uiRef.updateGraphUIWithData({});            
+            this.uiRef.updateGraphUIWithData({});
             return;
         }
         let parentNodeData, parentNodeSources, childNodesArray;
@@ -356,12 +358,12 @@ export default class TableController {
 
 
         Promise.all([parentNodeDataQueryRequest, parentNodeSourcesQueryRequest]).then(values => {
-            console.log('ParentNode and Sources data',values);
+            console.log('ParentNode and Sources data', values);
             parentNodeData = values[0];
             parentNodeSources = values[1].sources;
             let nodeDataArray = this.graphQueryController.getGraphNodesDataArrayWithIds('Graph', parentNodeSources);
             nodeDataArray.then(result => {
-                console.log('childnodes data',result);
+                console.log('childnodes data', result);
                 childNodesArray = result;
                 this.uiRef.updateGraphUIWithData({ parentNodeData, parentNodeSources, childNodesArray });
             })

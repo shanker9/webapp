@@ -245,10 +245,10 @@ class DagreD3 extends Component {
         this.selectedNodeKey = undefined;
         // this.isInitialSVGRender = true;
 
-        if (!parentNodeData || !parentNodeSources || !childNodesArray) {
-            this.clearSvg();
-            return;
-        }
+        // if (!parentNodeData || !parentNodeSources || !childNodesArray) {
+        //     this.clearSvg();
+        //     return;
+        // }
 
         this.setState({ parentNodeData: parentNodeData, parentNodeSources: parentNodeSources, childNodesArray: childNodesArray, isInitialSVGRender : true });
     }
