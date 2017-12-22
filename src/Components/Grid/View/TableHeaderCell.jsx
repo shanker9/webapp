@@ -20,7 +20,7 @@ class TableHeaderCell extends React.Component {
         // console.log('Dragged Element: ',event.target);
         const cellId = this.props.cellKey;
         const isSelected = this.state.isSelected;
-        if (this.state.columnProperties.groupingEnable) {
+        if (this.state.columnProperties.hasOwnProperty('groupingEnable')) {
             event.dataTransfer.setData("groupingcolumndata", JSON.stringify({ cellId: cellId, isSelected: isSelected, columnProperties: this.state.columnProperties }));
         }
     }

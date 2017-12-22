@@ -520,7 +520,8 @@ class TableView extends React.Component {
                                                     key={i}
                                                     groupingHandler={this.makeGroupSubscription}
                                                     cellKey={item.columnkey}
-                                                    cellData={item.columnvalue} />
+                                                    cellData={item.columnvalue}
+                                                    cellProperties={item.properties} />
                                             )}
                                         </tr>
                                     </thead>
