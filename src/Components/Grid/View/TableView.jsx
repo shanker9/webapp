@@ -8,7 +8,6 @@ import ReactSimpleRange from 'react-simple-range';
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
 
-
 // var flag = false, skipcount = 0;
 class TableView extends React.Component {
 
@@ -28,111 +27,196 @@ class TableView extends React.Component {
         this.columns = [
             {
                 columnkey: "counterparty",
-                columnvalue: "Counterparty"
+                columnvalue: "Counterparty",
+                properties: {
+                    isNumericColumn: false,
+                    groupingEnable: true,
+                }
             },
             {
                 columnkey: "name",
-                columnvalue: "Name"
+                columnvalue: "Name",
+                properties: {
+                    isNumericColumn: false,
+                    groupingEnable: true,
+                }
             },
             {
                 columnkey: "receiveIndex",
-                columnvalue: "ReceiveIndex"
+                columnvalue: "ReceiveIndex",
+                properties: {
+                    isNumericColumn: false,
+                    groupingEnable: true,
+                }
             },
             {
                 columnkey: "rho10bps",
-                columnvalue: "Rho10bps"
+                columnvalue: "Rho10bps",
+                properties: {
+                    isNumericColumn: true
+                }
             },
             {
                 columnkey: "gamma1pct",
-                columnvalue: "Gamma1pct"
+                columnvalue: "Gamma1pct",
+                properties: {
+                    isNumericColumn: true
+                }
             },
             {
                 columnkey: "delta1pct",
-                columnvalue: "Delta1pct"
+                columnvalue: "Delta1pct",
+                properties: {
+                    isNumericColumn: true
+                }
             },
             {
                 columnkey: "vega1pt",
-                columnvalue: "Vega1pt"
+                columnvalue: "Vega1pt",
+                properties: {
+                    isNumericColumn: true
+                }
             },
             {
                 columnkey: "lastUpdated",
-                columnvalue: "LastUpdated"
+                columnvalue: "LastUpdated",
+                properties: {
+                    isNumericColumn: false
+                }
             },
             {
                 columnkey: "receiveLeg",
-                columnvalue: "ReceiveLeg"
+                columnvalue: "ReceiveLeg",
+                properties: {
+                    isNumericColumn: true
+                }
             },
             {
                 columnkey: "vertex",
-                columnvalue: "Vertex"
+                columnvalue: "Vertex",
+                properties: {
+                    isNumericColumn: false
+                }
             },
             {
                 columnkey: "price",
-                columnvalue: "Price"
+                columnvalue: "Price",
+                properties: {
+                    isNumericColumn: true
+                }
             },
             {
                 columnkey: "payLeg",
-                columnvalue: "PayLeg"
+                columnvalue: "PayLeg",
+                properties: {
+                    isNumericColumn: true
+                }
             },
             {
                 columnkey: "volatility",
-                columnvalue: "Volatility"
+                columnvalue: "Volatility",
+                properties: {
+                    isNumericColumn: true
+                }
             },
             {
                 columnkey: "payCurrency",
-                columnvalue: "PayCurrency"
+                columnvalue: "PayCurrency",
+                properties: {
+                    isNumericColumn: false
+                }
             },
             {
                 columnkey: "payDiscountCurve",
-                columnvalue: "PayDiscountCurve"
+                columnvalue: "PayDiscountCurve",
+                properties: {
+                    isNumericColumn: false
+                }
             },
             {
                 columnkey: "payFixedRate",
-                columnvalue: "PayFixedRate"
+                columnvalue: "PayFixedRate",
+                properties: {
+                    isNumericColumn: false
+                }
             },
             {
                 columnkey: "maturityDate",
-                columnvalue: "MaturityDate"
+                columnvalue: "MaturityDate",
+                properties: {
+                    isNumericColumn: false
+                }
             },
             {
                 columnkey: "payNotional",
-                columnvalue: "PayNotional"
+                columnvalue: "PayNotional",
+                properties: {
+                    isNumericColumn: true
+                }
             },
             {
                 columnkey: "receiveDiscountCurve",
-                columnvalue: "ReceiveDiscountCurve"
+                columnvalue: "ReceiveDiscountCurve",
+                properties: {
+                    isNumericColumn: false
+                }
             },
             {
                 columnkey: "receiveNotional",
-                columnvalue: "ReceiveNotional"
+                columnvalue: "ReceiveNotional",
+                properties: {
+                    isNumericColumn: true
+                }
             },
             {
                 columnkey: "receiveCurrency",
-                columnvalue: "ReceiveCurrency"
+                columnvalue: "ReceiveCurrency",
+                properties: {
+                    isNumericColumn: false
+                }
             },
             {
                 columnkey: "receiveSpread",
-                columnvalue: "ReceiveSpread"
+                columnvalue: "ReceiveSpread",
+                properties: {
+                    isNumericColumn: false
+                }
             },
             {
                 columnkey: "amerOrEuro",
-                columnvalue: "AmerOrEuro"
+                columnvalue: "AmerOrEuro",
+                properties: {
+                    isNumericColumn: false
+                }
             },
             {
                 columnkey: "putOrCall",
-                columnvalue: "PutOrCall"
+                columnvalue: "PutOrCall",
+                properties: {
+                    isNumericColumn: false
+                }
             },
             {
                 columnkey: "contractSize",
-                columnvalue: "ContractSize"
+                columnvalue: "ContractSize",
+                properties: {
+                    isNumericColumn: true
+                }
             },
             {
                 columnkey: "strike",
-                columnvalue: "Strike"
+                columnvalue: "Strike",
+                properties: {
+                    isNumericColumn: true
+                }
             },
             {
                 columnkey: "underlier",
-                columnvalue: "Underlier"
+                columnvalue: "Underlier",
+                properties: {
+                    isNumericColumn: false,
+                    groupingEnable: true,
+                }
             }
         ];
 
@@ -260,7 +344,7 @@ class TableView extends React.Component {
     }
 
     clearGrouping() {
-        this.toggleBlockUI('Fetching Ungrouped Data');
+        this.toggleBlockUI('');
         /** Resetting temporal slider to default */
         // this.changeSliderValue(15);
 
@@ -276,22 +360,31 @@ class TableView extends React.Component {
     }
 
     onColumnDrop(event) {
-        let columnData = JSON.parse(event.dataTransfer.getData("groupingColumnData"));
-        let columnIndexInGroupedList = this.controller.getGroupingColumnsArray().indexOf(columnData.cellId);
+        if (event.dataTransfer.getData("groupingcolumndata")) {
+            let columnData = JSON.parse(event.dataTransfer.getData("groupingcolumndata"));
+            let columnIndexInGroupedList = this.controller.getGroupingColumnsArray().indexOf(columnData.cellId);
 
-        if (columnIndexInGroupedList === -1) {
-            if (this.refs.dragToBar.firstChild.nodeName === '#text') {
-                this.refs.dragToBar.removeChild(this.refs.dragToBar.firstChild);
+            if (columnIndexInGroupedList === -1) {
+                if (this.refs.dragToBar.firstChild.nodeName === '#text') {
+                    this.refs.dragToBar.removeChild(this.refs.dragToBar.firstChild);
+                }
+                let clonedColumnElement = document.getElementById(columnData.cellId).cloneNode(true);
+                clonedColumnElement.style.color = "#1E0B06";
+                clonedColumnElement.style.backgroundColor = "#e8e7e3";
+                clonedColumnElement.style.boxSizing = "border-box";
+                // clonedColumnElement.style.height = this.refs.dragToBar.offsetHeight + "px";
+                this.refs.dragToBar.appendChild(clonedColumnElement);
+                this.toggleBlockUI();
+                this.makeGroupSubscription(columnData.cellId);
             }
-            let clonedColumnElement = document.getElementById(columnData.cellId).cloneNode(true);
-            clonedColumnElement.style.color = "#1E0B06";
-            clonedColumnElement.style.backgroundColor = "#e8e7e3";
-            clonedColumnElement.style.boxSizing = "border-box";
-            // clonedColumnElement.style.height = this.refs.dragToBar.offsetHeight + "px";
-            this.refs.dragToBar.appendChild(clonedColumnElement);
-            this.toggleBlockUI();
-            this.makeGroupSubscription(columnData.cellId);
         }
+    }
+
+    allowDrop(event) {
+        if (!(event.dataTransfer.items.length > 0 && event.dataTransfer.items[0].type === 'groupingcolumndata')) {
+            event.dataTransfer.dropEffect = 'none';
+        }
+        event.preventDefault();
     }
 
     selectionDataUpdateHandler(rowIndexValue, parentRowKey, event) {
@@ -370,7 +463,7 @@ class TableView extends React.Component {
                         <div style={{ flex: 0.7 }}>
                             <div ref="dragToBar"
                                 className="dragtobar"
-                                onDragOver={event => event.preventDefault()}
+                                onDragOver={this.allowDrop.bind(this)}
                                 onDrop={this.onColumnDrop.bind(this)}>
                                 DRAG COLUMNS HERE TO START GROUPING
                         </div>
@@ -411,7 +504,8 @@ class TableView extends React.Component {
                                                     key={i}
                                                     groupingHandler={this.makeGroupSubscription}
                                                     cellKey={item.columnkey}
-                                                    cellData={item.columnvalue} />
+                                                    cellData={item.columnvalue}
+                                                    cellProperties={item.properties} />
                                             )}
                                         </tr>
                                     </thead>

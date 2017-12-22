@@ -151,7 +151,8 @@ class TableRow extends React.Component {
                 {
                     this.state.columnOrder.map((item, i) => {
                         return <TableCell key={i} parentBackgroundColor={this.dynamicBackgroundColor}
-                            cellData={this.getCellDataForKey(this.state.data, item.columnkey)}></TableCell>
+                            cellData={this.getCellDataForKey(this.state.data, item.columnkey)}
+                            columnProperties={item.properties}></TableCell>
                     })
                 }
             </tr>

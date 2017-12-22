@@ -52,7 +52,8 @@ class TableAggregatedRow extends React.Component {
                     this.state.columnOrder.map((item, i) => {
                         return (
                             <TableCell key={i} parentBackgroundColor={this.dynamicBackgroundColor}
-                                cellData={this.controller.getCellValueUsingColumnKeyFromData(item.columnkey, this.state.data)}></TableCell>
+                                cellData={this.controller.getCellValueUsingColumnKeyFromData(item.columnkey, this.state.data)}
+                                columnProperties={item.properties}></TableCell>
                         );
                     })
                 }

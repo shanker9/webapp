@@ -42,7 +42,6 @@ class TableCell extends React.Component {
     componentDidUpdate() {
 
         this.refs.tableCell.style.backgroundColor = this.state.animateColor;
-        // this.refs.tableCell.style.backgroundColor = this.conditionalAnimateColor;
     }
 
     detectTheEnd(e) {
@@ -55,7 +54,9 @@ class TableCell extends React.Component {
 
         return (
             <td ref={"tableCell"} className="td" >
+            <div className='cellDiv' style={this.props.columnProperties.isNumericColumn ? {textAlign:'right',paddingRight:'5px'} : {paddingLeft : '20px'}}>
                 {this.props.cellData}
+                </div>
             </td>
         )
     }
