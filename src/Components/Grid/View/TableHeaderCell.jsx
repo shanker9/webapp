@@ -25,6 +25,10 @@ class TableHeaderCell extends React.Component {
         }
     }
 
+    headerDrop(){
+        console.log('headerDropped');
+    }
+
     render() {
 
         return (
@@ -32,6 +36,8 @@ class TableHeaderCell extends React.Component {
                 className="th"
                 onClick={this.columnClickHandler}
                 onDragStart={this.dragStart.bind(this)}
+                onDragOver={e => e.preventDefault()}
+                onDrop={this.headerDrop.bind(this)}
                 draggable="true">
                 <div className='cellDiv'>{this.props.cellData}</div>
             </th>

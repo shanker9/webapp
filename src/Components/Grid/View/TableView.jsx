@@ -6,6 +6,7 @@ import TableHeaderCell from './TableHeaderCell.jsx';
 import GridView from './GridView.jsx';
 import ReactSimpleRange from 'react-simple-range';
 import BlockUi from 'react-block-ui';
+import TableHeader from './TableHeader.jsx'
 import 'react-block-ui/style.css';
 
 // var flag = false, skipcount = 0;
@@ -236,7 +237,7 @@ class TableView extends React.Component {
     componentDidMount() {
         this.controller = new TableController(this, this.subscriptionTopic);
         // this.makeDefaultSubscription();
-        this.makeGroupSubscription('name');
+        // this.makeGroupSubscription('name');
     }
 
     /*** EventHandler for scrolling of Tabledata ***/
@@ -455,9 +456,15 @@ class TableView extends React.Component {
         });
     }
 
+    reorderColumns(){
+        this.columns = this.columns.reverse();
+        this.forceUpdate();
+    }
+
     render() {
         return (
             <BlockUi tag="div" blocking={this.state.blocking} message={this.state.loadingmessage}>
+            <TableHeader />
                 <div className="blottercontainer">
                     <div style={{ display: 'flex', marginBottom: '3px' }}>
                         <div style={{ flex: 0.7 }}>
@@ -489,7 +496,8 @@ class TableView extends React.Component {
                         </div>
                         <BlotterInfo ref="blotterInfo"
                             subscribedTopic={this.props.subscriptionTopic}
-                            clearGrouping={this.clearGrouping.bind(this)} />
+                            clearGrouping={this.clearGrouping.bind(this)}
+                            reorderColumns={this.reorderColumns.bind(this)} />
                     </div>
 
                     <div className="gridContainerDiv">

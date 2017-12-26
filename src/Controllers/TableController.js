@@ -140,7 +140,7 @@ export default class TableController {
         let dateValueColumnsJsonpathArray = maxValueColumns.map(item => this.getJSONPathForColumnKey(item));
         let aggregateColumnsJsonpathArray = numericValueColumns.map(item => this.getJSONPathForColumnKey(item));
 
-        let projectionsArray = groupingColumnsJsonpathArray.concat(aggregateColumnsJsonpathArray, nonNumericColumnsJsonpathArray, dateValueColumnsJsonpathArray);
+        let projectionsArray = groupingColumnsJsonpathArray.concat(aggregateColumnsJsonpathArray);
         projectionsArray.sort();
 
         projectionsArray = projectionsArray.map(path => {
