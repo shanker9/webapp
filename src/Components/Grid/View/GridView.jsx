@@ -5,31 +5,18 @@ import TableAggregatedRow from './TableAggregatedRow.jsx';
 
 class GridView extends React.Component {
 
-    constructor() {
-        super();
-        this.groupedView = this.groupedView.bind(this);
-        this.normalview = this.normalview.bind(this);
-    }
-
-    componentDidMount() {
-    }
-
     render() {
-        if (this.props.isGroupedView) {
-            return this.groupedView();
-        } else {
-            return this.normalview();
-        }
+        return this.props.isGroupedView ? this.groupedView() : this.normalview();
     }
 
-    groupedView() {
+    groupedView = () => {
         let rowColorBoolean = false;
         return (
             <div>
                 <table className="table">
                     <tbody className="tableBody" >
                         <tr>
-                            <th style={{padding : '0px'}}>
+                            <th style={{ padding: '0px' }}>
                                 <div style={{ height: this.props.topDivHeight }}></div>
                             </th>
                         </tr>
@@ -45,7 +32,7 @@ class GridView extends React.Component {
                                     selectState={item.data.showBucketData}
                                     bucketData={item.data.bucketData}
                                     updateAggregatedRowExpandStatus={this.props.updateAggregatedRowExpandStatus}
-                                    columnKeyValues={this.props.columnKeyValues} />
+                                    columnData={this.props.columnData} />
                             } else {
                                 return <TableRow
                                     ref={'ref' + item.data.rowID}
@@ -55,7 +42,7 @@ class GridView extends React.Component {
                                     parentRowKey={item.data.aggRowKey}
                                     selectionDataUpdateHandler={this.props.selectionDataUpdateHandler}
                                     selectState={item.data.isSelected}
-                                    columnKeyValues={this.props.columnKeyValues}
+                                    columnData={this.props.columnData}
                                     isGroupedView={this.props.isGroupedView}
                                     isRowColored={rowColorBoolean} />
                             }
@@ -72,14 +59,14 @@ class GridView extends React.Component {
         );
     }
 
-    normalview() {
+    normalview = () => {
         let rowColorBoolean = true;
         return (
             <div>
                 <table className="table">
                     <tbody className="tableBody">
                         <tr>
-                            <th style={{padding :'0px'}}>
+                            <th style={{ padding: '0px' }}>
                                 <div style={{ height: this.props.topDivHeight }}></div>
                             </th>
                         </tr>
@@ -92,8 +79,9 @@ class GridView extends React.Component {
                                 indexVal={item.rowID}
                                 selectionDataUpdateHandler={this.props.selectionDataUpdateHandler}
                                 selectState={item.isSelected}
-                                columnKeyValues={this.props.columnKeyValues}
-                                isRowColored={rowColorBoolean} />
+                                columnData={this.props.columnData}
+                                isRowColored={rowColorBoolean}
+                            />
                         }
                         )}
                         <tr>
@@ -104,7 +92,6 @@ class GridView extends React.Component {
                     </tbody>
                 </table>
             </div>
-
         );
     }
 }

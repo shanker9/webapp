@@ -1,7 +1,5 @@
 import React from 'react';
 import TableCell from './TableCell.jsx';
-// import TableRow from './TableRow.jsx';
-// import styles from '../../../styles/AppStyles.css';
 import RowController from '../../../Controllers/RowController.js';
 
 class TableAggregatedRow extends React.Component {
@@ -9,12 +7,9 @@ class TableAggregatedRow extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isSelected: false,
-            shouldAnimate: false,
-            showBucketData: false,
             data: props.data,
-            columnOrder: this.props.columnKeyValues,
-            expandStatus : this.props.selectState
+            columnData: props.columnData,
+            expandStatus : props.selectState
         }
 
         this.controller = new RowController();
@@ -26,7 +21,7 @@ class TableAggregatedRow extends React.Component {
     componentWillReceiveProps(nextProps){
         this.setState({
             data: nextProps.data,
-            columnOrder: nextProps.columnKeyValues,
+            columnData: nextProps.columnData,
             expandStatus : nextProps.selectState
         })
     }
@@ -34,7 +29,6 @@ class TableAggregatedRow extends React.Component {
     handleRowClick(e) {
         e.preventDefault();
         this.props.updateAggregatedRowExpandStatus(this.props.aggregatedRowKey,this.state.expandStatus);
-        // this.setState({expandStatus: !this.state.expandStatus});
     }
 
     triggerUpdate(newdata) {
@@ -46,10 +40,10 @@ class TableAggregatedRow extends React.Component {
             <tr ref={"tableRow"}
                 className="tableRow"
                 onClick={this.handleRowClick}
-                style={{ backgroundColor: 'rgb(249, 247, 247)' }}>
+                style={{}}>
                 <td className="tdGroupedView">{this.state.expandStatus?'-':'+'}</td>
                 {
-                    this.state.columnOrder.map((item, i) => {
+                    this.state.columnData.map((item, i) => {
                         return (
                             <TableCell key={i} parentBackgroundColor={this.dynamicBackgroundColor}
                                 cellData={this.controller.getCellValueUsingColumnKeyFromData(item.columnkey, this.state.data)}

@@ -262,7 +262,7 @@ class TableView extends React.Component {
     makeDefaultSubscription() {
         // this.controller = new TableController(this, this.subscriptionTopic);
         let commandObject1 = {
-            "command" : 'sow_and_subscribe',
+            "command": 'sow_and_subscribe',
             "topic": this.subscriptionTopic,
             "orderBy": "/Name",
         }
@@ -474,9 +474,10 @@ class TableView extends React.Component {
                             <div ref="dragToBar"
                                 className="dragtobar"
                                 onDragOver={this.allowDrop.bind(this)}
-                                onDrop={this.onColumnDrop.bind(this)}>
+                                onDrop={this.onColumnDrop.bind(this)}
+                            >
                                 DRAG COLUMNS HERE TO START GROUPING
-                        </div>
+                            </div>
                         </div>
                         <div className='temporalContainer'>
                             <div className="temporalUIblock">
@@ -506,7 +507,7 @@ class TableView extends React.Component {
                     <div className="gridContainerDiv">
                         <TableHeader
                             columns={this.state.columns}
-                            parentTrigger={this.reorderColumns.bind(this)}
+                            columnReorderHandler={this.reorderColumns.bind(this)}
                             isGroupedView={this.state.isGroupedView} />
                         <div id="scrollableTableDiv" className="tableDiv" onScroll={this.scrollEventHandler}>
                             <GridView isGroupedView={this.state.isGroupedView}
@@ -514,9 +515,8 @@ class TableView extends React.Component {
                                 viewableData={this.state.gridDataSource}
                                 topDivHeight={this.state.topDivHeight}
                                 bottomDivHeight={this.state.bottomDivHeight}
-                                columnKeyValues={this.state.columns}
+                                columnData={this.state.columns}
                                 selectionDataUpdateHandler={this.selectionDataUpdateHandler.bind(this)}
-                                dataUpdateStatus={this.props.rowDataUpdateStatus}
                                 updateAggregatedRowExpandStatus={this.updateAggregatedRowExpandStatus} />
                         </div>
                     </div>

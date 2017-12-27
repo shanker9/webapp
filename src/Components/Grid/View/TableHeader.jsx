@@ -10,16 +10,22 @@ class SortableComponent extends Component {
         this.state = {
             columns: this.props.columns,
         }
-        this.isGroupedView = this.props.isGroupedView;
-        this.parentColumnSetter = this.props.parentTrigger;
+        this.isGroupedView = props.isGroupedView;
+        this.parentColumnSetter = props.columnReorderHandler;
     }
 
-    componentWillUpdate(nextProps,nextState){
-        let newProps = {...nextProps};
+    componentWillUpdate(nextProps, nextState) {
+        let newProps = { ...nextProps };
         this.isGroupedView = newProps.isGroupedView;
     }
 
-    SortableItem = SortableElement(({ value }) => <th className='th'><div className='cellDiv'>{value.columnvalue}</div></th>);
+    SortableItem = SortableElement(({ value }) => {
+        return (
+            <th className='th'>
+                <div className='cellDiv'>{value.columnvalue}</div>
+            </th>
+        )
+    });
 
     scrollEventHandler = () => {
         let headerNode = document.getElementById('scrollableHeaderDiv');
@@ -59,7 +65,7 @@ class SortableComponent extends Component {
     });
 
     onSortStart = ({ node, index, collection }, event) => {
-
+        console.log('sort started..');
     }
 
     onSortEnd = ({ oldIndex, newIndex }) => {
@@ -70,7 +76,7 @@ class SortableComponent extends Component {
     };
 
     render() {
-        return <this.SortableList axis='x' items={this.state.columns} onSortEnd={this.onSortEnd} />;
+        return <this.SortableList axis='x' items={this.state.columns} onSortEnd={this.onSortEnd} onSortStart={this.onSortStart} />;
     }
 }
 

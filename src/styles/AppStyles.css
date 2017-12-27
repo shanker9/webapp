@@ -95,7 +95,7 @@
 
     .gridContainerDiv {
         display: flex;
-        flex-direction: column; 
+        flex-direction: column;
     }
     
     .header {
@@ -136,7 +136,7 @@
     }
 
     th.groupExpansionHeaderBox{
-        min-width: 20px;
+        min-width: 40px;
         border: 1px solid lightgray;
         border-bottom: 0px;
         box-sizing: border-box;
@@ -230,16 +230,20 @@
         height: 20px;
     }
 
+    .tableGridRow:nth-child(even) {
+        background-color: rgb(249, 247, 247);
+    }
+
     tr:hover {
         cursor: default;
     }
 
-    .tableRow:hover {
-        cursor: default;
-    }
+    /* .tableRow:nth-child(even) {
+        background-color: rgb(219, 224, 235);
+    } */
 
     .tableRow {
-        font-variant : bold;
+        background-color: rgb(249, 247, 247);
     }
 
     .td {
@@ -269,7 +273,7 @@
         font-size: 100%;
         font-weight: bold;
         /* padding: 2px; */
-        min-width: 20px;
+        min-width: 40px;
         box-sizing: border-box;
         /* outline-style: outset; */
         outline-color : lightgray;

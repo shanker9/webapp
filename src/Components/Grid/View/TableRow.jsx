@@ -9,9 +9,8 @@ class TableRow extends React.Component {
         super(props);
         this.state = {
             isSelected: this.props.selectState,
-            shouldAnimate: false,
             data: props.data,
-            columnOrder: this.props.columnKeyValues,
+            columnData: this.props.columnData,
         }
         this.dynamicBackgroundColor = undefined;
         this.handleRowClick = this.handleRowClick.bind(this);
@@ -55,16 +54,16 @@ class TableRow extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         this.setState({
-            columnOrder : nextProps.columnKeyValues
+            columnData: nextProps.columnData
         })
     }
 
     handleRowClick(e) {
         e.preventDefault();
         console.log('Is Ctrl Pressed: ' + e.shiftKey);
-        this.props.selectionDataUpdateHandler(this.props.indexVal,this.props.parentRowKey, e); // Update the selection state in the data
+        this.props.selectionDataUpdateHandler(this.props.indexVal, this.props.parentRowKey, e); // Update the selection state in the data
     }
 
     triggerUpdate(newdata, selectState) {
@@ -84,24 +83,16 @@ class TableRow extends React.Component {
             return '';
         } else {
             let pathComponents = jsonpathforkey.split('/');
-            pathComponents = pathComponents.filter(item => {
-                if (item !== ""){
-                    return item;
-                }else{
-                    return false;
-                }
-            })
+            pathComponents = pathComponents.filter(item => item ? item : false)
             if (pathComponents.length === 0) {
                 result = data[key];
             } else {
                 result = data;
-                pathComponents.forEach(pathComponent => {
-                    result = result[pathComponent];
-                })
+                pathComponents.forEach(pathComponent => { result = result[pathComponent] })
             }
         }
 
-        if ((key === 'receiveLeg' || key === 'price' || key === 'payLeg') && result !== null) {
+        if ((key === 'receiveLeg' || key === 'price' || key === 'payLeg') && result) {
             return this.formatNumber(result.toFixed(2));
         }
         return result;
@@ -109,7 +100,7 @@ class TableRow extends React.Component {
 
     render() {
         this.dynamicBackgroundColor = this.state.isSelected ? '#7cb6ff' : this.props.isRowColored ? '#edeff2' : '#FFFFFF';
-
+        // this.dynamicBackgroundColor = this.state.isSelected ? '#7cb6ff' : '';
         return (
             <tr ref={"tableRow"}
                 className="tableGridRow"
@@ -117,10 +108,12 @@ class TableRow extends React.Component {
                 style={{ backgroundColor: this.dynamicBackgroundColor }}>
                 {this.props.isGroupedView ? <td className="tdGroupedView"></td> : null}
                 {
-                    this.state.columnOrder.map((item, i) => {
-                        return <TableCell key={i} parentBackgroundColor={this.dynamicBackgroundColor}
+                    this.state.columnData.map((item, i) => {
+                        return <TableCell
+                            key={i}
+                            parentBackgroundColor={this.dynamicBackgroundColor}
                             cellData={this.getCellDataForKey(this.state.data, item.columnkey)}
-                            columnProperties={item.properties}></TableCell>
+                            columnProperties={item.properties} />
                     })
                 }
             </tr>
@@ -128,7 +121,5 @@ class TableRow extends React.Component {
     }
 
 }
-
-
 
 export default TableRow;
