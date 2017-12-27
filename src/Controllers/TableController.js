@@ -27,15 +27,15 @@ export default class TableController {
     /** FOR DEFAULT VIEW DATA SUBSCRIPTION */
     ampsSubscribe(commandObject, columnName) {
         const command = commandObject;
-        command.command = this.isLiveData ? 'sow_and_subscribe' : 'sow';
+        // command.command = this.isLiveData ? 'sow_and_subscribe' : 'sow';
 
         let subController = new SubscriptionController(this, this.updateUIWithDefaultViewData.bind(this), this.rowUpdate.bind(this));
         this.ampsController.connectAndSubscribe(subController.defaultSubscriptionDataHandler.bind(subController),
             (subId) => {
                 this.livedatasubscriptionId = subId;
-                this.livedatasubscriptionCommmandCache = commandObject;
+                this.livedatasubscriptionCommmandCache = command;
             },
-            commandObject, columnName);
+            command, columnName);
     }
 
     rowUpdate(rowObject, isAggregatedView) {
@@ -407,8 +407,9 @@ export default class TableController {
                 "command": "sow",
                 "topic": this.subscriptionTopic,
                 "bookmark": bookmark,
-                "orderBy": "/product",
+                "orderBy": "/Name",
             }
+            // console.log('Temporal Command',commandObject);
             this.ampsSubscribe(commandObject);
             this.temporalSubscriptionCommandCache = commandObject;
         }

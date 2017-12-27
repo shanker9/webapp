@@ -20,206 +20,207 @@ class TableView extends React.Component {
             bottomDivHeight: 0,
             isGroupedView: false,
             blocking: false,
-            loadingmessage: ''
+            loadingmessage: '',
+            columns: [
+                {
+                    columnkey: "counterparty",
+                    columnvalue: "Counterparty",
+                    properties: {
+                        isNumericColumn: false,
+                        groupingEnable: true,
+                    }
+                },
+                {
+                    columnkey: "name",
+                    columnvalue: "Name",
+                    properties: {
+                        isNumericColumn: false,
+                        groupingEnable: true,
+                    }
+                },
+                {
+                    columnkey: "receiveIndex",
+                    columnvalue: "ReceiveIndex",
+                    properties: {
+                        isNumericColumn: false,
+                        groupingEnable: true,
+                    }
+                },
+                {
+                    columnkey: "rho10bps",
+                    columnvalue: "Rho10bps",
+                    properties: {
+                        isNumericColumn: true
+                    }
+                },
+                {
+                    columnkey: "gamma1pct",
+                    columnvalue: "Gamma1pct",
+                    properties: {
+                        isNumericColumn: true
+                    }
+                },
+                {
+                    columnkey: "delta1pct",
+                    columnvalue: "Delta1pct",
+                    properties: {
+                        isNumericColumn: true
+                    }
+                },
+                {
+                    columnkey: "vega1pt",
+                    columnvalue: "Vega1pt",
+                    properties: {
+                        isNumericColumn: true
+                    }
+                },
+                {
+                    columnkey: "lastUpdated",
+                    columnvalue: "LastUpdated",
+                    properties: {
+                        isNumericColumn: false
+                    }
+                },
+                {
+                    columnkey: "receiveLeg",
+                    columnvalue: "ReceiveLeg",
+                    properties: {
+                        isNumericColumn: true
+                    }
+                },
+                {
+                    columnkey: "vertex",
+                    columnvalue: "Vertex",
+                    properties: {
+                        isNumericColumn: false
+                    }
+                },
+                {
+                    columnkey: "price",
+                    columnvalue: "Price",
+                    properties: {
+                        isNumericColumn: true
+                    }
+                },
+                {
+                    columnkey: "payLeg",
+                    columnvalue: "PayLeg",
+                    properties: {
+                        isNumericColumn: true
+                    }
+                },
+                {
+                    columnkey: "volatility",
+                    columnvalue: "Volatility",
+                    properties: {
+                        isNumericColumn: true
+                    }
+                },
+                {
+                    columnkey: "payCurrency",
+                    columnvalue: "PayCurrency",
+                    properties: {
+                        isNumericColumn: false
+                    }
+                },
+                {
+                    columnkey: "payDiscountCurve",
+                    columnvalue: "PayDiscountCurve",
+                    properties: {
+                        isNumericColumn: false
+                    }
+                },
+                {
+                    columnkey: "payFixedRate",
+                    columnvalue: "PayFixedRate",
+                    properties: {
+                        isNumericColumn: false
+                    }
+                },
+                {
+                    columnkey: "maturityDate",
+                    columnvalue: "MaturityDate",
+                    properties: {
+                        isNumericColumn: false
+                    }
+                },
+                {
+                    columnkey: "payNotional",
+                    columnvalue: "PayNotional",
+                    properties: {
+                        isNumericColumn: true
+                    }
+                },
+                {
+                    columnkey: "receiveDiscountCurve",
+                    columnvalue: "ReceiveDiscountCurve",
+                    properties: {
+                        isNumericColumn: false
+                    }
+                },
+                {
+                    columnkey: "receiveNotional",
+                    columnvalue: "ReceiveNotional",
+                    properties: {
+                        isNumericColumn: true
+                    }
+                },
+                {
+                    columnkey: "receiveCurrency",
+                    columnvalue: "ReceiveCurrency",
+                    properties: {
+                        isNumericColumn: false
+                    }
+                },
+                {
+                    columnkey: "receiveSpread",
+                    columnvalue: "ReceiveSpread",
+                    properties: {
+                        isNumericColumn: false
+                    }
+                },
+                {
+                    columnkey: "amerOrEuro",
+                    columnvalue: "AmerOrEuro",
+                    properties: {
+                        isNumericColumn: false
+                    }
+                },
+                {
+                    columnkey: "putOrCall",
+                    columnvalue: "PutOrCall",
+                    properties: {
+                        isNumericColumn: false
+                    }
+                },
+                {
+                    columnkey: "contractSize",
+                    columnvalue: "ContractSize",
+                    properties: {
+                        isNumericColumn: true
+                    }
+                },
+                {
+                    columnkey: "strike",
+                    columnvalue: "Strike",
+                    properties: {
+                        isNumericColumn: true
+                    }
+                },
+                {
+                    columnkey: "underlier",
+                    columnvalue: "Underlier",
+                    properties: {
+                        isNumericColumn: false,
+                        groupingEnable: true,
+                    }
+                }
+            ]
         }
         this.controller = undefined;
         this.sliderValue = 15;
         this.lastScrollTop = 0;
-        this.columns = [
-            {
-                columnkey: "counterparty",
-                columnvalue: "Counterparty",
-                properties: {
-                    isNumericColumn: false,
-                    groupingEnable: true,
-                }
-            },
-            {
-                columnkey: "name",
-                columnvalue: "Name",
-                properties: {
-                    isNumericColumn: false,
-                    groupingEnable: true,
-                }
-            },
-            {
-                columnkey: "receiveIndex",
-                columnvalue: "ReceiveIndex",
-                properties: {
-                    isNumericColumn: false,
-                    groupingEnable: true,
-                }
-            },
-            {
-                columnkey: "rho10bps",
-                columnvalue: "Rho10bps",
-                properties: {
-                    isNumericColumn: true
-                }
-            },
-            {
-                columnkey: "gamma1pct",
-                columnvalue: "Gamma1pct",
-                properties: {
-                    isNumericColumn: true
-                }
-            },
-            {
-                columnkey: "delta1pct",
-                columnvalue: "Delta1pct",
-                properties: {
-                    isNumericColumn: true
-                }
-            },
-            {
-                columnkey: "vega1pt",
-                columnvalue: "Vega1pt",
-                properties: {
-                    isNumericColumn: true
-                }
-            },
-            {
-                columnkey: "lastUpdated",
-                columnvalue: "LastUpdated",
-                properties: {
-                    isNumericColumn: false
-                }
-            },
-            {
-                columnkey: "receiveLeg",
-                columnvalue: "ReceiveLeg",
-                properties: {
-                    isNumericColumn: true
-                }
-            },
-            {
-                columnkey: "vertex",
-                columnvalue: "Vertex",
-                properties: {
-                    isNumericColumn: false
-                }
-            },
-            {
-                columnkey: "price",
-                columnvalue: "Price",
-                properties: {
-                    isNumericColumn: true
-                }
-            },
-            {
-                columnkey: "payLeg",
-                columnvalue: "PayLeg",
-                properties: {
-                    isNumericColumn: true
-                }
-            },
-            {
-                columnkey: "volatility",
-                columnvalue: "Volatility",
-                properties: {
-                    isNumericColumn: true
-                }
-            },
-            {
-                columnkey: "payCurrency",
-                columnvalue: "PayCurrency",
-                properties: {
-                    isNumericColumn: false
-                }
-            },
-            {
-                columnkey: "payDiscountCurve",
-                columnvalue: "PayDiscountCurve",
-                properties: {
-                    isNumericColumn: false
-                }
-            },
-            {
-                columnkey: "payFixedRate",
-                columnvalue: "PayFixedRate",
-                properties: {
-                    isNumericColumn: false
-                }
-            },
-            {
-                columnkey: "maturityDate",
-                columnvalue: "MaturityDate",
-                properties: {
-                    isNumericColumn: false
-                }
-            },
-            {
-                columnkey: "payNotional",
-                columnvalue: "PayNotional",
-                properties: {
-                    isNumericColumn: true
-                }
-            },
-            {
-                columnkey: "receiveDiscountCurve",
-                columnvalue: "ReceiveDiscountCurve",
-                properties: {
-                    isNumericColumn: false
-                }
-            },
-            {
-                columnkey: "receiveNotional",
-                columnvalue: "ReceiveNotional",
-                properties: {
-                    isNumericColumn: true
-                }
-            },
-            {
-                columnkey: "receiveCurrency",
-                columnvalue: "ReceiveCurrency",
-                properties: {
-                    isNumericColumn: false
-                }
-            },
-            {
-                columnkey: "receiveSpread",
-                columnvalue: "ReceiveSpread",
-                properties: {
-                    isNumericColumn: false
-                }
-            },
-            {
-                columnkey: "amerOrEuro",
-                columnvalue: "AmerOrEuro",
-                properties: {
-                    isNumericColumn: false
-                }
-            },
-            {
-                columnkey: "putOrCall",
-                columnvalue: "PutOrCall",
-                properties: {
-                    isNumericColumn: false
-                }
-            },
-            {
-                columnkey: "contractSize",
-                columnvalue: "ContractSize",
-                properties: {
-                    isNumericColumn: true
-                }
-            },
-            {
-                columnkey: "strike",
-                columnvalue: "Strike",
-                properties: {
-                    isNumericColumn: true
-                }
-            },
-            {
-                columnkey: "underlier",
-                columnvalue: "Underlier",
-                properties: {
-                    isNumericColumn: false,
-                    groupingEnable: true,
-                }
-            }
-        ];
+
 
         this.subscriptionTopic = this.props.subscriptionTopic;
 
@@ -237,7 +238,7 @@ class TableView extends React.Component {
     componentDidMount() {
         this.controller = new TableController(this, this.subscriptionTopic);
         // this.makeDefaultSubscription();
-        // this.makeGroupSubscription('name');
+        this.makeGroupSubscription('name');
     }
 
     /*** EventHandler for scrolling of Tabledata ***/
@@ -261,8 +262,9 @@ class TableView extends React.Component {
     makeDefaultSubscription() {
         // this.controller = new TableController(this, this.subscriptionTopic);
         let commandObject1 = {
+            "command" : 'sow_and_subscribe',
             "topic": this.subscriptionTopic,
-            "orderBy": "/product",
+            "orderBy": "/Name",
         }
 
         this.controller.ampsSubscribe(commandObject1);
@@ -456,15 +458,16 @@ class TableView extends React.Component {
         });
     }
 
-    reorderColumns(){
-        this.columns = this.columns.reverse();
-        this.forceUpdate();
+    reorderColumns(reorderedColumns) {
+        this.setState({
+            columns: reorderedColumns
+        })
     }
 
     render() {
         return (
             <BlockUi tag="div" blocking={this.state.blocking} message={this.state.loadingmessage}>
-            <TableHeader />
+
                 <div className="blottercontainer">
                     <div style={{ display: 'flex', marginBottom: '3px' }}>
                         <div style={{ flex: 0.7 }}>
@@ -501,48 +504,17 @@ class TableView extends React.Component {
                     </div>
 
                     <div className="gridContainerDiv">
-                        {this.state.isGroupedView ?
-                            <div id="scrollableHeaderDiv" className="headerDiv">
-                                <table className="table">
-                                    <thead className="tableHead">
-                                        <tr className="tableHeaderRow">
-                                            <th className='groupExpansionHeaderBox' />
-                                            {this.columns.map((item, i) =>
-                                                <TableHeaderCell
-                                                    key={i}
-                                                    groupingHandler={this.makeGroupSubscription}
-                                                    cellKey={item.columnkey}
-                                                    cellData={item.columnvalue}
-                                                    cellProperties={item.properties} />
-                                            )}
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div> :
-                            <div id="scrollableHeaderDiv" className="headerDiv">
-                                <table className="table">
-                                    <thead className="tableHead">
-                                        <tr className="tableHeaderRow">
-                                            {this.columns.map((item, i) =>
-                                                <TableHeaderCell
-                                                    key={i}
-                                                    groupingHandler={this.makeGroupSubscription}
-                                                    cellKey={item.columnkey}
-                                                    cellData={item.columnvalue}
-                                                    cellProperties={item.properties} />
-                                            )}
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        }
+                        <TableHeader
+                            columns={this.state.columns}
+                            parentTrigger={this.reorderColumns.bind(this)}
+                            isGroupedView={this.state.isGroupedView} />
                         <div id="scrollableTableDiv" className="tableDiv" onScroll={this.scrollEventHandler}>
                             <GridView isGroupedView={this.state.isGroupedView}
                                 ref='gridViewRef'
                                 viewableData={this.state.gridDataSource}
                                 topDivHeight={this.state.topDivHeight}
                                 bottomDivHeight={this.state.bottomDivHeight}
-                                columnKeyValues={this.columns}
+                                columnKeyValues={this.state.columns}
                                 selectionDataUpdateHandler={this.selectionDataUpdateHandler.bind(this)}
                                 dataUpdateStatus={this.props.rowDataUpdateStatus}
                                 updateAggregatedRowExpandStatus={this.updateAggregatedRowExpandStatus} />

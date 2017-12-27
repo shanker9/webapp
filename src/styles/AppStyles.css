@@ -113,7 +113,14 @@
         background: linear-gradient(rgb(208, 212, 212),rgb(255, 255, 255), rgb(208, 212, 212));
     }
 
-    .table {
+    .sortableHeaderContainer {
+        min-height: fit-content;
+        overflow-x: hidden;     
+        overflow-y: scroll;
+        background: linear-gradient(rgb(208, 212, 212),rgb(255, 255, 255), rgb(208, 212, 212));        
+    }
+
+    table {
         border-collapse: collapse;
     }
 

@@ -30,7 +30,6 @@ class BlotterInfo extends React.Component {
                 {this.state.isGroupedView ? 
                 <div>
                 <button className="button" onClick={this.props.clearGrouping}>CLEAR GROUPING</button>
-                <button className="button" onClick={this.props.reorderColumns}>REORDER COLUMN</button>
                 </div> : 
                 <label style={{ float: 'right' }}>{`Showing ${this.state.lowerLimit}-${this.state.upperLimit} of ${this.state.dataMapsize}`}</label>}
             </div>

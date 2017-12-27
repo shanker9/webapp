@@ -37,8 +37,7 @@ export default class SubscriptionController {
                 } else {
                     this.appDataModel.addorUpdateRowData(rowKey, { "rowID": item.rowID, "data": newData, "isSelected": item.isSelected, "isUpdated": true });
 
-                    if (this.appDataModel.getGroupedData() !== undefined) {
-                        // this.parentControllerRef.updateRowDataInGroupedData(message,true);
+                    if (this.appDataModel.getGroupedData().size > 0) {
                         this.updateCallback(this.appDataModel.getDataFromDefaultData(rowKey), true);
                     }
                     // this.parentControllerRef.updateUIRowWithData(newData,item.isSelected, item.rowID);

@@ -40,7 +40,6 @@ class TableCell extends React.Component {
     }
 
     componentDidUpdate() {
-
         this.refs.tableCell.style.backgroundColor = this.state.animateColor;
     }
 

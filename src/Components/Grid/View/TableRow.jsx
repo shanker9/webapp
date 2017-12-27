@@ -16,44 +16,6 @@ class TableRow extends React.Component {
         this.dynamicBackgroundColor = undefined;
         this.handleRowClick = this.handleRowClick.bind(this);
 
-        // this.dataKeysJsonpathMapper = {
-        //     "amerOrEuro": "/data/amerOrEuro",
-        //     "contractSize":"/data/contractSize",
-        //     "counterparty": "/data/counterparty",
-
-        //     "maturityDate": "/data/maturityDate/str",
-
-        //     "payCurrency": "/data/pay/currency",
-        //     "payDiscountCurve": "/data/pay/discountCurve",
-        //     "payFixedRate": "/data/pay/fixedRate",
-        //     "payNotional": "/data/pay/notional",
-
-        //     "putOrCall":"/data/putOrCall",            
-
-        //     "receiveCurrency": "/data/receive/currency",
-        //     "receiveDiscountCurve": "/data/receive/discountCurve",
-        //     "receiveIndex": "/data/receive/index",
-        //     "receiveNotional": "/data/receive/notional",
-
-        //     "strike":"/data/strike",
-
-        //     "lastUpdated": "/lastUpdated/str",
-
-        //     "payLeg": "/output/componentPrices/payLeg",
-        //     "receiveLeg": "/output/componentPrices/receiveLeg",
-
-        //     "price": "/output/price",
-        //     "rho10bps": "/output/rho10bps",
-        //     "gamma1pct": "/output/gamma1pct",
-        //     "delta1pct": "/output/delta1pct",
-        //     "vega1pt": "/output/vega1pt",            
-        //     "volatility":"/output/volatility",
-
-        //     "product": "/product",
-        //     "underlier": "/underlier",
-        //     "vertex": "/vertex"
-        // }
-
         this.dataKeysJsonpathMapper = {
             "amerOrEuro": "/AmerOrEuro",
             "contractSize": "/ContractSize",
@@ -91,6 +53,12 @@ class TableRow extends React.Component {
             "underlier": "/Underlier",
             "vertex": "/Vertex"
         }
+    }
+
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            columnOrder : nextProps.columnKeyValues
+        })
     }
 
     handleRowClick(e) {
