@@ -1,5 +1,4 @@
 import React from 'react';
-// import styles from '../../../styles/AppStyles.css';
 
 class TableHeaderCell extends React.Component {
 
@@ -7,39 +6,33 @@ class TableHeaderCell extends React.Component {
         super(props);
         this.state = {
             isSelected: false,
-            columnProperties: props.cellProperties
+            columndata: props.columndata
         }
-        this.columnClickHandler = this.columnClickHandler.bind(this);
     }
 
-    columnClickHandler() {
-        // this.props.groupingHandler(this.props.cellKey, this.state.isSelected);
+    componentWillReceiveProps(nextProps) {
+        const {columndata} = { ...nextProps };
+        this.setState({ 
+            columndata : columndata
+         });
     }
 
     dragStart(event) {
-        // console.log('Dragged Element: ',event.target);
-        const cellId = this.props.cellKey;
+        const celldata = this.state.columndata;
         const isSelected = this.state.isSelected;
-        if (this.state.columnProperties.hasOwnProperty('groupingEnable')) {
-            event.dataTransfer.setData("groupingcolumndata", JSON.stringify({ cellId: cellId, isSelected: isSelected, columnProperties: this.state.columnProperties }));
+        if (this.state.columndata.properties.hasOwnProperty('groupingEnable')) {
+            event.dataTransfer.setData("groupingcolumndata", JSON.stringify({ celldata: celldata, isSelected: isSelected, columnProperties: this.state.columnProperties }));
         }
     }
 
-    headerDrop(){
-        console.log('headerDropped');
-    }
-
     render() {
-
         return (
-            <th id={this.props.cellKey}
+            <th id={this.props.columndata.columnkey}
+                data-id={this.props.columndata.columnkey}
                 className="th"
                 onClick={this.columnClickHandler}
-                onDragStart={this.dragStart.bind(this)}
-                onDragOver={e => e.preventDefault()}
-                onDrop={this.headerDrop.bind(this)}
-                draggable="true">
-                <div className='cellDiv'>{this.props.cellData}</div>
+                onDragStart={this.dragStart.bind(this)}>
+                <div className='cellDiv'>{this.props.columndata.columnvalue}</div>
             </th>
         )
     }

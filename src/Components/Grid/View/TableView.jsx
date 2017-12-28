@@ -6,10 +6,9 @@ import TableHeaderCell from './TableHeaderCell.jsx';
 import GridView from './GridView.jsx';
 import ReactSimpleRange from 'react-simple-range';
 import BlockUi from 'react-block-ui';
-import TableHeader from './TableHeader.jsx'
+import ControlledSortableHeader from './ControlledSortableHeader.jsx'
 import 'react-block-ui/style.css';
 
-// var flag = false, skipcount = 0;
 class TableView extends React.Component {
 
     constructor(props) {
@@ -365,26 +364,24 @@ class TableView extends React.Component {
     onColumnDrop(event) {
         if (event.dataTransfer.getData("groupingcolumndata")) {
             let columnData = JSON.parse(event.dataTransfer.getData("groupingcolumndata"));
-            let columnIndexInGroupedList = this.controller.getGroupingColumnsArray().indexOf(columnData.cellId);
+            let columnIndexInGroupedList = this.controller.getGroupingColumnsArray().indexOf(columnData.celldata.columnkey);
 
             if (columnIndexInGroupedList === -1) {
                 if (this.refs.dragToBar.firstChild.nodeName === '#text') {
                     this.refs.dragToBar.removeChild(this.refs.dragToBar.firstChild);
                 }
-                let clonedColumnElement = document.getElementById(columnData.cellId).cloneNode(true);
-                clonedColumnElement.style.color = "#1E0B06";
-                clonedColumnElement.style.backgroundColor = "#e8e7e3";
-                clonedColumnElement.style.boxSizing = "border-box";
-                // clonedColumnElement.style.height = this.refs.dragToBar.offsetHeight + "px";
-                this.refs.dragToBar.appendChild(clonedColumnElement);
+                let groupedElem = document.createElement('div');
+                groupedElem.innerHTML = columnData.celldata.columnvalue;
+                groupedElem.className = 'groupedColumn';
+                this.refs.dragToBar.appendChild(groupedElem);
                 this.toggleBlockUI();
-                this.makeGroupSubscription(columnData.cellId);
+                this.makeGroupSubscription(columnData.celldata.columnkey);
             }
         }
     }
 
     allowDrop(event) {
-        if (!(event.dataTransfer.items.length > 0 && event.dataTransfer.items[0].type === 'groupingcolumndata')) {
+        if (!event.dataTransfer.types.includes('groupingcolumndata')) {
             event.dataTransfer.dropEffect = 'none';
         }
         event.preventDefault();
@@ -467,7 +464,6 @@ class TableView extends React.Component {
     render() {
         return (
             <BlockUi tag="div" blocking={this.state.blocking} message={this.state.loadingmessage}>
-
                 <div className="blottercontainer">
                     <div style={{ display: 'flex', marginBottom: '3px' }}>
                         <div style={{ flex: 0.7 }}>
@@ -503,9 +499,8 @@ class TableView extends React.Component {
                             clearGrouping={this.clearGrouping.bind(this)}
                             reorderColumns={this.reorderColumns.bind(this)} />
                     </div>
-
                     <div className="gridContainerDiv">
-                        <TableHeader
+                        <ControlledSortableHeader
                             columns={this.state.columns}
                             columnReorderHandler={this.reorderColumns.bind(this)}
                             isGroupedView={this.state.isGroupedView} />

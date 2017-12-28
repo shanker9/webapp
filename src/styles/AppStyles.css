@@ -82,16 +82,23 @@
 
     .dragtobar{
         flex : 1;
-        /* width: 50%; */
+        display: flex;
         border: 1px groove;
-        /* border-bottom: 1px; */
-        /* padding: 2px; */
         text-align: center;
         vertical-align: middle;
         font-size: 12px;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
         color: grey;
     }
+
+    .groupedColumn {
+        color: black;
+        border: 1px solid lightgrey;
+        padding: 1px;
+        box-sizing: border-box;
+        background: linear-gradient(rgb(208, 212, 212),rgb(255, 255, 255), rgb(208, 212, 212));
+    }
+
 
     .gridContainerDiv {
         display: flex;
@@ -130,7 +137,7 @@
         cursor: pointer;        
     }
 
-    th:hover {
+    .th:hover {
         background-color: rgb(189, 192, 194);
         cursor: move;
     }
@@ -139,6 +146,7 @@
         min-width: 40px;
         border: 1px solid lightgray;
         border-bottom: 0px;
+        border-right: 0px;
         box-sizing: border-box;
     }
 
@@ -157,6 +165,9 @@
         /* width: 190px; */
     }
 
+    .sortableheadarrow {
+        padding: 0px;
+    }
     
     .tableDiv {
         height: -webkit-fill-available;
