@@ -216,12 +216,10 @@ class TableView extends React.Component {
                 }
             ]
         }
-        this.controller = undefined;
+        this.subscriptionTopic = this.props.subscriptionTopic;        
+        this.controller = new TableController(this, this.subscriptionTopic);
         this.sliderValue = 15;
         this.lastScrollTop = 0;
-
-
-        this.subscriptionTopic = this.props.subscriptionTopic;
 
         this.updateDataGridWithDefaultView = this.updateDataGridWithDefaultView.bind(this);
         this.updateDataGridWithGroupedView = this.updateDataGridWithGroupedView.bind(this);
@@ -235,7 +233,6 @@ class TableView extends React.Component {
     }
 
     componentDidMount() {
-        this.controller = new TableController(this, this.subscriptionTopic);
         // this.makeDefaultSubscription();
         this.makeGroupSubscription('name');
     }
@@ -260,7 +257,6 @@ class TableView extends React.Component {
     /** NON-GROUPING METHODS**/
 
     makeDefaultSubscription() {
-        // this.controller = new TableController(this, this.subscriptionTopic);
         let commandObject1 = {
             "command": 'sow_and_subscribe',
             "topic": this.subscriptionTopic,
@@ -450,9 +446,9 @@ class TableView extends React.Component {
 
     getLivePrices() {
         this.changeSliderValue(15);
-        // this.makeDefaultSubscription();
         this.controller.changeLiveDataStatus(true);
-        this.makeGroupSubscription('name');
+        this.controller.changeCurrentSubscriptionToLive(this.state.isGroupedView);
+        // this.makeGroupSubscription('name');
     }
 
     toggleBlockUI(loadingmessage) {

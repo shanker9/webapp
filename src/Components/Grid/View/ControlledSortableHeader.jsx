@@ -41,10 +41,6 @@ class ControlledSortableHeader extends Component {
         return list;
     }
 
-    filteredElement(event) {
-        console.log(event);
-    }
-
     getHeaderRow() {
         return this.state.isGroupedView ? (
             <div id="scrollableHeaderDiv" className='headerDiv' onScroll={this.scrollEventHandler}>

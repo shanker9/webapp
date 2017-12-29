@@ -55,7 +55,7 @@ export default class TableController {
     }
 
     getDefaultViewData(startIndex, endIndex, rowHeight) {
-        let adjustedStartIndex = startIndex > 10 ? (startIndex-10) : 0;
+        let adjustedStartIndex = startIndex > 10 ? (startIndex - 10) : 0;
         let gridDataSource = this.appDataModel.getDataMapInRangeFromDefaultData(adjustedStartIndex, endIndex);
         let topDivHeight = adjustedStartIndex * rowHeight;
         // let topDivHeight = startIndex > 10 ? (startIndex-10) * rowHeight : 0;
@@ -91,6 +91,23 @@ export default class TableController {
 
     changeLiveDataStatus(status) {
         this.isLiveData = status;
+    }
+
+    changeCurrentSubscriptionToLive(isGroupedView) {
+        const lastTemporalCommand = { ...this.temporalSubscriptionCommandCache }
+        lastTemporalCommand.command = 'sow_and_subscribe';
+        delete lastTemporalCommand.bookmark;
+        this.clearGroupSubscriptions();
+        this.unsubscribeLiveData();
+        if (isGroupedView) {
+            let subController = new AggregateSubscriptionController(this, this.groupingColumnsByLevel, lastTemporalCommand);
+
+            this.ampsController.connectAndSubscribe(subController.groupingSubscriptionDataHandler.bind(subController),
+                subController.groupingSubscriptionDetailsHandler.bind(subController),
+                lastTemporalCommand);
+        }else{
+            this.ampsSubscribe(lastTemporalCommand);            
+        }
     }
 
     /** GROUP SUBSCRIPTION DATAHANDLER **/
@@ -211,7 +228,7 @@ export default class TableController {
     }
 
     getGroupedViewData(startIndex, endIndex, rowHeight) {
-        let adjustedStartIndex = startIndex > 10 ? (startIndex-10) : 0;
+        let adjustedStartIndex = startIndex > 10 ? (startIndex - 10) : 0;
         let gridDataSource = this.appDataModel.getDataMapInRangeFromGroupedData(adjustedStartIndex, endIndex);
         let topDivHeight = adjustedStartIndex * rowHeight;
         // let topDivHeight = startIndex > 10 ? (startIndex-10) * rowHeight : 0;
@@ -253,7 +270,7 @@ export default class TableController {
             }
 
             // Clearing Graph and Chart views
-            this.uiRef.updateGraphUIWithData({});           
+            this.uiRef.updateGraphUIWithData({});
             this.uiRef.clearChartComponent();
         }
 
@@ -403,7 +420,7 @@ export default class TableController {
             // Removing conflation option
             let optionsStringSplit = commandObject.options.split(',conflation');
             let optionsWithoutConflation = optionsStringSplit[0];
-            console.log('options without conflation',optionsWithoutConflation);
+            console.log('options without conflation', optionsWithoutConflation);
             commandObject.options = optionsWithoutConflation;
 
             let subController = new AggregateSubscriptionController(this, ['name'], commandObject);

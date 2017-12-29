@@ -115,9 +115,9 @@
         overflow-x: hidden;     
         overflow-y: scroll;
         /* background-color: #2C4C65; */
-        /* background-color: rgb(205, 211, 218); */
+        /* background-color: rgb(247, 247, 247); */
         /* background: linear-gradient(rgb(255, 255, 255),rgb(223, 223, 223), rgb(163, 167, 167)); */
-        background: linear-gradient(rgb(208, 212, 212),rgb(255, 255, 255), rgb(208, 212, 212));
+        background: linear-gradient(rgb(208, 212, 212),rgb(224, 224, 224), rgb(208, 212, 212));
     }
 
     .sortableHeaderContainer {
