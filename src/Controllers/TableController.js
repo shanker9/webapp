@@ -24,6 +24,24 @@ export default class TableController {
         this.setGroupingColumnKeyMapper = undefined;
     }
 
+    sortDataBykey(key){
+        let groupedData = this.appDataModel.getGroupedData();
+        let groupedDataArray = Array.from(groupedData.entries());
+        let sortedArray = groupedDataArray.sort((a,b) => {
+            if(a[1].groupData[key] == null || a[1].groupData[key] == null){
+                console.log('null values',a[1] , b[1]);
+                return;
+            }
+            return a[1].groupData[key].localeCompare(b[1].groupData[key]);
+        })
+        console.log(sortedArray);
+        let sortedGroupedData = new Map(sortedArray);
+        this.appDataModel.setGroupedData(sortedGroupedData);
+        let groupedViewData = this.appDataModel.createGroupedViewedData(this.appDataModel.getGroupedData());
+        this.appDataModel.setGroupedViewData(groupedViewData);
+        this.uiRef.loadDataGridWithGroupedView();
+    }
+
     /** FOR DEFAULT VIEW DATA SUBSCRIPTION */
     ampsSubscribe(commandObject, columnName) {
         const command = commandObject;

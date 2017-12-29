@@ -53,7 +53,7 @@ class TableCell extends React.Component {
 
         return (
             <td ref={"tableCell"} className="td" >
-            <div className='cellDiv' style={this.props.columnProperties.isNumericColumn ? {textAlign:'right',paddingRight:'5px'} : {paddingLeft : '20px'}}>
+            <div className='cellDiv' style={this.props.columnProperties.isNumericColumn ? {textAlign:'right',paddingRight:'10px'} : {textAlign:'left',paddingLeft : '10px'}}>
                 {this.props.cellData}
                 </div>
             </td>

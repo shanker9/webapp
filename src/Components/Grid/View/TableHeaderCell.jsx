@@ -11,10 +11,10 @@ class TableHeaderCell extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {columndata} = { ...nextProps };
-        this.setState({ 
-            columndata : columndata
-         });
+        const { columndata } = { ...nextProps };
+        this.setState({
+            columndata: columndata
+        });
     }
 
     dragStart(event) {
@@ -32,7 +32,10 @@ class TableHeaderCell extends React.Component {
                 className="th"
                 onClick={this.columnClickHandler}
                 onDragStart={this.dragStart.bind(this)}>
-                <div className='cellDiv'>{this.props.columndata.columnvalue}</div>
+                <div className='cellDiv' style={this.state.columndata.properties.isNumericColumn ? { textAlign: 'right', paddingRight: '10px' } : { textAlign: 'left', paddingLeft: '10px' }}>
+                    {this.props.columndata.columnvalue}
+                </div>
+                <div>::</div>
             </th>
         )
     }

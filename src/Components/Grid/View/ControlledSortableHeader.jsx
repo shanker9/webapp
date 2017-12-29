@@ -49,8 +49,7 @@ class ControlledSortableHeader extends Component {
                         <tr>
                             <th className='groupExpansionHeaderBox' />
                             <Sortable tag='th' className='sortableheadarrow'
-                                animation={200}
-                                scrollspeed={50}
+                                options={{ animation: 300,handle:'.my-handle' }}
                                 onChange={this.listChangeHandler.bind(this)}>
                                 {this.getDraggableElements()}
                             </Sortable>
@@ -65,7 +64,7 @@ class ControlledSortableHeader extends Component {
                         <thead>
                             <tr id='headerRow'>
                                 <Sortable tag='th' className='sortableheaderrow'
-                                    scrollspeed={10}
+                                    options={{ animation: 200 }}
                                     onChange={this.listChangeHandler.bind(this)}>
                                     {this.getDraggableElements()}
                                 </Sortable>

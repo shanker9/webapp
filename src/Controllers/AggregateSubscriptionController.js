@@ -22,6 +22,7 @@ export default class AggregateSubscriptionController {
             this.aggregatedRowsData = new Map();
             return;
         } else if (message.c === 'group_end') {
+            console.log('Total Messages Received:',this.aggregatedRowsData.size)
             this.sowGroupDataEnd = true;
             // this.appDataModel.setGroupColumnKeyMapper(this.groupingColumnKeyMap);
             // let keyBinMapper = this.getGroupBuckets(this.appDataModel.getDataMap(),this.groupingColumnArray);

@@ -22,6 +22,7 @@ export default class SubscriptionController {
 
             case 'group_end':
                 console.log(message.c);
+                console.log('Total messages received:',this.appDataModel.getdefaultDataViewSize())
                 // this.parentControllerRef.updateUIWithDefaultViewData();
                 this.sowEndCallback();
                 break;

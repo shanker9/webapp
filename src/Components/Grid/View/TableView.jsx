@@ -464,6 +464,10 @@ class TableView extends React.Component {
         })
     }
 
+    sortColumn(){
+        this.controller.sortDataBykey('Counterparty');
+    }
+
     render() {
         return (
             <BlockUi tag="div" blocking={this.state.blocking} message={this.state.loadingmessage}>
@@ -499,8 +503,8 @@ class TableView extends React.Component {
                         </div>
                         <BlotterInfo ref="blotterInfo"
                             subscribedTopic={this.props.subscriptionTopic}
-                            clearGrouping={this.clearGrouping.bind(this)}
-                            reorderColumns={this.reorderColumns.bind(this)} />
+                            clearGrouping={this.clearGrouping.bind(this)} 
+                            sortColumn={this.sortColumn.bind(this)}/>
                     </div>
                     <div className="gridContainerDiv">
                         <ControlledSortableHeader
