@@ -431,6 +431,10 @@ class TableView extends React.Component {
         this.props.graphTreeComponentReference().updateGraphData(graphData);
     }
 
+    clearChartComponent() {
+        this.props.chartComponentReference().clearChartView();
+    }
+
     /** TEMPORAL METHODS **/
 
     sliderChangeHandler(e) {

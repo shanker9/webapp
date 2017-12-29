@@ -137,6 +137,7 @@ class App extends React.Component {
             <div className="tablecontainer">
                 <TableView ref='tableViewRef'
                     graphTreeComponentReference={this.getGraphTreeComponentReference.bind(this)}
+                    chartComponentReference={this.getChartComponentReference.bind(this)}
                     subscriptionTopic={this.state.subscriptionTopic}
                     rowHeight={this.state.rowHeight} />
             </div>

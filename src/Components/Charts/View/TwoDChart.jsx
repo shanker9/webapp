@@ -26,7 +26,7 @@ class TwoDChart extends Component {
   }
 
   resizeEventHandler(p) {
-    console.log('cahrt resize handler');
+    console.log('chart resize handler');
     let chartHeight = p.rect.height * 0.95;
     let chartWidth = p.rect.width * 0.95;
     this.setState({

@@ -38,6 +38,14 @@ class ChartHOC extends Component {
         })
     }
 
+    clearChartView(){
+        this.setState({
+            chartType : 'none',
+            chartData : {},
+            displayChart : false
+        })
+    }
+
     render() {
 
         if (this.state.chartType === '2D') {

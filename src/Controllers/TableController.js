@@ -251,6 +251,10 @@ export default class TableController {
                 this.appDataModel.setGroupedViewData(groupedViewData);
                 this.updateGroupedViewData();
             }
+
+            // Clearing Graph and Chart views
+            this.uiRef.updateGraphUIWithData({});           
+            this.uiRef.clearChartComponent();
         }
 
     }
@@ -358,6 +362,7 @@ export default class TableController {
         if (id == null) {
             this.graphQueryController.unsubscribeParentNodeData();
             this.uiRef.updateGraphUIWithData({});
+            this.uiRef.clearChartComponent();
             return;
         }
         let parentNodeData, parentNodeSources, childNodesArray;
