@@ -5,8 +5,35 @@ import TableAggregatedRow from './TableAggregatedRow.jsx';
 
 class GridView extends React.Component {
 
+    constructor(props){
+        super(props);
+        this.state = {
+            isGroupedView : props.isGroupedView,
+            datasource : props.viewableData,
+            topDivHeight : props.topDivHeight,
+            bottomDivHeight : props.bottomDivHeight,
+            columnData : props.columnData
+        }
+        this.selectionDataUpdateHandler = props.selectionDataUpdateHandler;
+        this.updateAggregatedRowExpandStatus = props.updateAggregatedRowExpandStatus;
+    }
+
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            isGroupedView : nextProps.isGroupedView,
+            datasource : nextProps.viewableData,
+            topDivHeight : nextProps.topDivHeight,
+            bottomDivHeight : nextProps.bottomDivHeight,
+            columnData : nextProps.columnData
+        })
+    }
+
+    updateGridWithData(datasource,topDivHeight,bottomDivHeight){
+        this.setState({datasource,topDivHeight,bottomDivHeight});
+    }
+
     render() {
-        return this.props.isGroupedView ? this.groupedView() : this.normalview();
+        return this.state.isGroupedView ? this.groupedView() : this.normalview();
     }
 
     groupedView = () => {
@@ -17,10 +44,10 @@ class GridView extends React.Component {
                     <tbody className="tableBody" >
                         <tr>
                             <th style={{ padding: '0px' }}>
-                                <div style={{ height: this.props.topDivHeight }}></div>
+                                <div style={{ height: this.state.topDivHeight }}></div>
                             </th>
                         </tr>
-                        {this.props.viewableData.map((item, i) => {
+                        {this.state.datasource.map((item, i) => {
                             // rowColorBoolean = !rowColorBoolean;
                             if (item.isAggregatedRow) {
                                 return <TableAggregatedRow data={item.data.groupData}
@@ -28,11 +55,11 @@ class GridView extends React.Component {
                                     key={item.key}
                                     aggregatedRowKey={item.key}
                                     indexVal={item.data.groupData.swapId}
-                                    dataUpdateHandler={this.props.selectionDataUpdateHandler}
+                                    dataUpdateHandler={this.selectionDataUpdateHandler}
                                     selectState={item.data.showBucketData}
                                     bucketData={item.data.bucketData}
-                                    updateAggregatedRowExpandStatus={this.props.updateAggregatedRowExpandStatus}
-                                    columnData={this.props.columnData} />
+                                    updateAggregatedRowExpandStatus={this.updateAggregatedRowExpandStatus}
+                                    columnData={this.state.columnData} />
                             } else {
                                 return <TableRow
                                     ref={'ref' + item.data.rowID}
@@ -40,16 +67,16 @@ class GridView extends React.Component {
                                     data={item.data.data}
                                     indexVal={item.data.rowID}
                                     parentRowKey={item.data.aggRowKey}
-                                    selectionDataUpdateHandler={this.props.selectionDataUpdateHandler}
+                                    selectionDataUpdateHandler={this.selectionDataUpdateHandler}
                                     selectState={item.data.isSelected}
-                                    columnData={this.props.columnData}
-                                    isGroupedView={this.props.isGroupedView}
+                                    columnData={this.state.columnData}
+                                    isGroupedView={this.state.isGroupedView}
                                     isRowColored={rowColorBoolean} />
                             }
                         })}
                         <tr>
                             <th>
-                                <div style={{ height: this.props.bottomDivHeight }}></div>
+                                <div style={{ height: this.state.bottomDivHeight }}></div>
                             </th>
                         </tr>
                     </tbody>
@@ -67,26 +94,26 @@ class GridView extends React.Component {
                     <tbody className="tableBody">
                         <tr>
                             <th style={{ padding: '0px' }}>
-                                <div style={{ height: this.props.topDivHeight }}></div>
+                                <div style={{ height: this.state.topDivHeight }}></div>
                             </th>
                         </tr>
-                        {this.props.viewableData.map((item, i) => {
+                        {this.state.datasource.map((item, i) => {
                             rowColorBoolean = !rowColorBoolean;
                             return <TableRow
                                 ref={'ref' + item.rowID}
                                 key={item.rowID}
                                 data={item.data}
                                 indexVal={item.rowID}
-                                selectionDataUpdateHandler={this.props.selectionDataUpdateHandler}
+                                selectionDataUpdateHandler={this.selectionDataUpdateHandler}
                                 selectState={item.isSelected}
-                                columnData={this.props.columnData}
+                                columnData={this.state.columnData}
                                 isRowColored={rowColorBoolean}
                             />
                         }
                         )}
                         <tr>
                             <th>
-                                <div style={{ height: this.props.bottomDivHeight }}></div>
+                                <div style={{ height: this.state.bottomDivHeight }}></div>
                             </th>
                         </tr>
                     </tbody>

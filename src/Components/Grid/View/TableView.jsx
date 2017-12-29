@@ -241,7 +241,8 @@ class TableView extends React.Component {
     }
 
     /*** EventHandler for scrolling of Tabledata ***/
-    scrollEventHandler() {
+    scrollEventHandler(event) {
+        event.preventDefault();
         let headerNode = document.getElementById('scrollableHeaderDiv');
         let tableNode = document.getElementById('scrollableTableDiv');
         headerNode.scrollLeft = tableNode.scrollLeft;
@@ -335,11 +336,13 @@ class TableView extends React.Component {
             this.toggleBlockUI();
         }
     }
-
+    skip = true;
     updateDataGridWithGroupedView() {
         let startIndex = Math.round(document.getElementById('scrollableTableDiv').scrollTop / this.props.rowHeight);
         let endIndex = startIndex + 50;
         this.setState(this.controller.getGroupedViewData(startIndex, endIndex, this.props.rowHeight, this.state.isGroupedView));
+        // const { gridDataSource, topDivHeight, bottomDivHeight } = this.controller.getGroupedViewData(startIndex, endIndex, this.props.rowHeight, this.state.isGroupedView);
+        // this.refs.gridViewRef.updateGridWithData(gridDataSource, topDivHeight, bottomDivHeight);
         if (this.state.blocking) {
             this.toggleBlockUI();
         }

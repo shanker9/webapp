@@ -55,9 +55,11 @@ export default class TableController {
     }
 
     getDefaultViewData(startIndex, endIndex, rowHeight) {
-        let gridDataSource = this.appDataModel.getDataMapInRangeFromDefaultData(startIndex, endIndex);
-        let topDivHeight = startIndex * rowHeight;
-        let bottomDivHeight = (this.appDataModel.getdefaultDataViewSize() - (startIndex + gridDataSource.length)) * rowHeight;
+        let adjustedStartIndex = startIndex > 10 ? (startIndex-10) : 0;
+        let gridDataSource = this.appDataModel.getDataMapInRangeFromDefaultData(adjustedStartIndex, endIndex);
+        let topDivHeight = adjustedStartIndex * rowHeight;
+        // let topDivHeight = startIndex > 10 ? (startIndex-10) * rowHeight : 0;
+        let bottomDivHeight = (this.appDataModel.getdefaultDataViewSize() - (adjustedStartIndex + gridDataSource.length)) * rowHeight;
         return { gridDataSource, topDivHeight, bottomDivHeight };
     }
 
@@ -209,9 +211,11 @@ export default class TableController {
     }
 
     getGroupedViewData(startIndex, endIndex, rowHeight) {
-        let gridDataSource = this.appDataModel.getDataMapInRangeFromGroupedData(startIndex, endIndex);
-        let topDivHeight = startIndex * rowHeight;
-        let bottomDivHeight = (this.appDataModel.getGroupedViewDataSize() - (startIndex + gridDataSource.length)) * rowHeight;
+        let adjustedStartIndex = startIndex > 10 ? (startIndex-10) : 0;
+        let gridDataSource = this.appDataModel.getDataMapInRangeFromGroupedData(adjustedStartIndex, endIndex);
+        let topDivHeight = adjustedStartIndex * rowHeight;
+        // let topDivHeight = startIndex > 10 ? (startIndex-10) * rowHeight : 0;
+        let bottomDivHeight = (this.appDataModel.getGroupedViewDataSize() - (adjustedStartIndex + gridDataSource.length)) * rowHeight;
         return { gridDataSource, topDivHeight, bottomDivHeight };
     }
 

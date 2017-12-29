@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Sortable from 'react-sortablejs';
+import ReactSortable from 'react-sortablejs';
 import TableHeaderCell from './TableHeaderCell.jsx';
 class ControlledSortableHeader extends Component {
     constructor(props) {
@@ -52,12 +52,14 @@ class ControlledSortableHeader extends Component {
                     <thead>
                         <tr>
                             <th className='groupExpansionHeaderBox' />
-                            <Sortable tag='th' className='sortableheadarrow'
+                            <ReactSortable tag='th' className='sortableheadarrow'
+                                animation={200}
+                                scrollSpeed={10}
                                 onChange={this.listChangeHandler.bind(this)}>
                                 {
                                     this.getDraggableElements()
                                 }
-                            </Sortable>
+                            </ReactSortable>
                         </tr>
                     </thead>
                 </table>
@@ -68,11 +70,13 @@ class ControlledSortableHeader extends Component {
                     <table>
                         <thead>
                             <tr id='headerRow'>
-                            <Sortable tag='th' className='sortableheaderrow' onChange={this.listChangeHandler.bind(this)}>
-                                {
-                                    this.getDraggableElements()
-                                }
-                            </Sortable>
+                                <ReactSortable tag='th' className='sortableheaderrow'
+                                    scrollSpeed={10}
+                                    onChange={this.listChangeHandler.bind(this)}>
+                                    {
+                                        this.getDraggableElements()
+                                    }
+                                </ReactSortable>
                             </tr>
                         </thead>
                     </table>
