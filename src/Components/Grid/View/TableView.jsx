@@ -27,6 +27,7 @@ class TableView extends React.Component {
                     properties: {
                         isNumericColumn: false,
                         groupingEnable: true,
+                        isSortable: true,
                     }
                 },
                 {
@@ -35,6 +36,7 @@ class TableView extends React.Component {
                     properties: {
                         isNumericColumn: false,
                         groupingEnable: true,
+                        isSortable: true,                        
                     }
                 },
                 {
@@ -43,6 +45,7 @@ class TableView extends React.Component {
                     properties: {
                         isNumericColumn: false,
                         groupingEnable: true,
+                        isSortable: true, 
                     }
                 },
                 {
@@ -91,7 +94,8 @@ class TableView extends React.Component {
                     columnkey: "vertex",
                     columnvalue: "Vertex",
                     properties: {
-                        isNumericColumn: false
+                        isNumericColumn: false,
+                        isSortable: true, 
                     }
                 },
                 {
@@ -212,6 +216,7 @@ class TableView extends React.Component {
                     properties: {
                         isNumericColumn: false,
                         groupingEnable: true,
+                        isSortable: true, 
                     }
                 }
             ]
@@ -464,8 +469,8 @@ class TableView extends React.Component {
         })
     }
 
-    sortColumn(){
-        this.controller.sortDataBykey('Counterparty');
+    sortColumn(columndata){
+        this.controller.sortDataBykey(columndata.columnvalue,this.state.isGroupedView);
     }
 
     render() {
@@ -510,7 +515,8 @@ class TableView extends React.Component {
                         <ControlledSortableHeader
                             columns={this.state.columns}
                             columnReorderHandler={this.reorderColumns.bind(this)}
-                            isGroupedView={this.state.isGroupedView} />
+                            isGroupedView={this.state.isGroupedView}
+                            columnsortinghandler={this.sortColumn.bind(this)} />
                         <div id="scrollableTableDiv" className="tableDiv" onScroll={this.scrollEventHandler}>
                             <GridView isGroupedView={this.state.isGroupedView}
                                 ref='gridViewRef'

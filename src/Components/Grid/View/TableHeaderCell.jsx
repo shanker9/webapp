@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-class TableHeaderCell extends React.Component {
+class TableHeaderCell extends Component {
 
     constructor(props) {
         super(props);
@@ -8,6 +8,7 @@ class TableHeaderCell extends React.Component {
             isSelected: false,
             columndata: props.columndata
         }
+        this.columnsortinghandler = props.columnsortinghandler;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -25,17 +26,27 @@ class TableHeaderCell extends React.Component {
         }
     }
 
+    columnClickHandler(event) {
+        if (this.state.columndata.properties.hasOwnProperty('isSortable') && this.state.columndata.properties.isSortable) {
+            this.columnsortinghandler(this.state.columndata);
+        }else{
+            alert(`Sorting on column : ${this.state.columndata.columnvalue} is not supported`);
+        }
+    }
+
     render() {
         return (
             <th id={this.props.columndata.columnkey}
                 data-id={this.props.columndata.columnkey}
                 className="th"
-                onClick={this.columnClickHandler}
+                onClick={this.columnClickHandler.bind(this)}
                 onDragStart={this.dragStart.bind(this)}>
-                <div className='cellDiv' style={this.state.columndata.properties.isNumericColumn ? { textAlign: 'right', paddingRight: '10px' } : { textAlign: 'left', paddingLeft: '10px' }}>
-                    {this.props.columndata.columnvalue}
+                <div className='headercelldiv' style={{ display: 'flex' }}>
+                    <div className='columnlabelbox' style={this.state.columndata.properties.isNumericColumn ? { textAlign: 'right', paddingRight: '10px' } : { textAlign: 'left', paddingLeft: '10px' }}>
+                        {this.props.columndata.columnvalue}
+                    </div>
+                    <div className='my-handle'>::</div>
                 </div>
-                <div>::</div>
             </th>
         )
     }

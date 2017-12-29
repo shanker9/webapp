@@ -24,22 +24,35 @@ export default class TableController {
         this.setGroupingColumnKeyMapper = undefined;
     }
 
-    sortDataBykey(key){
-        let groupedData = this.appDataModel.getGroupedData();
-        let groupedDataArray = Array.from(groupedData.entries());
-        let sortedArray = groupedDataArray.sort((a,b) => {
-            if(a[1].groupData[key] == null || a[1].groupData[key] == null){
-                console.log('null values',a[1] , b[1]);
-                return;
-            }
-            return a[1].groupData[key].localeCompare(b[1].groupData[key]);
-        })
-        console.log(sortedArray);
-        let sortedGroupedData = new Map(sortedArray);
-        this.appDataModel.setGroupedData(sortedGroupedData);
-        let groupedViewData = this.appDataModel.createGroupedViewedData(this.appDataModel.getGroupedData());
-        this.appDataModel.setGroupedViewData(groupedViewData);
-        this.uiRef.loadDataGridWithGroupedView();
+    sortDataBykey(key, isGroupedView) {
+        // let groupedData = this.appDataModel.getGroupedData();
+        if (isGroupedView) {
+            let groupedDataArray = Array.from(this.appDataModel.getGroupedData().entries());
+            let sortedArray = groupedDataArray.sort((a, b) => {
+                if (a[1].groupData[key] == null || a[1].groupData[key] == null) {
+                    console.log('null values', a[1], b[1]);
+                    return;
+                }
+                return a[1].groupData[key].localeCompare(b[1].groupData[key]);
+            })
+            // console.log(sortedArray);
+            // let sortedGroupedData = new Map(sortedArray);
+            this.appDataModel.setGroupedData(new Map(sortedArray));
+            let groupedViewData = this.appDataModel.createGroupedViewedData(this.appDataModel.getGroupedData());
+            this.appDataModel.setGroupedViewData(groupedViewData);
+            this.uiRef.loadDataGridWithGroupedView();
+        } else {
+            let dataArray = Array.from(this.appDataModel.getDataMap().entries());
+            let sortedArray = dataArray.sort((a, b) => {
+                if (a[1].data[key] == null || a[1].data[key] == null) {
+                    console.log('null values', a[1], b[1]);
+                    return;
+                }
+                return a[1].data[key].localeCompare(b[1].data[key]);
+            })
+            this.appDataModel.setDataMap(new Map(sortedArray));
+            this.uiRef.loadDataGridWithDefaultView();
+        }
     }
 
     /** FOR DEFAULT VIEW DATA SUBSCRIPTION */
@@ -123,8 +136,8 @@ export default class TableController {
             this.ampsController.connectAndSubscribe(subController.groupingSubscriptionDataHandler.bind(subController),
                 subController.groupingSubscriptionDetailsHandler.bind(subController),
                 lastTemporalCommand);
-        }else{
-            this.ampsSubscribe(lastTemporalCommand);            
+        } else {
+            this.ampsSubscribe(lastTemporalCommand);
         }
     }
 

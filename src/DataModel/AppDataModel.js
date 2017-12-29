@@ -64,6 +64,8 @@ class AppDataModel {
 
     getDataMap() { return this.dataMap; }
 
+    setDataMap(dataMap) { this.dataMap = dataMap }
+
     addorUpdateRowData(rowkey, rowdata) { this.dataMap.set(rowkey, rowdata); }
 
     getDataFromDefaultData(rowkey) { return this.dataMap.get(rowkey); }

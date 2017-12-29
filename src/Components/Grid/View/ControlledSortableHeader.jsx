@@ -10,6 +10,7 @@ class ControlledSortableHeader extends Component {
             isGroupedView: props.isGroupedView
         }
         this.parentColumnSetter = props.columnReorderHandler;
+        this.columnsortinghandler = props.columnsortinghandler;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -22,8 +23,9 @@ class ControlledSortableHeader extends Component {
 
     listChangeHandler(order, sortable, evt) {
         console.log('order', order);
+        let orderWithFilteredElements = this.state.isGroupedView ? order.slice(1) : order;
         let reorderedItemList = [];
-        order.forEach((item, i) => {
+        orderWithFilteredElements.forEach((item, i) => {
             let itemInCurrentState = this.state.columns.find(val => val.columnkey === item);
             reorderedItemList.push(itemInCurrentState);
         })
@@ -37,7 +39,7 @@ class ControlledSortableHeader extends Component {
     }
 
     getDraggableElements() {
-        let list = this.state.columns.map((item, i) => <TableHeaderCell key={i} columndata={item} />)
+        let list = this.state.columns.map((item, i) => <TableHeaderCell key={i} columndata={item} columnsortinghandler={this.columnsortinghandler} />)
         return list;
     }
 
@@ -46,14 +48,12 @@ class ControlledSortableHeader extends Component {
             <div id="scrollableHeaderDiv" className='headerDiv' onScroll={this.scrollEventHandler}>
                 <table>
                     <thead>
-                        <tr>
+                        <Sortable tag='tr' className='sortableheadarrow'
+                            options={{ animation: 300, handle: '.my-handle', filter: '.groupExpansionHeaderBox' }}
+                            onChange={this.listChangeHandler.bind(this)}>
                             <th className='groupExpansionHeaderBox' />
-                            <Sortable tag='th' className='sortableheadarrow'
-                                options={{ animation: 300,handle:'.my-handle' }}
-                                onChange={this.listChangeHandler.bind(this)}>
-                                {this.getDraggableElements()}
-                            </Sortable>
-                        </tr>
+                            {this.getDraggableElements()}
+                        </Sortable>
                     </thead>
                 </table>
             </div>
@@ -62,13 +62,11 @@ class ControlledSortableHeader extends Component {
                 <div id="scrollableHeaderDiv" className='headerDiv' onScroll={this.scrollEventHandler}>
                     <table>
                         <thead>
-                            <tr id='headerRow'>
-                                <Sortable tag='th' className='sortableheaderrow'
-                                    options={{ animation: 200 }}
-                                    onChange={this.listChangeHandler.bind(this)}>
-                                    {this.getDraggableElements()}
-                                </Sortable>
-                            </tr>
+                            <Sortable tag='tr' className='sortableheaderrow'
+                                options={{ animation: 300, handle: '.my-handle', filter: '.groupExpansionHeaderBox' }}
+                                onChange={this.listChangeHandler.bind(this)}>
+                                {this.getDraggableElements()}
+                            </Sortable>
                         </thead>
                     </table>
                 </div>

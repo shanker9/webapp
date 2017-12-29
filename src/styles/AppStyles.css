@@ -139,10 +139,9 @@
 
     .th:hover {
         background-color: rgb(189, 192, 194);
-        cursor: move;
     }
 
-    th.groupExpansionHeaderBox{
+    .groupExpansionHeaderBox{
         min-width: 40px;
         border: 1px solid lightgray;
         border-bottom: 0px;
@@ -150,6 +149,13 @@
         box-sizing: border-box;
     }
 
+    .my-handle {
+        float : right
+    }
+
+    .my-handle:hover {
+        cursor: move;
+    }
 
     .th {
         border: 1px solid lightgray;
@@ -275,6 +281,19 @@
         overflow: hidden;
         white-space: nowrap;
         box-sizing: border-box;
+    }
+
+    .headercelldiv {
+        width: 190px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        box-sizing: border-box;
+        display: flex;
+    }
+
+    .columnlabelbox {
+        flex: 1;
     }
 
     .tdGroupedView {
