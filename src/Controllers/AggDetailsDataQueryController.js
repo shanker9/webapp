@@ -12,7 +12,6 @@ export default class AggDetailsDataQueryController {
         this.uiUpdateCallback = uiUpdateCallback;
         this.aggRowData = undefined;
         this.subscriptionId = undefined;
-
     }
 
     subscribe(subscriptionSuccessCallback) {

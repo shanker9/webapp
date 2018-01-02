@@ -503,7 +503,7 @@ class TableView extends React.Component {
                                         thumbColor="#307dd4"
                                         onChangeComplete={this.sliderChangeHandler.bind(this)} />
                                 </div>
-                                <button className="temporalButton" onClick={this.getLivePrices.bind(this)}> Live Prices </button>
+                                <button className="button temporalButton" onClick={this.getLivePrices.bind(this)}> LIVE PRICES </button>
                             </div>
                         </div>
                         <BlotterInfo ref="blotterInfo"

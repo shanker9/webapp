@@ -51,8 +51,13 @@
     
     .blotterinfocontainer {
         align-items : center;
-        padding: 2px;
+        padding-right: 2px;
         flex: 0.5;
+    }
+
+    .cleargrouping {
+        background-color: rgb(179, 14, 14);
+        color: white;
     }
 
     .temporalContainer {
@@ -71,13 +76,9 @@
     }
 
     .temporalButton {
-        height: 20px; 
+        /* height: 20px;  */
         background-color: rgb(0, 134, 56);
-        border: none;
         color: white;
-        text-align: center;
-        cursor: pointer;
-        margin-left: 10px;
     }
 
     .dragtobar{
@@ -101,6 +102,7 @@
 
 
     .gridContainerDiv {
+        height: stretch;
         display: flex;
         flex-direction: column;
     }
@@ -117,7 +119,7 @@
         /* background-color: #2C4C65; */
         /* background-color: rgb(247, 247, 247); */
         /* background: linear-gradient(rgb(255, 255, 255),rgb(223, 223, 223), rgb(163, 167, 167)); */
-        background: linear-gradient(rgb(208, 212, 212),rgb(224, 224, 224), rgb(208, 212, 212));
+        background: linear-gradient(rgb(216, 216, 216),rgb(255, 255, 255), rgb(216, 216, 216));
     }
 
     .sortableHeaderContainer {
@@ -316,9 +318,9 @@
     }
 
     .button {
-        background-color: #A72D2D;
+        /* background-color: #A72D2D; */
         border: none;
-        color: white;
+        /* color: white; */
         text-align: center;
         text-decoration: none;
         font-size: 10px;

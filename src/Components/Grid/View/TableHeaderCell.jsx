@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class TableHeaderCell extends Component {
 
@@ -19,17 +19,20 @@ class TableHeaderCell extends Component {
     }
 
     dragStart(event) {
-        const celldata = this.state.columndata;
-        const isSelected = this.state.isSelected;
-        if (this.state.columndata.properties.hasOwnProperty('groupingEnable')) {
-            event.dataTransfer.setData("groupingcolumndata", JSON.stringify({ celldata: celldata, isSelected: isSelected, columnProperties: this.state.columnProperties }));
+        // event.preventDefault();
+        if (event.target.id === this.state.columndata.columnkey) {
+            const celldata = this.state.columndata;
+            const isSelected = this.state.isSelected;
+            if (this.state.columndata.properties.hasOwnProperty('groupingEnable')) {
+                event.dataTransfer.setData("groupingcolumndata", JSON.stringify({ celldata: celldata, isSelected: isSelected, columnProperties: this.state.columnProperties }));
+            }
         }
     }
 
     columnClickHandler(event) {
         if (this.state.columndata.properties.hasOwnProperty('isSortable') && this.state.columndata.properties.isSortable) {
             this.columnsortinghandler(this.state.columndata);
-        }else{
+        } else {
             alert(`Sorting on column : ${this.state.columndata.columnvalue} is not supported`);
         }
     }
