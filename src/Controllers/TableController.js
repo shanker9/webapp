@@ -424,11 +424,12 @@ export default class TableController {
         Promise.all([parentNodeDataQueryRequest, parentNodeSourcesQueryRequest]).then(values => {
             console.log('ParentNode and Sources data', values);
             parentNodeData = values[0];
-            parentNodeSources = values[1].sources;
+            parentNodeSources = values[1].getSources().getSourcesList();
             let nodeDataArray = this.graphQueryController.getGraphNodesDataArrayWithIds('Graph', parentNodeSources);
             nodeDataArray.then(result => {
                 console.log('childnodes data', result);
                 childNodesArray = result;
+                parentNodeData.deserializeSubType();
                 this.uiRef.updateGraphUIWithData({ parentNodeData, parentNodeSources, childNodesArray });
             })
         })
