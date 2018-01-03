@@ -70,9 +70,9 @@ class DagreD3 extends Component {
         g.setDefaultEdgeLabel(function () { return {}; });
 
         //setting ParentNode
-        g.setNode(parentNodeData.id, {
+        g.setNode(parentNodeData.getId(), {
             shape: "rect",
-            label: `${parentNodeData.shortId}\n ${this.formatNumber(parentNodeData.result.data.output.price.toFixed(2))}`,
+            label: `${parentNodeData.getShortId()}\n ${this.formatNumber(parentNodeData.getPrice().toFixed(2))}`,
             // label: `${parentNodeData.shortId}`,
             width: 180,
             height: 50,
@@ -82,9 +82,9 @@ class DagreD3 extends Component {
         });
 
         //setting edges to parentNode
-        parentNodeData.sources.forEach(source => {
+        parentNodeData.getSources().forEach(source => {
             // g.setEdge(rootNode.id, source.source);
-            g.setEdge(source.source, parentNodeData.id, {
+            g.setEdge(source.getSource(), parentNodeData.getId(), {
                 style: "stroke-width: 3px; fill-opacity: 0; stroke:lightgrey",
                 // lineInterpolate: 'basis'
             });
@@ -102,10 +102,10 @@ class DagreD3 extends Component {
 
         nodeIdArray.forEach(nodeId => {
             nodeData = nodeDataArray.find(item => {
-                return item.id === nodeId;
+                return item.getId() === nodeId;
             });
 
-            if (nodeData.hasOwnProperty('func')) {
+            if (nodeData.isFunctionVertex()) {
                 gElement.setNode(nodeId, {
                     shape: "rect",
                     label: nodeData.shortId,
@@ -117,7 +117,7 @@ class DagreD3 extends Component {
                 });
             } else {
                 gElement.setNode(nodeId, {
-                    label: nodeData.shortId,
+                    label: nodeData.getShortId(),
                     // width: 180,
                     // height: 40,
                     data: nodeData,
@@ -126,10 +126,10 @@ class DagreD3 extends Component {
                 });
             }
 
-            if (nodeData.sources !== undefined) {
-                nodeData.sources.forEach(source => {
+            if (nodeData.getSources()) {
+                nodeData.getSources().forEach(source => {
                     // gElement.setEdge(nodeData.id, source.source);
-                    gElement.setEdge(source.source, nodeData.id, {
+                    gElement.setEdge(source.getSource, nodeData.getId(), {
                         style: "stroke-width: 3px; fill-opacity: 0; stroke:lightgrey",
                         // lineInterpolate: 'basis'
                     });

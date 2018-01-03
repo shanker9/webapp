@@ -21,6 +21,10 @@ class GraphNodeDataModel {
         return this.vertexObject.getVertex();
     }
 
+    getSubType(){
+        return this.subTypeDeserialized;
+    }
+
     getId() {
         return this.getVertex().getId();
     }
@@ -28,6 +32,24 @@ class GraphNodeDataModel {
     getShortId() {
         return this.getVertex().getShortId();
     }
+
+    getPrice(){
+        return this.getSubType().getOutput().getPrice();
+    }
+
+    getSources(){
+        return this.isFunctionVertex() ? this.getVertex().getFunc().getSourcesList() : null;
+    }
+
+    isFunctionVertex(){
+        return this.getVertex().hasFunc();
+    }
+
+    isDataVertex(){
+        return this.getVertex().hasData();
+    }
+
+    /* Subtype serialization and JSON conversion methods */
 
     getDeserializedJson() {
         let jsonObject = this.formDeserializedJson(this.vertexObject);

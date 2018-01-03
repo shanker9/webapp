@@ -12,11 +12,11 @@
     "ChintuMachine": {
         "serverIP": "192.168.0.138",
         "serverPort": "9008",
-        "active": true
+        "active": false
     },
     "Laptop": {
         "serverIP": "10.0.0.4",
         "serverPort": "9008",
-        "active": false
+        "active": true
     }
 }
