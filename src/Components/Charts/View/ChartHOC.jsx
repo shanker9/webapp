@@ -8,13 +8,10 @@ class ChartHOC extends Component {
         super(props);
 
         this.state = {
-            chartType: '',
+            chartType: 'none',
             displayChart: false,
             chartData: {}
         }
-        this.twoDChart = undefined;
-        this.threeDChart = undefined;
-
         this.props.reference(this);
     }
 
@@ -22,39 +19,34 @@ class ChartHOC extends Component {
         this.setState({
             chartType: params.chartType,
             chartData: params.chartData
-        }, () => {
-            switch (params.chartType) {
-                case '2D':
-                    this.refs.twoDChart.renderChartWithData(params.chartData);
-                    break;
-
-                case '3D':
-                    this.refs.threeDChart.renderChartWithData(params.chartData);
-                    break;
-
-                default:
-                    console.log('Invalid Chart Type supplied to the draw method')
-            }
         })
     }
 
-    clearChartView(){
+    clearChartView() {
         this.setState({
-            chartType : 'none',
-            chartData : {},
-            displayChart : false
+            chartType: 'none',
+            chartData: {},
+            displayChart: false
         })
+    }
+
+    getChartView() {
+        switch(this.state.chartType){
+            case '2D':
+            return (<TwoDChart ref="twoDChart" chartData={this.state.chartData} resizeEventHandler={this.props.resizeEventHandler} />)
+            break;
+            
+            case '3D':
+            return (<ThreeDChart ref="threeDChart" chartData={this.state.chartData} resizeEventHandler={this.props.resizeEventHandler} />)
+            break;
+
+            default:
+            return <div/>
+        }           
     }
 
     render() {
-
-        if (this.state.chartType === '2D') {
-            return (<TwoDChart ref="twoDChart" resizeEventHandler={this.props.resizeEventHandler}/>);
-        } else if (this.state.chartType === '3D') {
-            return (<ThreeDChart ref="threeDChart" resizeEventHandler={this.props.resizeEventHandler}/>);
-        } else {
-            return (<div />)
-        }
+        return this.getChartView();
     }
 
 }

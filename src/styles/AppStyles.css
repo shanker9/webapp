@@ -48,6 +48,11 @@
         margin: 1px;
         margin-top: 5px;
     }
+
+    .blottertop {
+        display: flex;
+        margin-bottom: 12px;
+    }
     
     .blotterinfocontainer {
         align-items : center;

@@ -12,7 +12,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         var json = {
-            global: { enableEdgeDock: true, splitterSize: 4 },
+            global: { enableEdgeDock: true, splitterSize: 4 ,tabSetEnableTabStrip:true},
             borders: [
                 {
                     "type": "border",
@@ -181,6 +181,7 @@ class App extends React.Component {
 
     factory(node) {
         var component = node.getComponent();
+        node.setEventListener('visibility',p=>console.log('visibility event handler',p))
         let view;
         switch (component) {
             case 'blotter':

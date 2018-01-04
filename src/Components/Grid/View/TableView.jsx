@@ -477,7 +477,7 @@ class TableView extends React.Component {
         return (
             <BlockUi tag="div" blocking={this.state.blocking} message={this.state.loadingmessage}>
                 <div className="blottercontainer">
-                    <div style={{ display: 'flex', marginBottom: '3px' }}>
+                    <div className='blottertop'>
                         <div style={{ flex: 0.7 }}>
                             <div ref="dragToBar"
                                 className="dragtobar"

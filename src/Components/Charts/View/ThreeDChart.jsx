@@ -4,7 +4,7 @@ import vis from 'vis';
 class ThreeDChart extends Component {
     constructor(props) {
         super(props);
-        props.resizeEventHandler(this.resizeEventHandler.bind(this));        
+        props.resizeEventHandler(this.resizeEventHandler.bind(this));
         this.state = {
             volData: [],
         }
@@ -17,27 +17,27 @@ class ThreeDChart extends Component {
         this.layoutOptions = undefined;
         this.monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-        this.render3DChart = this.render3DChart.bind(this);        
+        this.render3DChart = this.render3DChart.bind(this);
 
     }
 
     componentDidMount() {
-
         let boundingDiv = document.getElementById('chartBoundingDiv');
         this.chartHeight = boundingDiv.clientHeight;
         this.chartWidth = boundingDiv.clientWidth;
+        this.renderChartWithData(this.props.chartData);
         // this.render3DChart();
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         this.graph3d.redraw();
         this.resizeContainerDiv(this.container);
-        this.setDefaultCameraPosition(); 
+        this.setDefaultCameraPosition();
     }
 
-    resizeEventHandler(p){
+    resizeEventHandler(p) {
         this.chartHeight = p.rect.height;
-        this.chartWidth = p.rect.width;       
+        this.chartWidth = p.rect.width;
     }
 
     render3DChart() {
@@ -80,8 +80,8 @@ class ThreeDChart extends Component {
         let data = new vis.DataSet();
         let formatedArray = [];
         dataParams.data.forEach(item => {
-            item.strikes.forEach((val, index) => {
-                formatedArray.push({ x: item.maturity.value * 1000, y: val, z: item.vols[index] });
+            item.strikesList.forEach((val, index) => {
+                formatedArray.push({ x: item.maturity.value * 1000, y: val, z: item.volsList[index] });
             })
         });
 
@@ -110,24 +110,15 @@ class ThreeDChart extends Component {
         };
 
         // var camera = this.graph3d ? this.graph3d.getCameraPosition() : null;
-        if(this.graph3d){
+        if (this.graph3d) {
             this.graph3d.setOptions(this.layoutOptions);
             this.graph3d.setData(data);
-        }else {
+        } else {
             this.container = document.getElementById('chartBoundingDiv');
             this.graph3d = new vis.Graph3d(this.container, data, this.layoutOptions);
         }
 
-        // container.style.height = this.chartHeight + 'px';
         this.resizeContainerDiv(this.container);
-
-        // if (camera) {
-        //     this.graph3d.setCameraPosition(camera);
-        // } // Reset camera to default
-        // else {
-            // var pos = { horizontal: 1.0, vertical: 0.5, distance: 2.5 };
-            // this.graph3d.setCameraPosition(pos);
-        // }
         this.setDefaultCameraPosition();
     }
 
@@ -136,21 +127,21 @@ class ThreeDChart extends Component {
         return `${d.getDate()}${this.monthNames[d.getMonth()]} ${d.getFullYear()}`;
     }
 
-    resizeContainerDiv(container){
+    resizeContainerDiv(container) {
         container.style.height = this.chartHeight + 'px';
         container.style.width = this.chartWidth + 'px';
     }
 
-    setDefaultCameraPosition(){
+    setDefaultCameraPosition() {
         var pos = { horizontal: 1.0, vertical: 0.5, distance: 2.5 };
-        if(this.graph3d){
+        if (this.graph3d) {
             this.graph3d.setCameraPosition(pos);
         }
     }
 
     render() {
         return (
-            <div id="chartBoundingDiv" style={{ flex: 1, height : '100%', font: '5px' }} />
+            <div id="chartBoundingDiv" style={{ flex: 1, height: '100%', font: '5px' }} />
         );
     }
 }

@@ -429,7 +429,7 @@ export default class TableController {
             nodeDataArray.then(result => {
                 console.log('childnodes data', result);
                 childNodesArray = result;
-                parentNodeData.deserializeSubType();
+                // parentNodeData.deserializeSubType();
                 this.uiRef.updateGraphUIWithData({ parentNodeData, parentNodeSources, childNodesArray });
             })
         })

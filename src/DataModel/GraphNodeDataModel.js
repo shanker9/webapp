@@ -7,21 +7,25 @@ import HolidayCalendarMsg_pb from '../proto_js/HolidayCalendarMsg_pb';
 import SwapMsg_pb from '../proto_js/SwapMsg_pb';
 import ProductDetailsMsg_pb from '../proto_js/ProductDetailsMsg_pb';
 import OptionMsg_pb from '../proto_js/OptionMsg_pb';
-import PricingResultsMsg_pb from '../proto_js/PricingResultsMsg_pb';
+import PricingResultsMsg_pb from '../proto_js/PricingResultsMsg_pb';//VolSurfaceMsg_pb
 import DateTimeMsg_pb from '../proto_js/DateTimeMsg_pb';
+import VolSurfaceMsg_pb from '../proto_js/VolSurfaceMsg_pb';
+import PriceMsg_pb from '../proto_js/PriceMsg_pb';
+
 
 class GraphNodeDataModel {
     constructor(graphNodeDataObject) {
         this.vertexObject = graphNodeDataObject;
         this.subTypeDeserialized = undefined;
         this.isSubTypeDeserialized = false;
+        this.deserializedJson = undefined;
     }
 
     getVertex() {
         return this.vertexObject.getVertex();
     }
 
-    getSubType(){
+    getSubType() {
         return this.subTypeDeserialized;
     }
 
@@ -33,27 +37,30 @@ class GraphNodeDataModel {
         return this.getVertex().getShortId();
     }
 
-    getPrice(){
+    getPrice() {
         return this.getSubType().getOutput().getPrice();
     }
 
-    getSources(){
+    getSources() {
         return this.isFunctionVertex() ? this.getVertex().getFunc().getSourcesList() : null;
     }
 
-    isFunctionVertex(){
+    isFunctionVertex() {
         return this.getVertex().hasFunc();
     }
 
-    isDataVertex(){
+    isDataVertex() {
         return this.getVertex().hasData();
     }
 
     /* Subtype serialization and JSON conversion methods */
 
     getDeserializedJson() {
-        let jsonObject = this.formDeserializedJson(this.vertexObject);
-        return jsonObject;
+        if (!this.deserializedJson) {
+            let jsonObject = this.formDeserializedJson(this.vertexObject);
+            this.deserializedJson = JSON.parse(JSON.stringify(jsonObject));
+        }
+        return this.deserializedJson;
     }
 
     deserializeSubType() {
@@ -120,6 +127,12 @@ class GraphNodeDataModel {
                 break;
             case 'qspace.DateTimeMsg':
                 deserializedVertexTypeProtobufData = DateTimeMsg_pb.DateTimeMsg.deserializeBinary(binaryData);
+                break;
+            case 'qspace.VolSurfaceMsg':
+                deserializedVertexTypeProtobufData = VolSurfaceMsg_pb.VolSurfaceMsg.deserializeBinary(binaryData);
+                break;
+            case 'qspace.PriceMsg':
+                deserializedVertexTypeProtobufData = PriceMsg_pb.PriceMsg.deserializeBinary(binaryData);
                 break;
         }
         return deserializedVertexTypeProtobufData;

@@ -21,29 +21,37 @@ class TwoDChart extends Component {
       chartWidth: 0
     }
     this.entriesDatePathComponent = undefined;
+    this.chartHeight = undefined;
+    this.chartWidth = undefined;
     this.monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  }
 
+  componentDidMount() {
+    this.calculateChartSize();
+    this.renderChartWithData(this.props.chartData);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.chartHeight === 0){
+      this.calculateChartSize();
+    }
+    this.renderChartWithData(nextProps.chartData);
   }
 
   resizeEventHandler(p) {
     console.log('chart resize handler');
-    let chartHeight = p.rect.height * 0.95;
-    let chartWidth = p.rect.width * 0.95;
-    this.setState({
-      chartHeight: chartHeight,
-      chartWidth: chartWidth
-    });
+    this.chartHeight = p.rect.height * 0.95;
+    this.chartWidth = p.rect.width * 0.95;
   }
 
   getChartData(graphData) {
-    let chartData = [];
-    let dataMin, dataMax;
+    let chartData = [], dataMin, dataMax, xVal, yVal;
     graphData.forEach(item => {
-      let xVal = this.getFormatedDate(item),
-        yVal = item.value * 100;
+      xVal = this.getFormatedDate(item);
+      yVal = item.value * 100;
 
-      dataMin = dataMin === undefined ? yVal : (dataMin > yVal ? yVal : dataMin);
-      dataMax = dataMax === undefined ? yVal : (dataMax < yVal ? yVal : dataMax);
+      dataMin = !dataMin ? yVal : (dataMin > yVal ? yVal : dataMin);
+      dataMax = !dataMax ? yVal : (dataMax < yVal ? yVal : dataMax);
 
       chartData.push({ time: xVal, rate: yVal });
     })
@@ -59,28 +67,30 @@ class TwoDChart extends Component {
   }
 
   renderChartWithData(dataParams) {
-    this.entriesDatePathComponent = dataParams.datePathComponent;
-    let formatedDataForAreaChart = this.getChartData(dataParams.data);
-    const { chartHeight, chartWidth } = this.calculateChartSize();
+    const dataObject = this.getFormattedChartData(dataParams);
     this.setState({
-      dataObject: formatedDataForAreaChart,
-      chartHeight : chartHeight,
-      chartWidth : chartWidth
+      dataObject: dataObject,
+      chartHeight: this.chartHeight,
+      chartWidth: this.chartWidth
     });
+  }
+
+  getFormattedChartData(dataParams) {
+    this.entriesDatePathComponent = dataParams.datePathComponent;
+    let dataObject = this.getChartData(dataParams.data);
+    return dataObject;
   }
 
   calculateChartSize() {
     let boundingDiv = document.getElementById('chartBoundingDiv');
     let chartHeight, chartWidth;
     if (boundingDiv) {
-      chartHeight = boundingDiv.clientHeight * 0.95;
-      chartWidth = boundingDiv.clientWidth * 0.95;
+      this.chartHeight = boundingDiv.clientHeight * 0.95;
+      this.chartWidth = boundingDiv.clientWidth * 0.95;
     }
-    return { chartHeight, chartWidth };
   }
 
   render() {
-    // const this.state.dataObject = this.getChartData(chartData);
     return (
       <div id='chartBoundingDiv' style={{ flex: 1 }}>
         <AreaChart width={this.state.chartWidth} height={this.state.chartHeight} data={this.state.dataObject.chartData}
@@ -107,13 +117,6 @@ class TwoDChart extends Component {
         </AreaChart>
       </div>
     );
-  }
-}
-
-class CustomizedLabel extends Component {
-  render() {
-    const { x, y, stroke, value } = this.props;
-    return <text x={x} y={y} dy={-4} fill={stroke} fontSize={5} transform="rotate(-90)" textAnchor="end">{value}</text>
   }
 }
 

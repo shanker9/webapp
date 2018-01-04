@@ -31,7 +31,7 @@ export default class GraphQueryController {
     }
 
     getParentNodeData(isLiveData, queryTopic, nodeId, callback) {
-        let graphNodeData, subscriptionId, isSowDataEnd, convertSubTypes = true;
+        let graphNodeData, subscriptionId, isSowDataEnd, updateData;
         return new Promise((resolve, reject) => {
             this.getGraphDataWithId(isLiveData, queryTopic, `/vertex/id=="${nodeId}"`, (message) => {
 
@@ -41,30 +41,20 @@ export default class GraphQueryController {
                     case 'group_begin':
                         break;
                     case 'group_end':
-                        this.ampsController.unsubscribeProtobuf(subscriptionId, unsubscribeId => console.log('Query Unsubscribed Id:', unsubscribeId))
+                        // this.ampsController.unsubscribeProtobuf(subscriptionId, unsubscribeId => console.log('Query Unsubscribed Id:', unsubscribeId))
                         resolve(graphNodeData);
                         break;
                     case 'sow':
                         graphNodeData = new GraphNodeDataModel(this.convertBinaryToProtobuf(message.data));
+                        graphNodeData.deserializeSubType();
                         break;
                     case 'p':
-                        callback(new GraphNodeDataModel(this.convertBinaryToProtobuf(message.data)));
+                        updateData = new GraphNodeDataModel(this.convertBinaryToProtobuf(message.data));
+                        updateData.deserializeSubType();
+                        callback(updateData);
                         break;
                 }
-
-                // if (message.c === 'group_begin') { return; }
-                // else if (message.c === 'group_end') {
-                //     isSowDataEnd = true;
-                //     resolve(graphNodeData);
-                // }
-                // else {
-                //     if (isSowDataEnd) {
-                //         callback(message.data);
-                //         return;
-                //     }
-                //     graphNodeData = message.data;
-                // }
-            }, subId => subscriptionId = subId)
+            }, subId => this.parentNodeSubscriptionId = subId)
         })
     }
 
@@ -88,20 +78,13 @@ export default class GraphQueryController {
                     case 'p':
                         break;
                 }
-
-                // if (message.c === 'group_begin') { return; }
-                // else if (message.c === 'group_end') {
-                //     this.ampsController.unsubscribeProtobuf(subscriptionId, unsubscribeId => console.log('Query Unsubscribed Id:', unsubscribeId))
-                //     resolve(graphNodeData);
-                // }
-                // graphNodeData = this.convertBinaryMessageToJson(message.data);
             }, subId => subscriptionId = subId)
         })
     }
 
     unsubscribeParentNodeData() {
         if (this.parentNodeSubscriptionId !== undefined) {
-            this.ampsController.unsubscribe(this.parentNodeSubscriptionId, unsubscribeId => console.log('Query Unsubscribed Id:', unsubscribeId));
+            this.ampsController.unsubscribeProtobuf(this.parentNodeSubscriptionId, unsubscribeId => console.log('Query Unsubscribed Id:', unsubscribeId));
         }
     }
 
@@ -128,122 +111,14 @@ export default class GraphQueryController {
                     case 'p':
                         break;
                 }
-
-                // if (message.c === 'group_begin') { return; }
-                // else if (message.c === 'group_end') {
-                //     this.ampsController.unsubscribeProtobuf(subscriptionId, unsubscribeId => console.log('Query Unsubscribed Id:', unsubscribeId))
-                //     resolve(graphNodesArray);
-                // }
-                // else {
-                //     graphNodesArray.push(this.convertBinaryMessageToJson(message.data));
-                // }
             }, subId => subscriptionId = subId)
         })
     }
 
     convertBinaryToProtobuf(binaryData) {
         let deserializedProtobufData, isDataVertex, deserializedObjectData, type, value, deserializedVertexTypeProtobufData;
-
         deserializedProtobufData = Wrapper_pb.Wrapper.deserializeBinary(binaryData);
-        // let graphNodeDataModel = new GraphNodeDataModel(deserializedProtobufData);
         return deserializedProtobufData;
-        // if (convertAnySubtypes) {
-        //     isDataVertex = deserializedProtobufData.getVertex().hasData();
-        //     deserializedObjectData = deserializedProtobufData.toObject();
-        //     if (isDataVertex) {
-        //         type = deserializedProtobufData.getVertex().getData().getData().getTypeName();
-        //         value = deserializedProtobufData.getVertex().getData().getData().getValue();
-        //     } else {
-        //         type = deserializedProtobufData.getVertex().getFunc().getResult().getData().getTypeName();
-        //         value = deserializedProtobufData.getVertex().getFunc().getResult().getData().getValue();
-        //     };
-
-        //     switch (type) {
-        //         case 'qspace.TimeSeriesMsg':
-        //             {
-        //                 deserializedVertexTypeProtobufData = TimeSeriesMsg_pb.TimeSeriesMsg.deserializeBinary(value);
-        //                 isDataVertex ? deserializedObjectData.vertex.data.data.value = deserializedVertexTypeProtobufData.toObject() : deserializedObjectData.vertex.func.result.data.value = deserializedVertexTypeProtobufData.toObject();
-        //                 // isDataVertex ? deserializedProtobufData.getVertex().getData().getData().setValue(deserializedVertexTypeProtobufData) :
-        //                 //     deserializedProtobufData.getVertex().getFunc().getResult().getData().setValue(deserializedVertexTypeProtobufData);
-        //                 console.log(JSON.stringify(deserializedObjectData));
-        //             }
-        //             break;
-        //         case 'qspace.RateCurveMsg':
-        //             {
-        //                 deserializedVertexTypeProtobufData = RateCurveMsg_pb.RateCurveMsg.deserializeBinary(value);
-        //                 isDataVertex ? deserializedObjectData.vertex.data.data.value = deserializedVertexTypeProtobufData.toObject() : deserializedObjectData.vertex.func.result.data.value = deserializedVertexTypeProtobufData.toObject();
-        //                 // isDataVertex ? deserializedProtobufData.getVertex().getData().getData().setValue(deserializedVertexTypeProtobufData) :
-        //                 //     deserializedProtobufData.getVertex().getFunc().getResult().getData().setValue(deserializedVertexTypeProtobufData);
-        //                 console.log(JSON.stringify(deserializedObjectData));
-        //             }
-        //             break;
-        //         case 'qspace.SwapDefinitionMsg':
-        //             {
-        //                 deserializedVertexTypeProtobufData = SwapDefinitionMsg_pb.SwapDefinitionMsg.deserializeBinary(value);
-        //                 isDataVertex ? deserializedObjectData.vertex.data.data.value = deserializedVertexTypeProtobufData.toObject() : deserializedObjectData.vertex.func.result.data.value = deserializedVertexTypeProtobufData.toObject();
-        //                 // isDataVertex ? deserializedProtobufData.getVertex().getData().getData().setValue(deserializedVertexTypeProtobufData) :
-        //                 //     deserializedProtobufData.getVertex().getFunc().getResult().getData().setValue(deserializedVertexTypeProtobufData);
-        //                 console.log(JSON.stringify(deserializedObjectData));
-        //             }
-        //             break;
-        //         case 'qspace.HolidayCalendarMsg':
-        //             {
-        //                 deserializedVertexTypeProtobufData = HolidayCalendarMsg_pb.HolidayCalendarMsg.deserializeBinary(value);
-        //                 isDataVertex ? deserializedObjectData.vertex.data.data.value = deserializedVertexTypeProtobufData.toObject() : deserializedObjectData.vertex.func.result.data.value = deserializedVertexTypeProtobufData.toObject();
-        //                 // isDataVertex ? deserializedProtobufData.getVertex().getData().getData().setValue(deserializedVertexTypeProtobufData) :
-        //                 //     deserializedProtobufData.getVertex().getFunc().getResult().getData().setValue(deserializedVertexTypeProtobufData);
-        //                 console.log(JSON.stringify(deserializedObjectData));
-        //             }
-        //             break;
-        //         case 'qspace.SwapMsg':
-        //             {
-        //                 deserializedVertexTypeProtobufData = SwapMsg_pb.SwapMsg.deserializeBinary(value);
-        //                 isDataVertex ? deserializedObjectData.vertex.data.data.value = deserializedVertexTypeProtobufData.toObject() : deserializedObjectData.vertex.func.result.data.value = deserializedVertexTypeProtobufData.toObject();
-        //                 // isDataVertex ? deserializedProtobufData.getVertex().getData().getData().setValue(deserializedVertexTypeProtobufData) :
-        //                 //     deserializedProtobufData.getVertex().getFunc().getResult().getData().setValue(deserializedVertexTypeProtobufData);
-        //                 console.log(JSON.stringify(deserializedObjectData));
-        //             }
-        //             break;
-        //         case 'qspace.ProductDetailsMsg':
-        //             {
-        //                 deserializedVertexTypeProtobufData = ProductDetailsMsg_pb.ProductDetailsMsg.deserializeBinary(value);
-        //                 isDataVertex ? deserializedObjectData.vertex.data.data.value = deserializedVertexTypeProtobufData.toObject() : deserializedObjectData.vertex.func.result.data.value = deserializedVertexTypeProtobufData.toObject();
-        //                 // isDataVertex ? deserializedProtobufData.getVertex().getData().getData().setValue(deserializedVertexTypeProtobufData) :
-        //                 //     deserializedProtobufData.getVertex().getFunc().getResult().getData().setValue(deserializedVertexTypeProtobufData);
-        //                 console.log(JSON.stringify(deserializedObjectData));
-        //             }
-        //             break;
-        //         case 'qspace.OptionMsg':
-        //             {
-        //                 deserializedVertexTypeProtobufData = OptionMsg_pb.OptionMsg.deserializeBinary(value);
-        //                 isDataVertex ? deserializedObjectData.vertex.data.data.value = deserializedVertexTypeProtobufData.toObject() : deserializedObjectData.vertex.func.result.data.value = deserializedVertexTypeProtobufData.toObject();
-        //                 // isDataVertex ? deserializedProtobufData.getVertex().getData().getData().setValue(deserializedVertexTypeProtobufData) :
-        //                 //     deserializedProtobufData.getVertex().getFunc().getResult().getData().setValue(deserializedVertexTypeProtobufData);
-        //                 console.log(JSON.stringify(deserializedObjectData));
-        //             }
-        //             break;
-        //         case 'qspace.PricingResultsMsg':
-        //             {
-        //                 deserializedVertexTypeProtobufData = PricingResultsMsg_pb.PricingResultsMsg.deserializeBinary(value);
-        //                 isDataVertex ? deserializedObjectData.vertex.data.data.value = deserializedVertexTypeProtobufData.toObject() : deserializedObjectData.vertex.func.result.data.value = deserializedVertexTypeProtobufData.toObject();
-        //                 // isDataVertex ? deserializedProtobufData.getVertex().getData().getData().setValue(deserializedVertexTypeProtobufData) :
-        //                 //     deserializedProtobufData.getVertex().getFunc().getResult().getData().setValue(deserializedVertexTypeProtobufData);
-        //                 console.log(JSON.stringify(deserializedObjectData));
-        //             }
-        //             break;
-        //         case 'qspace.DateTimeMsg':
-        //             {
-        //                 deserializedVertexTypeProtobufData = DateTimeMsg_pb.DateTimeMsg.deserializeBinary(value);
-        //                 isDataVertex ? deserializedObjectData.vertex.data.data.value = deserializedVertexTypeProtobufData.toObject() : deserializedObjectData.vertex.func.result.data.value = deserializedVertexTypeProtobufData.toObject();
-        //                 // isDataVertex ? deserializedProtobufData.getVertex().getData().getData().setValue(deserializedVertexTypeProtobufData) :
-        //                 //     deserializedProtobufData.getVertex().getFunc().getResult().getData().setValue(deserializedVertexTypeProtobufData);
-        //                 console.log(JSON.stringify(deserializedObjectData));
-        //             }
-        //             break;
-        //     }
-        //     return deserializedObjectData;
-        // }
-        // return deserializedProtobufData;
     }
 
 }

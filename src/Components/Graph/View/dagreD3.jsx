@@ -44,9 +44,12 @@ class DagreD3 extends Component {
         this.dagreGraphTreeLayout();
     }
 
+    componentWillReceiveProps(nextProps){
+        this.setState({isInitialSVGRender : true});        
+    }
+
     componentResizeHandler(p){
         console.log(p);
-        this.setState({isInitialSVGRender : true});
     }
 
     formatNumber(number) {
@@ -108,7 +111,7 @@ class DagreD3 extends Component {
             if (nodeData.isFunctionVertex()) {
                 gElement.setNode(nodeId, {
                     shape: "rect",
-                    label: nodeData.shortId,
+                    label: nodeData.getShortId(),
                     // width: 180,
                     // height: 40,
                     data: nodeData,
@@ -129,7 +132,7 @@ class DagreD3 extends Component {
             if (nodeData.getSources()) {
                 nodeData.getSources().forEach(source => {
                     // gElement.setEdge(nodeData.id, source.source);
-                    gElement.setEdge(source.getSource, nodeData.getId(), {
+                    gElement.setEdge(source.getSource(), nodeData.getId(), {
                         style: "stroke-width: 3px; fill-opacity: 0; stroke:lightgrey",
                         // lineInterpolate: 'basis'
                     });
@@ -146,7 +149,7 @@ class DagreD3 extends Component {
 
         g.nodes().forEach(function (v) {
             let node = g.node(v);
-            if (node.data.hasOwnProperty('func')) {
+            if (node.data.isFunctionVertex()) {
                 // Round the corners of the nodes
                 node.rx = node.ry = 40;
             }
@@ -193,7 +196,7 @@ class DagreD3 extends Component {
             let selectedNodeElem = nodeData.elem;
             selectedNodeElem.style.fill = "lightblue";
             selectedNodeElem.children[0].style.stroke = "red";
-            this.updateObjectBrowserData(nodeData);
+            this.updateObjectBrowserData(nodeData.data.getDeserializedJson());
         }
 
         let selectedNode = inner.selectAll("g.node");
@@ -288,6 +291,7 @@ class DagreD3 extends Component {
     }
 
     nodeClickHandler(nodeKey) {
+        let jsonStringForObjectBrowser;
 
         if (this.selectedNodeKey) {
             let selectedNodeElem = this.gLayout.node(this.selectedNodeKey).elem;
@@ -302,55 +306,106 @@ class DagreD3 extends Component {
         g.style.fill = "lightblue";
         g.children[0].style.stroke = "red";
 
-        this.updateObjectBrowserData(nodeData);
-        this.updateChartComponent(nodeData);
+        jsonStringForObjectBrowser = nodeData.data.getDeserializedJson();
+
+        this.updateObjectBrowserData(jsonStringForObjectBrowser);
+        this.updateChartComponent(jsonStringForObjectBrowser);
     }
 
     updateObjectBrowserData(nodeData) {
         let objectBrowserReference = this.props.objectBrowserComponentReference();
         if (objectBrowserReference) {
-            this.props.objectBrowserComponentReference().updateData(nodeData.data);
+            this.props.objectBrowserComponentReference().updateData(nodeData);
         }
     }
 
     updateChartComponent(nodeData) {
-        let datePathComponent, dataArrayKey;
-        if (nodeData.data.shortId.startsWith('TS')) {
-            datePathComponent = 'dateTime';
-            dataArrayKey = 'entries';
-            this.props.chartComponentReference().drawChartWithData({
-                chartData:
-                    {
-                        data: nodeData.data.data[dataArrayKey],
-                        datePathComponent: datePathComponent
-                    },
-                chartType: '2D'
+        let datePathComponent, dataArrayKey, shortId, startingWith;
+        shortId = nodeData.vertex.shortId;
+        startingWith = shortId.substring(0,2);
+
+        switch(startingWith) {
+            case 'TS':
+            {
+                datePathComponent = 'dateTime';
+                dataArrayKey = 'entriesList';
+                this.props.chartComponentReference().drawChartWithData({
+                    chartData:
+                        {
+                            data: nodeData.vertex.data.data.value[dataArrayKey],
+                            datePathComponent: datePathComponent
+                        },
+                    chartType: '2D'
+                }
+                );
             }
-            );
+            break;
+            case 'RC':
+            {
+                datePathComponent = 'date';
+                dataArrayKey = 'pointsList';
+                this.props.chartComponentReference().drawChartWithData({
+                    chartData:
+                        {
+                            data: nodeData.vertex.data.data.value[dataArrayKey],
+                            datePathComponent: datePathComponent
+                        },
+                    chartType: '2D'
+                }
+                );
+            }
+            break;
+            case 'VS':
+            {
+                dataArrayKey = 'curvesList';
+                this.props.chartComponentReference().drawChartWithData({
+                    chartData:
+                        {
+                            data: nodeData.vertex.data.data.value[dataArrayKey],
+                        },
+                    chartType: '3D'
+                }
+                );
+            }
+            break;
         }
-        else if (nodeData.data.shortId.startsWith('RC')) {
-            datePathComponent = 'date';
-            dataArrayKey = 'points';
-            this.props.chartComponentReference().drawChartWithData({
-                chartData:
-                    {
-                        data: nodeData.data.data[dataArrayKey],
-                        datePathComponent: datePathComponent
-                    },
-                chartType: '2D'
-            }
-            );
-        } else if (nodeData.data.shortId.startsWith('VS')) {
-            dataArrayKey = 'curves';
-            this.props.chartComponentReference().drawChartWithData({
-                chartData:
-                    {
-                        data: nodeData.data.data[dataArrayKey],
-                    },
-                chartType: '3D'
-            }
-            );
-        }
+
+        // if (nodeData.vertex.shortId.startsWith('TS')) {
+        //     datePathComponent = 'dateTime';
+        //     dataArrayKey = 'entries';
+        //     this.props.chartComponentReference().drawChartWithData({
+        //         chartData:
+        //             {
+        //                 data: nodeData.vertex.data.data.value[dataArrayKey],
+        //                 datePathComponent: datePathComponent
+        //             },
+        //         chartType: '2D'
+        //     }
+        //     );
+        // }
+        // else if (nodeData.vertex.shortId.startsWith('RC')) {
+        //     datePathComponent = 'date';
+        //     dataArrayKey = 'points';
+        //     this.props.chartComponentReference().drawChartWithData({
+        //         chartData:
+        //             {
+        //                 data: nodeData.vertex.data.data.value[dataArrayKey],
+        //                 datePathComponent: datePathComponent
+        //             },
+        //         chartType: '2D'
+        //     }
+        //     );
+        // } else if (nodeData.data.shortId.startsWith('VS')) {
+        //     dataArrayKey = 'curves';
+        //     this.props.chartComponentReference().drawChartWithData({
+        //         chartData:
+        //             {
+        //                 data: nodeData.data.data[dataArrayKey],
+        //             },
+        //         chartType: '3D'
+        //     }
+        //     );
+        // }
         // if (datePathComponent && dataArrayKey) {
         //     this.props.chartComponentReference().renderChartWithData(nodeData.data.data[dataArrayKey], datePathComponent);
         // }
