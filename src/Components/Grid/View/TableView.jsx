@@ -221,7 +221,7 @@ class TableView extends React.Component {
                 }
             ]
         }
-        this.subscriptionTopic = this.props.subscriptionTopic;        
+        this.subscriptionTopic = props.subscriptionTopic;        
         this.controller = new TableController(this, this.subscriptionTopic);
         this.sliderValue = 15;
         this.lastScrollTop = 0;

@@ -12,7 +12,7 @@ class ChartHOC extends Component {
             displayChart: false,
             chartData: {}
         }
-        this.props.reference(this);
+        // this.props.reference(this);
     }
 
     drawChartWithData(params) {

@@ -10,7 +10,7 @@ class DagreD3 extends Component {
 
     constructor(props) {
         super(props);
-        props.resizeEventHandler(this.componentResizeHandler.bind(this));
+        // props.resizeEventHandler(this.componentResizeHandler.bind(this));
         this.state = {
             parentNodeData: this.props.qGraphData.parentNodeData,
             parentNodeSources: this.props.qGraphData.parentNodeSources,
@@ -27,7 +27,7 @@ class DagreD3 extends Component {
         this.initialSvg = undefined;
 
 
-        this.props.reference(this);
+        // this.props.reference(this);
     }
 
     componentDidMount() {
